@@ -1,0 +1,18 @@
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# Runtime/local artifacts (на случай, если понадобятся скрипты для парсинга сайта А)
+node_modules/
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+
+# Local exports
+*.log
