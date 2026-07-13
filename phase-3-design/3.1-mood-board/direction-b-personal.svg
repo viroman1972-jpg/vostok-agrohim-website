@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#F0E6D2"/>
+
+  <!-- ===== HERO SECTION ===== -->
+  <!-- Header bar (light, warm) -->
+  <rect x="0" y="0" width="1200" height="80" fill="#F0E6D2"/>
+  <line x1="0" y1="80" x2="1200" y2="80" stroke="#D9C9A8" stroke-width="1"/>
+  <text x="60" y="45" font-size="24" font-weight="normal" fill="#3D5A3F" font-family="Georgia, serif" font-style="italic">Восток АгроХим</text>
+  <text x="60" y="65" font-size="10" fill="#8B806E" font-family="Georgia, serif">поставщик СЗР • с 2011 года</text>
+
+  <text x="530" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">Каталог</text>
+  <text x="620" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">Опт</text>
+  <text x="680" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">Для дачи</text>
+  <text x="770" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">О компании</text>
+  <text x="880" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">Доставка</text>
+  <text x="970" y="52" font-size="14" fill="#2D2416" font-family="Georgia, serif">Контакты</text>
+
+  <rect x="1080" y="35" width="20" height="20" rx="10" fill="#C46B4E"/>
+  <text x="1082" y="49" font-size="10" fill="#F0E6D2" font-weight="bold" font-family="Arial">TG</text>
+  <rect x="1110" y="35" width="30" height="20" rx="10" fill="#C46B4E"/>
+  <text x="1114" y="49" font-size="10" fill="#F0E6D2" font-weight="bold" font-family="Arial">MAX</text>
+  <text x="1150" y="49" font-size="14" fill="#3D5A3F" font-family="Arial" font-weight="bold">📞</text>
+
+  <!-- Left content: Personal quote-style intro -->
+  <text x="60" y="180" font-size="14" fill="#8B806E" font-family="Georgia, serif" font-style="italic">— Прутян Андрей Владимирович,</text>
+  <text x="60" y="200" font-size="14" fill="#8B806E" font-family="Georgia, serif" font-style="italic">директор</text>
+
+  <text x="60" y="270" font-size="46" font-weight="normal" fill="#2D2416" font-family="Georgia, serif" font-style="italic">
+    <tspan x="60" dy="0">Работаю в отрасли</tspan>
+    <tspan x="60" dy="58">с 2011 года.</tspan>
+    <tspan x="60" dy="58">Отвечаю за каждый заказ</tspan>
+    <tspan x="60" dy="58">лично.</tspan>
+  </text>
+
+  <!-- CTA buttons - softer -->
+  <rect x="60" y="530" width="240" height="55" rx="27" fill="#C46B4E"/>
+  <text x="180" y="565" font-size="15" font-weight="bold" fill="#F0E6D2" text-anchor="middle" font-family="Georgia, serif">Написать напрямую</text>
+
+  <rect x="320" y="530" width="180" height="55" rx="27" fill="none" stroke="#3D5A3F" stroke-width="2"/>
+  <text x="410" y="565" font-size="15" fill="#3D5A3F" text-anchor="middle" font-family="Georgia, serif">Открыть каталог</text>
+
+  <!-- Signature-style line -->
+  <text x="60" y="620" font-size="12" fill="#8B806E" font-family="Georgia, serif" font-style="italic">
+    ООО «Восток АгроХим» • Челябинск • ПН–ЧТ 9:00–17:00
+  </text>
+
+  <!-- Right visual: portrait placeholder -->
+  <!-- Frame around "portrait" -->
+  <rect x="720" y="150" width="380" height="440" rx="2" fill="#8B806E"/>
+  <rect x="732" y="162" width="356" height="416" rx="2" fill="#3D5A3F"/>
+
+  <!-- Portrait silhouette -->
+  <defs>
+    <linearGradient id="portraitB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0E6D2" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#2D2416"/>
+    </linearGradient>
+  </defs>
+  <rect x="732" y="162" width="356" height="416" rx="2" fill="url(#portraitB)"/>
+
+  <!-- Head silhouette -->
+  <circle cx="910" cy="335" r="70" fill="#2D2416" opacity="0.6"/>
+  <!-- Shoulders -->
+  <path d="M 780 578 Q 780 470 910 460 Q 1040 470 1040 578 Z" fill="#2D2416" opacity="0.6"/>
+
+  <!-- Portrait label -->
+  <text x="910" y="640" font-size="12" fill="#8B806E" text-anchor="middle" font-family="Georgia, serif" font-style="italic">
+    Здесь будет портрет директора
+  </text>
+
+  <!-- Small decorative element -->
+  <text x="740" y="200" font-size="11" fill="#F0E6D2" font-family="Georgia, serif" font-style="italic" opacity="0.7">— 15 лет —</text>
+
+  <!-- Separator - decorative line -->
+  <line x1="60" y1="670" x2="1140" y2="670" stroke="#D9C9A8" stroke-width="1"/>
+  <circle cx="600" cy="670" r="4" fill="#C46B4E"/>
+
+  <!-- ===== BOTTOM PANEL — palette + typography ===== -->
+  <text x="60" y="710" font-size="24" font-weight="normal" fill="#3D5A3F" font-family="Georgia, serif" font-style="italic">Направление B. «Личная фирма»</text>
+  <text x="60" y="735" font-size="14" fill="#8B806E" font-family="Georgia, serif">Тепло • человеческое лицо • персональная ответственность директора</text>
+
+  <text x="60" y="775" font-size="12" font-weight="bold" fill="#2D2416" font-family="Arial">ПАЛИТРА</text>
+
+  <rect x="60" y="785" width="70" height="70" rx="35" fill="#3D5A3F"/>
+  <text x="60" y="875" font-size="11" fill="#2D2416" font-family="monospace">#3D5A3F</text>
+  <text x="60" y="890" font-size="10" fill="#8B806E" font-family="Arial">Основной</text>
+
+  <rect x="145" y="785" width="70" height="70" rx="35" fill="#F0E6D2" stroke="#D9C9A8"/>
+  <text x="145" y="875" font-size="11" fill="#2D2416" font-family="monospace">#F0E6D2</text>
+  <text x="145" y="890" font-size="10" fill="#8B806E" font-family="Arial">Фон</text>
+
+  <rect x="230" y="785" width="70" height="70" rx="35" fill="#C46B4E"/>
+  <text x="230" y="875" font-size="11" fill="#2D2416" font-family="monospace">#C46B4E</text>
+  <text x="230" y="890" font-size="10" fill="#8B806E" font-family="Arial">Акцент</text>
+
+  <rect x="315" y="785" width="70" height="70" rx="35" fill="#2D2416"/>
+  <text x="315" y="875" font-size="11" fill="#2D2416" font-family="monospace">#2D2416</text>
+  <text x="315" y="890" font-size="10" fill="#8B806E" font-family="Arial">Текст</text>
+
+  <rect x="400" y="785" width="70" height="70" rx="35" fill="#8B806E"/>
+  <text x="400" y="875" font-size="11" fill="#2D2416" font-family="monospace">#8B806E</text>
+  <text x="400" y="890" font-size="10" fill="#8B806E" font-family="Arial">Вторичный</text>
+
+  <text x="530" y="775" font-size="12" font-weight="bold" fill="#2D2416" font-family="Arial">ТИПОГРАФИКА</text>
+
+  <text x="530" y="815" font-size="28" fill="#2D2416" font-family="Georgia, serif" font-style="italic">Заголовки — Playfair Display</text>
+  <text x="530" y="845" font-size="16" fill="#2D2416" font-family="Georgia, serif">Основной текст — Source Sans / Nunito</text>
+  <text x="530" y="868" font-size="12" fill="#8B806E" font-family="Georgia, serif" font-style="italic">Второстепенный — та же семья, серо-бежевый</text>
+  <text x="530" y="890" font-size="10" fill="#8B806E" font-family="monospace">Референс: европейские семейные агрофирмы, ремесленные бренды</text>
+</svg>

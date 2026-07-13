@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="Georgia, serif">
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#F8F4E9"/>
+
+  <!-- ===== HERO SECTION (top 620px) ===== -->
+  <!-- Header bar -->
+  <rect x="0" y="0" width="1200" height="80" fill="#1B4332"/>
+  <text x="60" y="50" font-size="24" font-weight="bold" fill="#F8F4E9" font-family="Georgia, serif">ВосТок АгроХим</text>
+  <text x="60" y="66" font-size="10" fill="#F8F4E9" opacity="0.7" font-family="Arial">СЗР и агрохимия с 2011 года</text>
+
+  <!-- Nav items -->
+  <text x="550" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">Каталог</text>
+  <text x="640" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">Опт</text>
+  <text x="700" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">Для дачи</text>
+  <text x="790" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">О компании</text>
+  <text x="900" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">Доставка</text>
+  <text x="990" y="52" font-size="14" fill="#F8F4E9" font-family="Arial">Контакты</text>
+
+  <!-- Contact icons -->
+  <rect x="1080" y="35" width="20" height="20" rx="2" fill="#E4A853"/>
+  <text x="1082" y="49" font-size="10" fill="#1B4332" font-weight="bold" font-family="Arial">TG</text>
+  <rect x="1110" y="35" width="30" height="20" rx="2" fill="#E4A853"/>
+  <text x="1114" y="49" font-size="10" fill="#1B4332" font-weight="bold" font-family="Arial">MAX</text>
+  <text x="1150" y="49" font-size="14" fill="#F8F4E9" font-family="Arial" font-weight="bold">📞</text>
+
+  <!-- Left content: Headline + CTA -->
+  <text x="60" y="200" font-size="42" font-weight="normal" fill="#1A1D1F" font-family="Georgia, serif">
+    <tspan x="60" dy="0">Оптовый поставщик</tspan>
+    <tspan x="60" dy="55">СЗР и агрохимии</tspan>
+    <tspan x="60" dy="55">по всей России</tspan>
+  </text>
+
+  <text x="60" y="380" font-size="18" fill="#6B7280" font-family="Arial">
+    <tspan x="60" dy="0">На рынке с 2011 года.</tspan>
+    <tspan x="60" dy="26">Работаем напрямую с директором.</tspan>
+  </text>
+
+  <!-- CTA buttons -->
+  <rect x="60" y="470" width="240" height="55" rx="4" fill="#E4A853"/>
+  <text x="180" y="504" font-size="15" font-weight="bold" fill="#1A1D1F" text-anchor="middle" font-family="Arial">Написать директору</text>
+
+  <rect x="320" y="470" width="180" height="55" rx="4" fill="none" stroke="#1B4332" stroke-width="2"/>
+  <text x="410" y="504" font-size="15" fill="#1B4332" text-anchor="middle" font-family="Arial">Открыть каталог</text>
+
+  <!-- Proof strip -->
+  <text x="60" y="580" font-size="13" font-weight="bold" fill="#1B4332" font-family="Arial">15+ ЛЕТ</text>
+  <text x="60" y="600" font-size="11" fill="#6B7280" font-family="Arial">на рынке</text>
+
+  <text x="180" y="580" font-size="13" font-weight="bold" fill="#1B4332" font-family="Arial">91+ ПРЕПАРАТ</text>
+  <text x="180" y="600" font-size="11" fill="#6B7280" font-family="Arial">в каталоге</text>
+
+  <text x="330" y="580" font-size="13" font-weight="bold" fill="#1B4332" font-family="Arial">ВСЯ РОССИЯ</text>
+  <text x="330" y="600" font-size="11" fill="#6B7280" font-family="Arial">склад в Челябинске</text>
+
+  <text x="480" y="580" font-size="13" font-weight="bold" fill="#1B4332" font-family="Arial">ПРЯМЫЕ КОНТРАКТЫ</text>
+  <text x="480" y="600" font-size="11" fill="#6B7280" font-family="Arial">с производителями</text>
+
+  <!-- Right visual: field with grain silhouette -->
+  <rect x="700" y="130" width="440" height="440" rx="4" fill="#3D5A3F"/>
+  <!-- Sky gradient at top -->
+  <defs>
+    <linearGradient id="fieldA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E4A853" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#3D5A3F"/>
+      <stop offset="100%" stop-color="#1B4332"/>
+    </linearGradient>
+  </defs>
+  <rect x="700" y="130" width="440" height="440" rx="4" fill="url(#fieldA)"/>
+  <!-- Wheat stalks -->
+  <g stroke="#E4A853" stroke-width="1.5" fill="none" opacity="0.85">
+    <line x1="750" y1="570" x2="750" y2="480"/>
+    <line x1="780" y1="570" x2="780" y2="460"/>
+    <line x1="810" y1="570" x2="810" y2="490"/>
+    <line x1="840" y1="570" x2="840" y2="470"/>
+    <line x1="870" y1="570" x2="870" y2="450"/>
+    <line x1="900" y1="570" x2="900" y2="480"/>
+    <line x1="930" y1="570" x2="930" y2="465"/>
+    <line x1="960" y1="570" x2="960" y2="475"/>
+    <line x1="990" y1="570" x2="990" y2="485"/>
+    <line x1="1020" y1="570" x2="1020" y2="455"/>
+    <line x1="1050" y1="570" x2="1050" y2="475"/>
+    <line x1="1080" y1="570" x2="1080" y2="470"/>
+  </g>
+  <!-- Ears -->
+  <g fill="#E4A853">
+    <ellipse cx="750" cy="475" rx="3" ry="7"/>
+    <ellipse cx="780" cy="455" rx="3" ry="7"/>
+    <ellipse cx="810" cy="485" rx="3" ry="7"/>
+    <ellipse cx="840" cy="465" rx="3" ry="7"/>
+    <ellipse cx="870" cy="445" rx="3" ry="7"/>
+    <ellipse cx="900" cy="475" rx="3" ry="7"/>
+    <ellipse cx="930" cy="460" rx="3" ry="7"/>
+    <ellipse cx="960" cy="470" rx="3" ry="7"/>
+    <ellipse cx="990" cy="480" rx="3" ry="7"/>
+    <ellipse cx="1020" cy="450" rx="3" ry="7"/>
+    <ellipse cx="1050" cy="470" rx="3" ry="7"/>
+    <ellipse cx="1080" cy="465" rx="3" ry="7"/>
+  </g>
+  <!-- Image caption -->
+  <text x="920" y="605" font-size="11" fill="#6B7280" text-anchor="middle" font-family="Arial" font-style="italic">Здесь будет фото поля / упаковки препаратов / рабочих моментов</text>
+
+  <!-- Separator -->
+  <line x1="60" y1="640" x2="1140" y2="640" stroke="#D4C9AC" stroke-width="1"/>
+
+  <!-- ===== BOTTOM PANEL — palette + typography ===== -->
+  <text x="60" y="680" font-size="24" font-weight="bold" fill="#1B4332" font-family="Georgia, serif">Направление A. «Уверенная классика»</text>
+  <text x="60" y="705" font-size="14" fill="#6B7280" font-family="Arial">Сдержанность • деловой тон • авторитет 15-летней компании</text>
+
+  <!-- Palette -->
+  <text x="60" y="745" font-size="12" font-weight="bold" fill="#1A1D1F" font-family="Arial">ПАЛИТРА</text>
+
+  <rect x="60" y="755" width="70" height="70" rx="3" fill="#1B4332"/>
+  <text x="60" y="845" font-size="11" fill="#1A1D1F" font-family="monospace">#1B4332</text>
+  <text x="60" y="860" font-size="10" fill="#6B7280" font-family="Arial">Основной</text>
+
+  <rect x="145" y="755" width="70" height="70" rx="3" fill="#F8F4E9" stroke="#D4C9AC"/>
+  <text x="145" y="845" font-size="11" fill="#1A1D1F" font-family="monospace">#F8F4E9</text>
+  <text x="145" y="860" font-size="10" fill="#6B7280" font-family="Arial">Фон</text>
+
+  <rect x="230" y="755" width="70" height="70" rx="3" fill="#E4A853"/>
+  <text x="230" y="845" font-size="11" fill="#1A1D1F" font-family="monospace">#E4A853</text>
+  <text x="230" y="860" font-size="10" fill="#6B7280" font-family="Arial">Акцент</text>
+
+  <rect x="315" y="755" width="70" height="70" rx="3" fill="#1A1D1F"/>
+  <text x="315" y="845" font-size="11" fill="#1A1D1F" font-family="monospace">#1A1D1F</text>
+  <text x="315" y="860" font-size="10" fill="#6B7280" font-family="Arial">Текст</text>
+
+  <rect x="400" y="755" width="70" height="70" rx="3" fill="#6B7280"/>
+  <text x="400" y="845" font-size="11" fill="#1A1D1F" font-family="monospace">#6B7280</text>
+  <text x="400" y="860" font-size="10" fill="#6B7280" font-family="Arial">Вторичный</text>
+
+  <!-- Typography -->
+  <text x="530" y="745" font-size="12" font-weight="bold" fill="#1A1D1F" font-family="Arial">ТИПОГРАФИКА</text>
+
+  <text x="530" y="780" font-size="28" fill="#1A1D1F" font-family="Georgia, serif">Заголовки — Merriweather</text>
+  <text x="530" y="810" font-size="16" fill="#1A1D1F" font-family="Arial">Основной текст — Inter (гротеск)</text>
+  <text x="530" y="833" font-size="12" fill="#6B7280" font-family="Arial">Второстепенный текст — Inter, серый</text>
+  <text x="530" y="858" font-size="10" fill="#6B7280" font-family="monospace">Референс в отрасли: Щёлково Агрохим (betaren.ru), UPL Russia</text>
+</svg>

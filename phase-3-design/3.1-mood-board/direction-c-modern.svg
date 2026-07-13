@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Helvetica Neue', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#FAFAFA"/>
+
+  <!-- ===== HERO SECTION ===== -->
+  <!-- Header bar - minimalist -->
+  <rect x="0" y="0" width="1200" height="70" fill="#FAFAFA"/>
+  <text x="60" y="42" font-size="20" font-weight="900" fill="#0F172A" font-family="Arial">VOSTOK</text>
+  <rect x="150" y="30" width="6" height="6" fill="#FF6B35"/>
+  <text x="165" y="42" font-size="12" font-weight="500" fill="#64748B" font-family="Arial" letter-spacing="1">АГРОХИМ</text>
+
+  <text x="500" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">Каталог</text>
+  <text x="580" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">Опт</text>
+  <text x="635" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">Для дачи</text>
+  <text x="720" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">О компании</text>
+  <text x="830" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">Доставка</text>
+  <text x="920" y="42" font-size="13" font-weight="500" fill="#0F172A" font-family="Arial">Контакты</text>
+
+  <!-- Header CTA -->
+  <rect x="1030" y="24" width="130" height="30" rx="15" fill="#0F172A"/>
+  <text x="1095" y="43" font-size="12" font-weight="600" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Написать →</text>
+
+  <!-- Left content - big bold type -->
+  <text x="60" y="185" font-size="14" fill="#FF6B35" font-family="Arial" font-weight="700" letter-spacing="3">С 2011 ГОДА</text>
+
+  <text x="60" y="270" font-size="72" font-weight="900" fill="#0F172A" font-family="Arial" letter-spacing="-2">
+    <tspan x="60" dy="0">СЗР</tspan>
+  </text>
+  <text x="200" y="270" font-size="72" font-weight="300" fill="#0F172A" font-family="Arial" letter-spacing="-2">
+    <tspan>и агрохимия</tspan>
+  </text>
+  <text x="60" y="335" font-size="72" font-weight="900" fill="#2D7D46" font-family="Arial" letter-spacing="-2">
+    ПО ВСЕЙ РОССИИ.
+  </text>
+  <text x="60" y="400" font-size="72" font-weight="300" fill="#0F172A" font-family="Arial" letter-spacing="-2">
+    Напрямую с
+  </text>
+  <text x="425" y="400" font-size="72" font-weight="900" fill="#0F172A" font-family="Arial" letter-spacing="-2">
+    директором.
+  </text>
+
+  <!-- Subtitle -->
+  <text x="60" y="450" font-size="16" fill="#64748B" font-family="Arial">
+    <tspan x="60" dy="0">Оптовые поставки от Август, Байер, БАСФ, Щёлково,</tspan>
+    <tspan x="60" dy="22">ФМРус, Листерра. Склад в Челябинске.</tspan>
+  </text>
+
+  <!-- CTAs -->
+  <rect x="60" y="510" width="220" height="60" rx="30" fill="#FF6B35"/>
+  <text x="170" y="547" font-size="16" font-weight="700" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Написать директору →</text>
+
+  <rect x="300" y="510" width="180" height="60" rx="30" fill="none" stroke="#0F172A" stroke-width="2"/>
+  <text x="390" y="547" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="Arial">Каталог</text>
+
+  <!-- Proof numbers - big -->
+  <text x="60" y="640" font-size="42" font-weight="900" fill="#2D7D46" font-family="Arial">15+</text>
+  <text x="60" y="665" font-size="11" fill="#64748B" font-family="Arial" letter-spacing="1">ЛЕТ НА РЫНКЕ</text>
+
+  <text x="180" y="640" font-size="42" font-weight="900" fill="#2D7D46" font-family="Arial">91+</text>
+  <text x="180" y="665" font-size="11" fill="#64748B" font-family="Arial" letter-spacing="1">ПРЕПАРАТОВ</text>
+
+  <text x="300" y="640" font-size="42" font-weight="900" fill="#2D7D46" font-family="Arial">1</text>
+  <text x="300" y="665" font-size="11" fill="#64748B" font-family="Arial" letter-spacing="1">ДИРЕКТОР, ЛИЧНО</text>
+
+  <text x="470" y="640" font-size="42" font-weight="900" fill="#2D7D46" font-family="Arial">РФ</text>
+  <text x="470" y="665" font-size="11" fill="#64748B" font-family="Arial" letter-spacing="1">СКЛАД В ЧЕЛЯБИНСКЕ</text>
+
+  <!-- Right visual: bold abstract composition -->
+  <!-- Big green block -->
+  <rect x="720" y="130" width="400" height="400" rx="0" fill="#2D7D46"/>
+  <!-- Overlapping orange accent block -->
+  <rect x="780" y="180" width="220" height="220" rx="0" fill="#FF6B35"/>
+  <!-- White circle -->
+  <circle cx="1010" cy="380" r="90" fill="#FAFAFA"/>
+  <!-- Green ring -->
+  <circle cx="1010" cy="380" r="90" fill="none" stroke="#2D7D46" stroke-width="3"/>
+  <!-- Text inside circle -->
+  <text x="1010" y="375" font-size="14" fill="#0F172A" text-anchor="middle" font-family="Arial" font-weight="600">Прямо с</text>
+  <text x="1010" y="395" font-size="16" fill="#FF6B35" text-anchor="middle" font-family="Arial" font-weight="900">директором</text>
+
+  <!-- Corner label -->
+  <text x="740" y="160" font-size="10" fill="#FAFAFA" font-family="Arial" letter-spacing="2" font-weight="700">01 / VOSTOK</text>
+
+  <!-- Wheat icon minimal in corner -->
+  <g transform="translate(1075, 500)">
+    <line x1="0" y1="0" x2="0" y2="20" stroke="#FAFAFA" stroke-width="2"/>
+    <line x1="0" y1="10" x2="-6" y2="4" stroke="#FAFAFA" stroke-width="2"/>
+    <line x1="0" y1="10" x2="6" y2="4" stroke="#FAFAFA" stroke-width="2"/>
+    <line x1="0" y1="5" x2="-6" y2="-1" stroke="#FAFAFA" stroke-width="2"/>
+    <line x1="0" y1="5" x2="6" y2="-1" stroke="#FAFAFA" stroke-width="2"/>
+  </g>
+
+  <text x="920" y="570" font-size="11" fill="#64748B" text-anchor="middle" font-family="Arial" font-style="italic">Здесь будут макросъёмка растений, поля с дрона, фото директора</text>
+
+  <!-- Separator - single thin orange line -->
+  <line x1="60" y1="695" x2="180" y2="695" stroke="#FF6B35" stroke-width="3"/>
+
+  <!-- ===== BOTTOM PANEL — palette + typography ===== -->
+  <text x="60" y="735" font-size="26" font-weight="900" fill="#0F172A" font-family="Arial" letter-spacing="-1">НАПРАВЛЕНИЕ C.</text>
+  <text x="315" y="735" font-size="26" font-weight="300" fill="#0F172A" font-family="Arial" letter-spacing="-1">«Технологичный агро»</text>
+  <text x="60" y="760" font-size="14" fill="#64748B" font-family="Arial">Современность • контраст • уверенность • отличие от «типового агросайта»</text>
+
+  <text x="60" y="795" font-size="11" font-weight="700" fill="#0F172A" font-family="Arial" letter-spacing="2">ПАЛИТРА</text>
+
+  <rect x="60" y="805" width="70" height="70" fill="#2D7D46"/>
+  <text x="60" y="895" font-size="11" fill="#0F172A" font-family="monospace">#2D7D46</text>
+
+  <rect x="145" y="805" width="70" height="70" fill="#FAFAFA" stroke="#E5E7EB"/>
+  <text x="145" y="895" font-size="11" fill="#0F172A" font-family="monospace">#FAFAFA</text>
+
+  <rect x="230" y="805" width="70" height="70" fill="#FF6B35"/>
+  <text x="230" y="895" font-size="11" fill="#0F172A" font-family="monospace">#FF6B35</text>
+
+  <rect x="315" y="805" width="70" height="70" fill="#0F172A"/>
+  <text x="315" y="895" font-size="11" fill="#0F172A" font-family="monospace">#0F172A</text>
+
+  <rect x="400" y="805" width="70" height="70" fill="#64748B"/>
+  <text x="400" y="895" font-size="11" fill="#0F172A" font-family="monospace">#64748B</text>
+
+  <text x="530" y="795" font-size="11" font-weight="700" fill="#0F172A" font-family="Arial" letter-spacing="2">ТИПОГРАФИКА</text>
+
+  <text x="530" y="828" font-size="26" font-weight="900" fill="#0F172A" font-family="Arial" letter-spacing="-0.5">Заголовки — Manrope Bold</text>
+  <text x="530" y="855" font-size="14" font-weight="400" fill="#0F172A" font-family="Arial">Основной текст — Inter Regular</text>
+  <text x="530" y="875" font-size="11" fill="#64748B" font-family="Arial">Второстепенный текст — тот же гротеск, серо-синий</text>
+  <text x="530" y="895" font-size="10" fill="#64748B" font-family="monospace">Референс: Bayer Agriculture, современные agtech-стартапы</text>
+</svg>
