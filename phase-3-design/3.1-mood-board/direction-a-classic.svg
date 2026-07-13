@@ -33,7 +33,6 @@
 
   <text x="60" y="380" font-size="18" fill="#6B7280" font-family="Arial">
     <tspan x="60" dy="0">На рынке с 2011 года.</tspan>
-    <tspan x="60" dy="26">Общайтесь с директором напрямую.</tspan>
   </text>
 
   <!-- CTA buttons -->
