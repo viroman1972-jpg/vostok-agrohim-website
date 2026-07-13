@@ -2,20 +2,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2100">
   <defs>
     <linearGradient id="fieldA" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#F0D89A"/>
-      <stop offset="45%" stop-color="#C4A05C"/>
-      <stop offset="80%" stop-color="#3D5A3F"/>
-      <stop offset="100%" stop-color="#1B4332"/>
+      <stop offset="0%" stop-color="#E8B45C"/>
+      <stop offset="30%" stop-color="#C48F42"/>
+      <stop offset="70%" stop-color="#7A5A2A"/>
+      <stop offset="100%" stop-color="#3D2D18"/>
     </linearGradient>
     <linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#F0D89A" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#E4A853" stop-opacity="0.4"/>
+      <stop offset="0%" stop-color="#F5D690"/>
+      <stop offset="25%" stop-color="#F8B968"/>
+      <stop offset="55%" stop-color="#E88C4A"/>
+      <stop offset="85%" stop-color="#B8623C"/>
+      <stop offset="100%" stop-color="#7A4232"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFAE6"/>
+      <stop offset="15%" stop-color="#FFEBB5" stop-opacity="0.85"/>
+      <stop offset="40%" stop-color="#F5C868" stop-opacity="0.45"/>
+      <stop offset="70%" stop-color="#F5C868" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#F5C868" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hazeA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5C888" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#F5C888" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="canA" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#F8F4E9"/>
       <stop offset="50%" stop-color="#ffffff"/>
       <stop offset="100%" stop-color="#D4C9AC"/>
     </linearGradient>
+    <filter id="softBlurA">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+    <filter id="distantBlur">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <!-- Reusable wheat symbol for foreground detail -->
+    <symbol id="wheatFull" viewBox="0 0 20 60" overflow="visible">
+      <line x1="10" y1="60" x2="10" y2="22" stroke="#B08040" stroke-width="1.2"/>
+      <g fill="#F5C868">
+        <ellipse cx="10" cy="24" rx="1.6" ry="2.2"/>
+        <ellipse cx="8"  cy="22" rx="1.6" ry="2.2"/>
+        <ellipse cx="12" cy="22" rx="1.6" ry="2.2"/>
+        <ellipse cx="7.5" cy="19" rx="1.5" ry="2"/>
+        <ellipse cx="12.5" cy="19" rx="1.5" ry="2"/>
+        <ellipse cx="8" cy="16" rx="1.4" ry="1.9"/>
+        <ellipse cx="12" cy="16" rx="1.4" ry="1.9"/>
+        <ellipse cx="10" cy="14" rx="1.3" ry="1.7"/>
+      </g>
+      <g stroke="#E8B45C" stroke-width="0.5" fill="none" opacity="0.85">
+        <line x1="10" y1="14" x2="8" y2="4"/>
+        <line x1="10" y1="14" x2="12" y2="4"/>
+        <line x1="10" y1="14" x2="10" y2="2"/>
+        <line x1="8" y1="16" x2="6" y2="8"/>
+        <line x1="12" y1="16" x2="14" y2="8"/>
+      </g>
+    </symbol>
   </defs>
 
   <rect width="1200" height="2100" fill="#F8F4E9"/>
@@ -55,45 +96,164 @@
   <rect x="320" y="490" width="180" height="55" rx="4" fill="none" stroke="#1B4332" stroke-width="2"/>
   <text x="410" y="524" font-size="15" fill="#1B4332" text-anchor="middle" font-family="Arial">Открыть каталог</text>
 
-  <!-- Hero image: wheat field with sky -->
+  <!-- Hero image: golden hour wheat field with sky -->
   <rect x="700" y="130" width="440" height="440" rx="6" fill="url(#skyA)"/>
-  <rect x="700" y="330" width="440" height="240" fill="url(#fieldA)"/>
 
-  <circle cx="1030" cy="200" r="35" fill="#F0D89A" opacity="0.9"/>
-  <path d="M 700 340 Q 800 320 900 335 T 1140 330 L 1140 350 L 700 350 Z" fill="#1B4332" opacity="0.5"/>
+  <!-- Wispy high clouds (blurred) -->
+  <g fill="#F8E4A0" opacity="0.5" filter="url(#softBlurA)">
+    <ellipse cx="800" cy="175" rx="55" ry="4"/>
+    <ellipse cx="820" cy="185" rx="35" ry="3"/>
+    <ellipse cx="950" cy="195" rx="45" ry="4"/>
+    <ellipse cx="1080" cy="165" rx="35" ry="3"/>
+    <ellipse cx="1100" cy="175" rx="20" ry="2"/>
+  </g>
 
-  <g stroke="#F0D89A" stroke-width="1.5" fill="none" opacity="0.9">
-    <line x1="720" y1="560" x2="720" y2="440"/>
-    <line x1="750" y1="560" x2="750" y2="410"/>
-    <line x1="780" y1="560" x2="780" y2="425"/>
-    <line x1="810" y1="560" x2="810" y2="405"/>
-    <line x1="840" y1="560" x2="840" y2="435"/>
-    <line x1="870" y1="560" x2="870" y2="415"/>
-    <line x1="900" y1="560" x2="900" y2="400"/>
-    <line x1="930" y1="560" x2="930" y2="425"/>
-    <line x1="960" y1="560" x2="960" y2="410"/>
-    <line x1="990" y1="560" x2="990" y2="420"/>
-    <line x1="1020" y1="560" x2="1020" y2="395"/>
-    <line x1="1050" y1="560" x2="1050" y2="415"/>
-    <line x1="1080" y1="560" x2="1080" y2="405"/>
-    <line x1="1110" y1="560" x2="1110" y2="430"/>
+  <!-- Sun with soft glow -->
+  <circle cx="1020" cy="270" r="100" fill="url(#sunGlow)"/>
+  <circle cx="1020" cy="270" r="32" fill="#FFFAE6"/>
+
+  <!-- Atmospheric haze near horizon -->
+  <rect x="700" y="300" width="440" height="60" fill="url(#hazeA)"/>
+
+  <!-- Far distant hills (very subtle, hazy) -->
+  <path d="M 700 340 Q 780 328 860 335 T 1000 330 T 1140 335 L 1140 360 L 700 360 Z"
+        fill="#8A5044" opacity="0.5" filter="url(#distantBlur)"/>
+
+  <!-- Middle distance hills -->
+  <path d="M 700 358 Q 820 340 940 355 T 1140 345 L 1140 375 L 700 375 Z"
+        fill="#6A3E38" opacity="0.7"/>
+
+  <!-- Tree line silhouettes on horizon -->
+  <g fill="#3A251C" opacity="0.75">
+    <ellipse cx="740" cy="352" rx="7" ry="10"/>
+    <ellipse cx="758" cy="354" rx="5" ry="8"/>
+    <ellipse cx="775" cy="350" rx="6" ry="11"/>
+    <ellipse cx="850" cy="356" rx="4" ry="6"/>
+    <ellipse cx="892" cy="347" rx="6" ry="9"/>
+    <ellipse cx="908" cy="349" rx="4" ry="7"/>
+    <ellipse cx="1050" cy="351" rx="5" ry="8"/>
+    <ellipse cx="1090" cy="347" rx="8" ry="12"/>
+    <ellipse cx="1112" cy="352" rx="4" ry="7"/>
   </g>
-  <g fill="#F0D89A">
-    <ellipse cx="720" cy="435" rx="3" ry="8"/>
-    <ellipse cx="750" cy="405" rx="3" ry="8"/>
-    <ellipse cx="780" cy="420" rx="3" ry="8"/>
-    <ellipse cx="810" cy="400" rx="3" ry="8"/>
-    <ellipse cx="840" cy="430" rx="3" ry="8"/>
-    <ellipse cx="870" cy="410" rx="3" ry="8"/>
-    <ellipse cx="900" cy="395" rx="3" ry="8"/>
-    <ellipse cx="930" cy="420" rx="3" ry="8"/>
-    <ellipse cx="960" cy="405" rx="3" ry="8"/>
-    <ellipse cx="990" cy="415" rx="3" ry="8"/>
-    <ellipse cx="1020" cy="390" rx="3" ry="8"/>
-    <ellipse cx="1050" cy="410" rx="3" ry="8"/>
-    <ellipse cx="1080" cy="400" rx="3" ry="8"/>
-    <ellipse cx="1110" cy="425" rx="3" ry="8"/>
+
+  <!-- Small farmhouse silhouette in middle distance -->
+  <g fill="#3A251C" opacity="0.8">
+    <rect x="960" y="345" width="22" height="16"/>
+    <polygon points="960,345 971,335 982,345"/>
+    <rect x="968" y="352" width="4" height="9" fill="#F5B968"/>
   </g>
+
+  <!-- Field surface -->
+  <rect x="700" y="370" width="440" height="200" fill="url(#fieldA)"/>
+
+  <!-- Row texture in field (subtle) -->
+  <g stroke="#E8B45C" stroke-width="0.4" opacity="0.3" filter="url(#softBlurA)">
+    <line x1="700" y1="380" x2="1140" y2="380"/>
+    <line x1="700" y1="388" x2="1140" y2="388"/>
+    <line x1="700" y1="398" x2="1140" y2="398"/>
+    <line x1="700" y1="410" x2="1140" y2="410"/>
+    <line x1="700" y1="425" x2="1140" y2="425"/>
+  </g>
+
+  <!-- Tractor path curve -->
+  <path d="M 850 570 Q 920 500 940 400"
+        stroke="#D4B078" stroke-width="14" fill="none" opacity="0.32"/>
+
+  <!-- Middle-distance wheat: many small ears with stalks -->
+  <g opacity="0.75">
+    <g stroke="#B08040" stroke-width="0.7" fill="none">
+      <line x1="710" y1="475" x2="710" y2="448"/>
+      <line x1="722" y1="472" x2="722" y2="443"/>
+      <line x1="734" y1="475" x2="734" y2="450"/>
+      <line x1="746" y1="470" x2="746" y2="440"/>
+      <line x1="758" y1="475" x2="758" y2="445"/>
+      <line x1="770" y1="472" x2="770" y2="443"/>
+      <line x1="782" y1="475" x2="782" y2="447"/>
+      <line x1="794" y1="470" x2="794" y2="440"/>
+      <line x1="806" y1="474" x2="806" y2="445"/>
+      <line x1="818" y1="472" x2="818" y2="442"/>
+      <line x1="830" y1="475" x2="830" y2="447"/>
+      <line x1="842" y1="470" x2="842" y2="440"/>
+      <line x1="854" y1="474" x2="854" y2="445"/>
+      <line x1="866" y1="472" x2="866" y2="442"/>
+      <line x1="878" y1="475" x2="878" y2="446"/>
+      <line x1="890" y1="470" x2="890" y2="441"/>
+      <line x1="902" y1="475" x2="902" y2="445"/>
+      <line x1="914" y1="472" x2="914" y2="443"/>
+      <line x1="926" y1="470" x2="926" y2="440"/>
+      <line x1="938" y1="475" x2="938" y2="446"/>
+      <line x1="950" y1="472" x2="950" y2="443"/>
+      <line x1="962" y1="470" x2="962" y2="440"/>
+      <line x1="974" y1="474" x2="974" y2="444"/>
+      <line x1="986" y1="472" x2="986" y2="443"/>
+      <line x1="998" y1="475" x2="998" y2="446"/>
+      <line x1="1010" y1="470" x2="1010" y2="440"/>
+      <line x1="1022" y1="475" x2="1022" y2="445"/>
+      <line x1="1034" y1="472" x2="1034" y2="442"/>
+      <line x1="1046" y1="470" x2="1046" y2="441"/>
+      <line x1="1058" y1="475" x2="1058" y2="446"/>
+      <line x1="1070" y1="472" x2="1070" y2="443"/>
+      <line x1="1082" y1="470" x2="1082" y2="440"/>
+      <line x1="1094" y1="474" x2="1094" y2="444"/>
+      <line x1="1106" y1="472" x2="1106" y2="443"/>
+      <line x1="1118" y1="475" x2="1118" y2="446"/>
+      <line x1="1130" y1="470" x2="1130" y2="440"/>
+    </g>
+    <g fill="#F5C868">
+      <ellipse cx="710" cy="447" rx="2" ry="5"/>
+      <ellipse cx="722" cy="442" rx="2" ry="5"/>
+      <ellipse cx="734" cy="449" rx="2" ry="5"/>
+      <ellipse cx="746" cy="439" rx="2" ry="5"/>
+      <ellipse cx="758" cy="444" rx="2" ry="5"/>
+      <ellipse cx="770" cy="442" rx="2" ry="5"/>
+      <ellipse cx="782" cy="446" rx="2" ry="5"/>
+      <ellipse cx="794" cy="439" rx="2" ry="5"/>
+      <ellipse cx="806" cy="444" rx="2" ry="5"/>
+      <ellipse cx="818" cy="441" rx="2" ry="5"/>
+      <ellipse cx="830" cy="446" rx="2" ry="5"/>
+      <ellipse cx="842" cy="439" rx="2" ry="5"/>
+      <ellipse cx="854" cy="444" rx="2" ry="5"/>
+      <ellipse cx="866" cy="441" rx="2" ry="5"/>
+      <ellipse cx="878" cy="445" rx="2" ry="5"/>
+      <ellipse cx="890" cy="440" rx="2" ry="5"/>
+      <ellipse cx="902" cy="444" rx="2" ry="5"/>
+      <ellipse cx="914" cy="442" rx="2" ry="5"/>
+      <ellipse cx="926" cy="439" rx="2" ry="5"/>
+      <ellipse cx="938" cy="445" rx="2" ry="5"/>
+      <ellipse cx="950" cy="442" rx="2" ry="5"/>
+      <ellipse cx="962" cy="439" rx="2" ry="5"/>
+      <ellipse cx="974" cy="443" rx="2" ry="5"/>
+      <ellipse cx="986" cy="442" rx="2" ry="5"/>
+      <ellipse cx="998" cy="445" rx="2" ry="5"/>
+      <ellipse cx="1010" cy="439" rx="2" ry="5"/>
+      <ellipse cx="1022" cy="444" rx="2" ry="5"/>
+      <ellipse cx="1034" cy="441" rx="2" ry="5"/>
+      <ellipse cx="1046" cy="440" rx="2" ry="5"/>
+      <ellipse cx="1058" cy="445" rx="2" ry="5"/>
+      <ellipse cx="1070" cy="442" rx="2" ry="5"/>
+      <ellipse cx="1082" cy="439" rx="2" ry="5"/>
+      <ellipse cx="1094" cy="443" rx="2" ry="5"/>
+      <ellipse cx="1106" cy="442" rx="2" ry="5"/>
+      <ellipse cx="1118" cy="445" rx="2" ry="5"/>
+      <ellipse cx="1130" cy="439" rx="2" ry="5"/>
+    </g>
+  </g>
+
+  <!-- Foreground wheat: detailed ears (using symbol) -->
+  <use href="#wheatFull" x="705"  y="490" width="20" height="60"/>
+  <use href="#wheatFull" x="735"  y="495" width="20" height="60"/>
+  <use href="#wheatFull" x="768"  y="488" width="22" height="65"/>
+  <use href="#wheatFull" x="800"  y="500" width="20" height="60"/>
+  <use href="#wheatFull" x="832"  y="492" width="20" height="60"/>
+  <use href="#wheatFull" x="862"  y="500" width="22" height="65"/>
+  <use href="#wheatFull" x="895"  y="488" width="20" height="60"/>
+  <use href="#wheatFull" x="928"  y="495" width="20" height="60"/>
+  <use href="#wheatFull" x="960"  y="490" width="22" height="65"/>
+  <use href="#wheatFull" x="995"  y="500" width="20" height="60"/>
+  <use href="#wheatFull" x="1030" y="492" width="22" height="65"/>
+  <use href="#wheatFull" x="1060" y="500" width="20" height="60"/>
+  <use href="#wheatFull" x="1095" y="490" width="22" height="65"/>
+  <use href="#wheatFull" x="1125" y="500" width="20" height="60"/>
 
   <!-- ============= PROOF STRIP ============= -->
   <rect x="0" y="620" width="1200" height="80" fill="#1B4332"/>
