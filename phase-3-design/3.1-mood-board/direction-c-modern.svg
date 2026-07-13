@@ -19,7 +19,7 @@
 
   <!-- Header CTA -->
   <rect x="1030" y="24" width="130" height="30" rx="15" fill="#0F172A"/>
-  <text x="1095" y="43" font-size="12" font-weight="600" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Написать →</text>
+  <text x="1095" y="43" font-size="12" font-weight="600" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Консультация →</text>
 
   <!-- Left content - big bold type -->
   <text x="60" y="185" font-size="14" fill="#FF6B35" font-family="Arial" font-weight="700" letter-spacing="3">С 2011 ГОДА</text>
@@ -48,7 +48,7 @@
 
   <!-- CTAs -->
   <rect x="60" y="510" width="220" height="60" rx="30" fill="#FF6B35"/>
-  <text x="170" y="547" font-size="16" font-weight="700" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Написать директору →</text>
+  <text x="170" y="547" font-size="16" font-weight="700" fill="#FAFAFA" text-anchor="middle" font-family="Arial">Получить консультацию →</text>
 
   <rect x="300" y="510" width="180" height="60" rx="30" fill="none" stroke="#0F172A" stroke-width="2"/>
   <text x="390" y="547" font-size="16" font-weight="600" fill="#0F172A" text-anchor="middle" font-family="Arial">Каталог</text>
