@@ -39,11 +39,26 @@ The company is not presented as:
 
 - a large anonymous distributor;
 - a marketplace;
-- an official representative without confirmation.
+- an official representative of manufacturers other than АО «Август».
 
-The company is presented as:
+The company IS presented as:
 
-An expert supplier that helps agricultural businesses choose suitable crop protection solutions.
+- **an official dealer of АО Фирма «Август»** on the territory of Chelyabinsk region (confirmed by dealer letter № 26-03/05 dated 05.03.2026, valid until 31.12.2026);
+- an expert supplier that helps agricultural businesses choose suitable crop protection solutions;
+- a regional company with practical understanding of agricultural tasks.
+
+---
+
+## Manufacturers block — special note
+
+The Manufacturers block is the only section where confirmed dealership status is emphasized.
+
+- Only АО «Август» logo can be used (confirmed by dealer letter).
+- Other manufacturers (БАСФ, Байер, ФМРус, Листерра) are mentioned only as text, no logos, neutral wording.
+- Гарант Оптима and Щёлково Агрохим are not displayed at all (business decisions, see brands-block-decision.md).
+
+Details:
+`проектные решения/brands-block-decision.md`
 
 ---
 
