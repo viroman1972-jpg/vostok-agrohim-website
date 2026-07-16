@@ -353,3 +353,98 @@ Avoid:
 - price-focused communication;
 - marketplace style;
 - exaggerated claims.
+
+---
+
+# Update after strategic review
+
+Version: 1.2
+
+## Block 3. Solutions by customer tasks
+
+### Purpose
+
+Help visitors quickly understand that the company can solve their specific crop protection tasks.
+
+The visitor should think:
+
+"My problem is understood. This company can help me."
+
+---
+
+## Main message
+
+Решения для защиты основных культур
+
+---
+
+## Supporting text
+
+Подбираем препараты и схемы защиты в зависимости от культуры, проблемы и условий применения.
+
+---
+
+## Structure
+
+Four solution categories:
+
+### 01. Защита от сорняков
+
+Focus:
+
+- herbicide solutions;
+- control of unwanted vegetation;
+- crop protection tasks.
+
+---
+
+### 02. Защита от болезней
+
+Focus:
+
+- prevention and control of crop diseases;
+- fungicide solutions.
+
+---
+
+### 03. Защита от вредителей
+
+Focus:
+
+- insect pest control;
+- insecticide solutions.
+
+---
+
+### 04. Другие задачи защиты растений
+
+Purpose:
+
+Cover specific situations and individual customer needs.
+
+---
+
+## Design principles
+
+Use:
+
+- clean card structure;
+- calm professional presentation;
+- minimal line icons;
+- clear navigation.
+
+Avoid:
+
+- marketplace-style catalog presentation;
+- price-first communication;
+- excessive product focus.
+
+---
+
+## CTA
+
+Primary action:
+
+Подобрать решение для вашей задачи
+
+The CTA should lead toward consultation, not only product browsing.
