@@ -25,7 +25,32 @@ The main value proposition:
 
 Homepage logic:
 
-Trust → Expertise → Solution → Product → Confidence → Contact
+Trust → Audience → Expertise → Solution → Product → Confidence → Contact
+
+---
+
+# Navigation
+
+Menu structure (header):
+
+Как мы работаем · Задачи защиты · Каталог ▾ · Производители · Контакты
+
+The "Каталог" item is a dropdown with four sub-entries — the four fundamental catalog entry points confirmed by base strategy (decision #7):
+
+Каталог ▾
+- Гербициды, инсектициды, фунгициды (по типу)
+- Пшеница, кукуруза, ячмень... (по культурам)
+- От вредителей и болезней
+- По действующим веществам
+
+Formulation is intentionally in the language of personas — not "By product type / By crops / By pests" as internal ярлыки, but concrete category names that a farmer or agronomist recognizes immediately.
+
+Each sub-entry links to a corresponding section of `/catalog`.
+
+Additional pages (not in main nav, accessible from "Для кого мы работаем" tiles on homepage):
+
+- `/opt` — landing page for wholesale buyers (КФХ, agroholdings, distributors)
+- `/dacha` — landing page for home gardeners and small farms
 
 ---
 
@@ -126,7 +151,79 @@ Requirements:
 
 ---
 
-# 2. Solution Approach Section
+# 2. Для кого мы работаем
+
+## Purpose
+
+Segment the audience immediately after Hero — help the visitor identify themselves ("это для меня") and remove entry-level objections of the two secondary personas.
+
+Closes objections:
+
+- Сергей Валерьевич (wholesale buyer): "сайт не рассчитан на нас, оптовых";
+- Алевтина Викторовна (dacha owner): "здесь всё промышленное, не для меня".
+
+Basis:
+
+Base strategy decision #2 — "B2B-first + secondary B2C — single site with two landing pages `/opt` and `/dacha`".
+
+## Main message
+
+Для кого мы работаем
+
+## Supporting text
+
+Short line, one or two sentences setting up the two tile block. Example:
+
+"Работаем с любыми объёмами — от одного флакона на теплицу до партий для агрохолдинга."
+
+## Structure
+
+Two tiles, side by side on desktop, stacked on mobile.
+
+### Tile 1. Оптовым покупателям
+
+Target: КФХ, агрохолдинги, дистрибьюторы.
+
+Content elements:
+
+- заголовок «Оптовым покупателям»;
+- краткое описание кому подходит;
+- 2-3 buying arguments: скидки на объём, работа по договору, полный пакет документов при отгрузке;
+- CTA: «Смотреть условия →»
+
+Links to: `/opt`
+
+### Tile 2. Дачникам и малым хозяйствам
+
+Target: ЛПХ, дачники, малые фермы.
+
+Content elements:
+
+- заголовок «Дачникам и малым хозяйствам»;
+- краткое описание кому подходит;
+- 2-3 buying arguments: работаем с любыми объёмами, простые инструкции по применению, помощь в подборе препарата;
+- CTA: «Подобрать препарат →»
+
+Links to: `/dacha`
+
+## Design principles
+
+Use:
+
+- two visually equal tiles (no dominant one);
+- calm professional presentation;
+- restrained iconography, if any;
+- clear separation between tiles.
+
+Avoid:
+
+- marketing pressure ("Только у нас!", "Лучшие цены!");
+- imagery clichés (крупный фермер vs дачник с граблями);
+- visual imbalance between tiles.
+
+---
+
+# 3. Как мы работаем
 
 ## Purpose
 
@@ -186,7 +283,7 @@ Avoid:
 
 ---
 
-# 3. Solutions by Customer Tasks Section
+# 4. Задачи защиты
 
 ## Purpose
 
@@ -198,7 +295,7 @@ Main idea:
 
 ## Main message
 
-Решения для защиты основных культур.
+Задачи защиты растений
 
 ## Supporting text
 
@@ -228,13 +325,23 @@ Insecticide solutions.
 
 Individual solutions for specific situations.
 
+## Bridge to full catalog
+
+Under the four tiles — a thin bridge line, small in size, muted in tone, that acknowledges: this is only one way to browse the assortment.
+
+Wording:
+
+"Ищете препарат для конкретной культуры, производителя или с определённым действующим веществом? Все входы в каталог →"
+
+The bridge links to `/catalog` — the full catalog page, which contains all four entry points (по типу, по культурам, по вредным объектам, по действующим веществам) as spelled out in the Navigation section and in the base sitemap (`phase-2-planning/2.1-sitemap/`).
+
 ## CTA
 
 Подобрать решение для вашей задачи
 
 ---
 
-# 4. Product Assortment Section
+# 5. Каталог
 
 ## Purpose
 
@@ -242,7 +349,7 @@ Show available products without turning the website into an online store.
 
 ## Main message
 
-Средства защиты растений в нашем ассортименте.
+Каталог препаратов
 
 ## Supporting text
 
@@ -271,7 +378,7 @@ CTA:
 
 ---
 
-# 5. Company Expertise Section
+# 6. Company Expertise Section
 
 ## Purpose
 
@@ -305,7 +412,7 @@ Show why customers should work with a small regional company.
 
 ---
 
-# 6. Manufacturers Section
+# 7. Manufacturers Section
 
 ## Purpose
 
@@ -378,7 +485,7 @@ Do NOT display:
 
 ---
 
-# 7. Final CTA Section
+# 8. Final CTA Section
 
 ## Purpose
 

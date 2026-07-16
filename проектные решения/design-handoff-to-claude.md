@@ -93,12 +93,28 @@ Avoid:
 Use:
 
 1. Hero
-2. Solution approach
-3. Solutions by customer tasks
-4. Product assortment
-5. Company expertise
-6. Manufacturers
-7. Final CTA
+2. Для кого мы работаем (два landing-тайла: оптовые / дачники)
+3. Как мы работаем
+4. Задачи защиты (+ мостик к полному каталогу)
+5. Каталог
+6. Company expertise
+7. Manufacturers
+8. Final CTA
+
+## Navigation
+
+Header menu:
+
+Как мы работаем · Задачи защиты · Каталог ▾ · Производители · Контакты
+
+The "Каталог" item is a dropdown with four entries (formulated in persona language):
+
+- Гербициды, инсектициды, фунгициды (по типу)
+- Пшеница, кукуруза, ячмень... (по культурам)
+- От вредителей и болезней
+- По действующим веществам
+
+Additional landing pages `/opt` and `/dacha` are reached from the homepage tiles in section 2, not from the main navigation.
 
 Source of truth:
 
