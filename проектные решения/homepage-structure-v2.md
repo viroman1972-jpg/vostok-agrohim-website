@@ -53,6 +53,59 @@ Secondary:
 
 Посмотреть каталог
 
+## Proof strip
+
+Under the CTAs — a single line with three key trust signals separated by middle dots.
+
+Content:
+
+Официальный дилер АО «Август» · В отрасли с 2015 года · Челябинская область
+
+Purpose:
+
+- add immediate credibility signals visible above the fold;
+- support the H1 without competing with it;
+- close the "trust" step of the persuasion sequence before the visitor scrolls further.
+
+Placement:
+
+- immediately below the CTA buttons;
+- separated from CTAs by a moderate gap (not glued);
+- above the fold on desktop when possible.
+
+Visual style:
+
+- small text size (~14px on desktop, secondary hierarchy);
+- muted color (secondary text tone, not accent);
+- thin middle-dot separators («·») between items;
+- no icons, no boxes, no emoji;
+- single line on desktop, natural wrap or stacking on mobile.
+
+Interactivity:
+
+The first item — "Официальный дилер АО «Август»" — is clickable.
+
+On click: opens the scan of the dealer letter in a lightbox or modal.
+
+Source file for the dealer letter:
+`00-management/documents/avgust-dealer-letter-2026.jpg`
+
+Small visual indicator of clickability (↗ or subtle underline on hover) is acceptable but should stay minimal.
+
+Other two items ("В отрасли с 2015 года", "Челябинская область") are not clickable — plain text.
+
+Mobile behavior:
+
+Option A (preferred):
+
+Wrap naturally to two lines if needed. Keep the middle dots.
+
+Option B (if A causes layout issues):
+
+Stack items vertically with the dot omitted, each item on its own line, keeping muted style.
+
+Do not shorten items or drop the dealer status on mobile.
+
 ## Visual direction
 
 Concept:
