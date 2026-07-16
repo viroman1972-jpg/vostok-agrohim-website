@@ -270,3 +270,86 @@ The homepage should NOT communicate:
 Core customer feeling:
 
 "Этой компании можно доверить задачу защиты урожая. Здесь помогут подобрать правильное решение."
+
+---
+
+# Updates after strategic review
+
+Version: 1.1
+
+The homepage structure was refined after additional analysis of company positioning.
+
+---
+
+# Block 2. Solution approach
+
+## Purpose
+
+Explain the main difference of Vostok-AgroHim:
+
+The company does not simply sell crop protection products.
+It helps customers choose appropriate solutions for crop protection tasks.
+
+---
+
+## Main message
+
+Подбираем решения для защиты растений, а не просто продаём препараты.
+
+---
+
+## Supporting text
+
+Учитываем особенности культуры, проблему на поле и задачи хозяйства, чтобы подобрать подходящий вариант защиты.
+
+---
+
+## Structure
+
+Three-step process:
+
+### 01. Анализируем задачу
+
+Understanding:
+
+- crop specifics;
+- problem;
+- timing;
+- farm conditions.
+
+---
+
+### 02. Подбираем решение
+
+Selection based on:
+
+- crop protection task;
+- suitable products;
+- application approach.
+
+---
+
+### 03. Организуем поставку
+
+Providing:
+
+- product supply;
+- documentation;
+- customer support.
+
+---
+
+## Design principles
+
+Visual style:
+
+- calm professional B2B presentation;
+- three clear cards;
+- minimal linear icons;
+- no aggressive sales elements.
+
+Avoid:
+
+- price-focused communication;
+- marketplace style;
+- exaggerated claims.
