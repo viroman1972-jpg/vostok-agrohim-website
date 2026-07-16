@@ -31,3 +31,15 @@
 - [План проекта](00-management/project-plan.md)
 - [Журнал решений](00-management/decisions-log.md)
 - [Текущий статус](00-management/status.md)
+
+## Current design documentation priority
+
+For current design decisions use:
+
+1. project-info/company-facts.md
+2. проектные решения/design-constraints.md
+3. проектные решения/homepage-structure-v1.md
+4. проектные решения/hero-visual-update.md
+
+Older phase documents represent previous exploration stages.
+Approved documents above have priority over earlier explorations.
