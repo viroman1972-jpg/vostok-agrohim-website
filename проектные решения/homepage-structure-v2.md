@@ -1,12 +1,16 @@
 # Homepage Structure v2 — Восток-Агрохим
 
-Version: 2.0
+Version: 2.1
 
 Status:
 Approved concept
 
 This document supersedes homepage-structure-v1.md.
 Previous versions represent earlier exploration stages.
+
+Change log:
+- v2.1 — updated Hero H1 and supporting message after refinement session (see section 1). Rest of structure unchanged.
+- v2.0 — initial approved concept.
 
 ---
 
@@ -62,11 +66,11 @@ Create immediate trust and explain the company's main value.
 
 ## Main message
 
-Решения для защиты урожая, подобранные под задачи вашего хозяйства.
+Помогаем подобрать эффективное средство защиты растений
 
 ## Supporting message
 
-Средства защиты растений от проверенных производителей. Помогаем подобрать эффективное решение для ваших культур.
+Препараты проверенных производителей — с учётом культуры, условий и особенностей обработки.
 
 ## CTA
 
