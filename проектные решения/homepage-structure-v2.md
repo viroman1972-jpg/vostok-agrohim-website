@@ -1,6 +1,6 @@
 # Homepage Structure v2 — Восток-Агрохим
 
-Version: 2.1
+Version: 2.2
 
 Status:
 Approved concept
@@ -9,6 +9,7 @@ This document supersedes homepage-structure-v1.md.
 Previous versions represent earlier exploration stages.
 
 Change log:
+- v2.2 — блок 2 «Для кого мы работаем» удалён по НР01 (отказ от дачной аудитории от 19.07.2026). Сегментация опт/дача на главной больше не нужна: аудитория одна — профессиональный B2B (агрономы, КФХ, оптовые покупатели). Оставшиеся блоки перенумерованы (3→2, 4→3, 5→4, 6→5, 7→6, 8→7). Homepage logic упрощена: убрано звено Audience. Раздел Navigation обновлён: удалено упоминание `/dacha` и плиток блока 2. См. `00-management/decisions-registry.md`, запись НР01.
 - v2.1 — updated Hero H1 and supporting message after refinement session (see section 1). Rest of structure unchanged.
 - v2.0 — initial approved concept.
 
@@ -29,7 +30,7 @@ The main value proposition:
 
 Homepage logic:
 
-Trust → Audience → Expertise → Solution → Product → Confidence → Contact
+Trust → Expertise → Solution → Product → Confidence → Contact
 
 ---
 
@@ -51,10 +52,11 @@ Formulation is intentionally in the language of personas — not "By product typ
 
 Each sub-entry links to a corresponding section of `/catalog`.
 
-Additional pages (not in main nav, accessible from "Для кого мы работаем" tiles on homepage):
+Additional pages (not in main nav):
 
-- `/opt` — landing page for wholesale buyers (КФХ, agroholdings, distributors)
-- `/dacha` — landing page for home gardeners and small farms
+- `/opt` — landing page for wholesale buyers (КФХ, agroholdings, distributors). Accessible from footer, from the wholesale mention in the About block, and via direct traffic from marketing materials.
+
+(`/dacha` — планировалась, удалена по НР01 19.07.2026.)
 
 ---
 
@@ -155,79 +157,13 @@ Requirements:
 
 ---
 
-# 2. Для кого мы работаем
+# ~~2. Для кого мы работаем~~
 
-## Purpose
-
-Segment the audience immediately after Hero — help the visitor identify themselves ("это для меня") and remove entry-level objections of the two secondary personas.
-
-Closes objections:
-
-- Сергей Валерьевич (wholesale buyer): "сайт не рассчитан на нас, оптовых";
-- Алевтина Викторовна (dacha owner): "здесь всё промышленное, не для меня".
-
-Basis:
-
-Base strategy decision #2 — "B2B-first + secondary B2C — single site with two landing pages `/opt` and `/dacha`".
-
-## Main message
-
-Для кого мы работаем
-
-## Supporting text
-
-Short line, one or two sentences setting up the two tile block. Example:
-
-"Работаем с любыми объёмами — от одного флакона на теплицу до партий для агрохолдинга."
-
-## Structure
-
-Two tiles, side by side on desktop, stacked on mobile.
-
-### Tile 1. Оптовым покупателям
-
-Target: КФХ, агрохолдинги, дистрибьюторы.
-
-Content elements:
-
-- заголовок «Оптовым покупателям»;
-- краткое описание кому подходит;
-- 2-3 buying arguments: скидки на объём, работа по договору, полный пакет документов при отгрузке;
-- CTA: «Смотреть условия →»
-
-Links to: `/opt`
-
-### Tile 2. Дачникам и малым хозяйствам
-
-Target: ЛПХ, дачники, малые фермы.
-
-Content elements:
-
-- заголовок «Дачникам и малым хозяйствам»;
-- краткое описание кому подходит;
-- 2-3 buying arguments: работаем с любыми объёмами, простые инструкции по применению, помощь в подборе препарата;
-- CTA: «Подобрать препарат →»
-
-Links to: `/dacha`
-
-## Design principles
-
-Use:
-
-- two visually equal tiles (no dominant one);
-- calm professional presentation;
-- restrained iconography, if any;
-- clear separation between tiles.
-
-Avoid:
-
-- marketing pressure ("Только у нас!", "Лучшие цены!");
-- imagery clichés (крупный фермер vs дачник с граблями);
-- visual imbalance between tiles.
+**Секция удалена в v2.2 (19.07.2026) по НР01 — отказ от дачной аудитории.** Оригинальная концепция блока предполагала две плитки: «Оптовым покупателям» → `/opt` и «Дачникам и малым хозяйствам» → `/dacha`. С удалением дачной аудитории сегментация внутри одного B2B-сегмента (профессионалы + оптовики) на главной страницы не требуется: аудитория одинаково относится к пути «эксперт помогает подобрать препарат». `/opt` остаётся отдельной страницей, но входы на неё — из футера, из блока «Экспертиза компании» и из маркетинговых материалов, а не с плитки главной.
 
 ---
 
-# 3. Как мы работаем
+# 2. Как мы работаем
 
 ## Purpose
 
@@ -287,7 +223,7 @@ Avoid:
 
 ---
 
-# 4. Задачи защиты
+# 3. Задачи защиты
 
 ## Purpose
 
@@ -345,7 +281,7 @@ The bridge links to `/catalog` — the full catalog page, which contains all fou
 
 ---
 
-# 5. Каталог
+# 4. Каталог
 
 ## Purpose
 
@@ -382,7 +318,7 @@ CTA:
 
 ---
 
-# 6. Company Expertise Section
+# 5. Company Expertise Section
 
 ## Purpose
 
@@ -416,7 +352,7 @@ Show why customers should work with a small regional company.
 
 ---
 
-# 7. Manufacturers Section
+# 6. Manufacturers Section
 
 ## Purpose
 
@@ -489,7 +425,7 @@ Do NOT display:
 
 ---
 
-# 8. Final CTA Section
+# 7. Final CTA Section
 
 ## Purpose
 
