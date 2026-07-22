@@ -1,6 +1,6 @@
 # Homepage Structure v2 — Восток-Агрохим
 
-Version: 2.4
+Version: 2.5
 
 Status:
 Approved concept
@@ -9,9 +9,10 @@ This document supersedes homepage-structure-v1.md.
 Previous versions represent earlier exploration stages.
 
 Change log:
-- v2.4 — блок 5 «Company Expertise Section» удалён с главной по НР08. Оценка макета Claude Design + содержательный анализ показали избыточность блока: три пункта из четырёх семантически дублируют блок 2 «Как мы работаем», роль финального доверия лучше выполняет блок «Производители» через дилерское письмо АО «Август», единственный уникальный тезис «Прямой контакт со специалистами» переносится в другую точку сайта (см. ОВ07). На длинной странице два блока «про нас» подряд утомляют профессионального посетителя, который пришёл за препаратом. Оставшиеся блоки перенумерованы (6 → 5 Manufacturers, 7 → 6 Final CTA). Homepage logic упрощена: Trust → Expertise → Solution → Product → Trust reinforcement → Contact — ступень Expertise теперь один раз, в блоке 2 «Как мы работаем»; финальное доверие — через дилерский статус Августа. Миссия и общий тезис о ценностях компании — кандидат для отдельной страницы «О компании» или футера, не для главной. См. `00-management/decisions-registry.md`, запись НР08.
-- v2.3 — блок 5 «Company Expertise Section» уточнён. Формат подачи — четыре текстовые строки на кремовом фоне `#F8F4E9` (не плитки, не карточки с фоном; амбровые акценты слева) — решение ДМ11 в `00-management/decisions-registry.md`. Пункты 01–04 переформулированы в сторону конкретики: уход от прямых повторов Hero (стаж «в отрасли с 2015 года») и блока 2 «Как мы работаем» (процесс подбора). H2 и sub без изменений. Правка точечная, номера блоков не сдвигаются. См. `проектные решения/prompt-claude-design-expertise.md`. **Отменено в v2.4 — см. выше.**
-- v2.2 — блок 2 «Для кого мы работаем» удалён по НР01 (отказ от дачной аудитории от 19.07.2026). Сегментация опт/дача на главной больше не нужна: аудитория одна — профессиональный B2B (агрономы, КФХ, оптовые покупатели). Оставшиеся блоки перенумерованы (3→2, 4→3, 5→4, 6→5, 7→6, 8→7). Homepage logic упрощена: убрано звено Audience. Раздел Navigation обновлён: удалено упоминание `/dacha` и плиток блока 2. См. `00-management/decisions-registry.md`, запись НР01.
+- v2.5 — **Перестроена логика главной.** Блок «Company Expertise Section» возвращён на главную в компактной форме на позицию 2 (сразу после Hero) — решение ДМ13. Блок «Как мы работаем» перенесён с позиции 2 на позицию 5 (после Каталога) — решение ДМ14. Логика: сайт сначала убеждает «вы пришли в правильное место» (Positioning), потом ведёт к проблеме и продукту (Solution → Product), и только после — раскрывает техническую сторону взаимодействия (Process). НР08 отменено (блок возвращён в другой форме и месте). ОВ07 закрыт (миссия вернулась на главную; тезис про агронома не возвращается по указанию заказчика — директор не агроном формально). Формулировки компактного блока утверждены заказчиком 22.07.2026. Промпт для Claude Design — `проектные решения/prompt-claude-design-expertise-compact.md`.
+- v2.4 — блок 5 «Company Expertise Section» удалён по НР08 (21.07.2026, третий раунд). Основание: содержательный повтор блока 2 «Как мы работаем» + блока 6 «Производители». **Впоследствии в v2.5 блок возвращён в компактной форме в другую позицию (2, сразу после Hero).** Оставшиеся блоки v2.4 были перенумерованы: 6→5 (Manufacturers), 7→6 (Final CTA).
+- v2.3 — блок 5 «Company Expertise Section» уточнён. Формат подачи — четыре текстовые строки на кремовом фоне (ДМ11). **Впоследствии блок удалён в v2.4 и возвращён в v2.5 в другой форме и месте.**
+- v2.2 — блок 2 «Для кого мы работаем» удалён по НР01 (отказ от дачной аудитории от 19.07.2026).
 - v2.1 — updated Hero H1 and supporting message after refinement session (see section 1). Rest of structure unchanged.
 - v2.0 — initial approved concept.
 
@@ -30,9 +31,11 @@ The main value proposition:
 
 "Подбираем решения для защиты урожая, а не просто продаём препараты."
 
-Homepage logic:
+Homepage logic (v2.5):
 
-Trust → Expertise → Solution → Product → Trust reinforcement → Contact
+Trust (Hero) → Positioning (Company Expertise) → Solution (Задачи защиты) → Product (Каталог) → Process (Как мы работаем) → Trust reinforcement (Производители) → Contact (Final CTA)
+
+Ключевая идея: клиент сначала убеждается, что пришёл в правильное место (Positioning), потом идёт к своей задаче и продукту, и только потом — если нужно — читает про процесс взаимодействия. Постоянный клиент листает быстро — компактный блок 2 не тормозит его; новый клиент в 5 секунд понимает, чем компания может клосна его бизнесу.
 
 ---
 
@@ -78,13 +81,9 @@ Create immediate trust and explain the company's main value.
 
 ## CTA
 
-Primary:
+Primary: Получить консультацию
 
-Получить консультацию
-
-Secondary:
-
-Посмотреть каталог
+Secondary: Посмотреть каталог
 
 ## Proof strip
 
@@ -94,134 +93,66 @@ Content:
 
 Официальный дилер АО «Август» · В отрасли с 2015 года · Челябинская область
 
-Purpose:
+Purpose: add immediate credibility signals visible above the fold; support the H1 without competing with it; close the "trust" step of the persuasion sequence before the visitor scrolls further.
 
-- add immediate credibility signals visible above the fold;
-- support the H1 without competing with it;
-- close the "trust" step of the persuasion sequence before the visitor scrolls further.
+Placement: immediately below the CTA buttons, separated from CTAs by a moderate gap, above the fold on desktop when possible.
 
-Placement:
+Visual style: small text size (~14px on desktop, secondary hierarchy); muted color; thin middle-dot separators; no icons, no boxes, no emoji; single line on desktop, natural wrap or stacking on mobile.
 
-- immediately below the CTA buttons;
-- separated from CTAs by a moderate gap (not glued);
-- above the fold on desktop when possible.
+Interactivity: The first item — "Официальный дилер АО «Август»" — is clickable. On click: opens the scan of the dealer letter in a lightbox or modal. Source file: `00-management/documents/avgust-dealer-letter-2026.jpg`.
 
-Visual style:
+Other two items are not clickable.
 
-- small text size (~14px on desktop, secondary hierarchy);
-- muted color (secondary text tone, not accent);
-- thin middle-dot separators («·») between items;
-- no icons, no boxes, no emoji;
-- single line on desktop, natural wrap or stacking on mobile.
-
-Interactivity:
-
-The first item — "Официальный дилер АО «Август»" — is clickable.
-
-On click: opens the scan of the dealer letter in a lightbox or modal.
-
-Source file for the dealer letter:
-`00-management/documents/avgust-dealer-letter-2026.jpg`
-
-Small visual indicator of clickability (↗ or subtle underline on hover) is acceptable but should stay minimal.
-
-Other two items ("В отрасли с 2015 года", "Челябинская область") are not clickable — plain text.
-
-Mobile behavior:
-
-Option A (preferred):
-
-Wrap naturally to two lines if needed. Keep the middle dots.
-
-Option B (if A causes layout issues):
-
-Stack items vertically with the dot omitted, each item on its own line, keeping muted style.
-
-Do not shorten items or drop the dealer status on mobile.
+Mobile behavior: Option A (preferred) — wrap naturally to two lines if needed, keep the middle dots. Option B (if A causes layout issues) — stack items vertically with the dot omitted.
 
 ## Visual direction
 
-Concept:
+Concept: Человек + продукция + рабочая среда.
 
-Человек + продукция + рабочая среда
-
-The image should communicate:
-
-"Здесь есть специалист, который разбирается в задаче."
-
-Requirements:
-
-- no director portrait;
-- no artificial corporate portrait;
-- no generic agricultural stock image;
-- professional working atmosphere;
-- focus on expertise and consultation.
+Requirements: no director portrait, no artificial corporate portrait, no generic agricultural stock image; professional working atmosphere; focus on expertise and consultation.
 
 ---
 
 # ~~2. Для кого мы работаем~~
 
-**Секция удалена в v2.2 (19.07.2026) по НР01 — отказ от дачной аудитории.** Оригинальная концепция блока предполагала две плитки: «Оптовым покупателям» → `/opt` и «Дачникам и малым хозяйствам» → `/dacha`. С удалением дачной аудитории сегментация внутри одного B2B-сегмента (профессионалы + оптовики) на главной страницы не требуется: аудитория одинаково относится к пути «эксперт помогает подобрать препарат». `/opt` остаётся отдельной страницей, но входы на неё — из футера, из блока «Экспертиза компании» и из маркетинговых материалов, а не с плитки главной.
+**Секция удалена в v2.2 (19.07.2026) по НР01 — отказ от дачной аудитории.** См. `00-management/decisions-registry.md`, запись НР01.
 
 ---
 
-# 2. Как мы работаем
+# 2. Company Expertise Section (компактный, v2.5)
 
 ## Purpose
 
-Explain the difference between a consultant supplier and a simple seller.
+Single place on the homepage where the company speaks about itself — компактное позиционирование сразу после Hero. За пару секунд показывает пять коротких обещаний, которые закрывают основные боли целевой аудитории: экспертиза, региональный контекст, гибкость по объёму, ценовая прозрачность. Не «Почему мы», не «Наши преимущества» — утвердительный тон.
 
-Main idea:
+## Main message
 
-Подбираем решения для защиты растений, а не просто продаём препараты.
+Знаем продукт. Понимаем задачи хозяйства.
 
 ## Supporting text
 
-Учитываем особенности культуры, проблему на поле и задачи хозяйства, чтобы подобрать подходящий вариант защиты.
+С 2015 года помогаем защищать урожай.
 
-## Structure
+## Format (ДМ13)
 
-### 01. Анализируем задачу
+**Компактный список из пяти коротких строк на кремовом фоне** (`#F8F4E9`). Амбровый маркер слева от каждой строки. Нет плиток, карточек, иконок, нумерации 01–05, заголовков внутри пунктов. Компактность — ключевой приоритет, блок должен занимать заметно меньше вертикали, чем соседние плиточные блоки. См. ДМ13 в `00-management/decisions-registry.md` и промпт `проектные решения/prompt-claude-design-expertise-compact.md`.
 
-Understanding:
+## Five points (утверждённые формулировки, 22.07.2026)
 
-- культура;
-- проблема;
-- сроки;
-- условия хозяйства.
+- Подберём препараты под вашу задачу
+- Учтём климатические условия региона и особенности вашего хозяйства
+- Подскажем нормы расхода и баковые смеси
+- Отпустим и одну упаковку, и оптовую партию
+- Обсудим цену индивидуально — зависит от объёма заказа
 
----
+Фактическая опора каждого пункта — содержимое старого сайта vostok-agrohim.ru (разделы «Преимущества нашей компании» и «О компании»): агрономы-консультанты в подборе, баковые смеси, климатические условия региона, оптовые и розничные поставки, индивидуальный расчёт. Агроном явно не назван — директор не агроном формально, но по опыту владеет экспертизой. Формулировки в 1-м лице мн. ч. собирательны, работают и для директора, и для любого другого сотрудника.
 
-### 02. Подбираем решение
+## What this block does not do
 
-Selection based on:
-
-- задача защиты;
-- подходящий препарат;
-- схема применения.
-
----
-
-### 03. Организуем поставку
-
-Providing:
-
-- продукция;
-- документы;
-- сопровождение заказа.
-
-## Design principles
-
-Use:
-
-- three clear cards;
-- calm professional presentation;
-- minimal line icons.
-
-Avoid:
-
-- aggressive sales communication;
-- marketplace style.
+- No CTA button, no links inside the points
+- No hover interactions
+- No repetition of Hero proof strip content as a separate accent
+- No explicit mention of "agronom" (директор не является агрономом формально)
 
 ---
 
@@ -231,9 +162,7 @@ Avoid:
 
 Help visitors identify their problem and understand that the company can help.
 
-Main idea:
-
-"Моя задача понятна. Здесь помогут найти решение."
+Main idea: "Моя задача понятна. Здесь помогут найти решение."
 
 ## Main message
 
@@ -249,19 +178,13 @@ Main idea:
 
 Herbicide solutions.
 
----
-
 ### 02. Защита от болезней
 
 Fungicide solutions.
 
----
-
 ### 03. Защита от вредителей
 
 Insecticide solutions.
-
----
 
 ### 04. Другие задачи защиты растений
 
@@ -269,13 +192,9 @@ Individual solutions for specific situations.
 
 ## Bridge to full catalog
 
-Under the four tiles — a thin bridge line, small in size, muted in tone, that acknowledges: this is only one way to browse the assortment.
-
-Wording:
-
 "Ищете препарат для конкретной культуры, производителя или с определённым действующим веществом? Все входы в каталог →"
 
-The bridge links to `/catalog` — the full catalog page, which contains all four entry points (по типу, по культурам, по вредным объектам, по действующим веществам) as spelled out in the Navigation section and in the base sitemap (`phase-2-planning/2.1-sitemap/`).
+The bridge links to `/catalog`.
 
 ## CTA
 
@@ -301,49 +220,55 @@ Show available products without turning the website into an online store.
 
 Show selected solutions, not the entire catalog.
 
-Product cards include:
+Product cards include: product name; manufacturer; purpose; link to details.
 
-- product name;
-- manufacturer;
-- purpose;
-- link to details.
+Avoid: price-first communication; aggressive purchase buttons; marketplace presentation.
 
-Avoid:
-
-- price-first communication;
-- aggressive purchase buttons;
-- marketplace presentation.
-
-CTA:
-
-Смотреть каталог
+CTA: Смотреть каталог
 
 ---
 
-# ~~5. Company Expertise Section~~
+# 5. Как мы работаем (перемещён в v2.5, ДМ14)
 
-**Секция удалена в v2.4 (21.07.2026) по НР08 — оценка макета Claude Design + содержательный анализ показали структурную избыточность блока.**
+## Purpose
 
-Оригинальная концепция (принятая в v2.3, отменённая в v2.4) предполагала H2 «Знаем продукт. Понимаем задачи хозяйства.», sub про стаж с 2015 года и четыре текстовые строки на кремовом фоне с формулировками:
+Explain the difference between a consultant supplier and a simple seller. Блок отвечает на вопрос клиента, уже заинтересованного продуктом: «а как это будет происходить». Размещён после Каталога — в точке, где вопрос про процесс естественно возникает.
 
-- «Работаем с продукцией, а не с ассортиментом»
-- «Начинаем с задачи, а не с препарата»
-- «Прямой контакт со специалистами»
-- «Сопровождение сделки»
+Main idea:
 
-Формулировки сохранены в реестре решений (`00-management/decisions-registry.md`, запись ДМ11 в статусе «отменено»).
+Подбираем решения для защиты растений, а не просто продаём препараты.
 
-Причины удаления:
+## Supporting text
 
-1. Три из четырёх пунктов семантически дублируют блок 2 «Как мы работаем» («Работаем с продукцией…» и «Сопровождение сделки» пересказывают шаги блока 2; «Начинаем с задачи…» пересказывает 01+02 блока 2).
-2. Роль финального доверия («Confidence перед контактом» в persuasion sequence) сильнее выполняет блок «Производители» через дилерское письмо АО «Август» — проверяемый факт весит больше любых формулировок про экспертизу.
-3. На длинной странице два блока «про нас» подряд (блок 2 + блок 5) утомляют профессионального посетителя, который пришёл за препаратом, а не за манифестом компании.
-4. Единственный реально уникальный тезис — «Прямой контакт со специалистами» — лучше ложится в блок «Оплата и работа по договору» или в футер как строку про доступность директора. См. ОВ07 в реестре решений.
-5. Миссия и ценности компании (H2 «Знаем продукт. Понимаем задачи хозяйства.» и sub про стаж как формулировка миссии) — кандидат для отдельной страницы «О компании» или для футера, где их ищут те, кому это нужно, а не для главной, где они удлиняют путь к CTA.
+Учитываем особенности культуры, проблему на поле и задачи хозяйства, чтобы подобрать подходящий вариант защиты.
+
+## Structure
+
+### 01. Анализируем задачу
+
+Understanding: культура; проблема; сроки; условия хозяйства.
+
+### 02. Подбираем решение
+
+Selection based on: задача защиты; подходящий препарат; схема применения.
+
+### 03. Организуем поставку
+
+Providing: продукция; документы; сопровождение заказа.
+
+## Design principles
+
+**Компактный вариант для v2.5** (обсуждался в ходе перестройки, перед передачей в Claude Design нужен отдельный промпт):
+- Убрать плитки-карточки с фоном и линейные иконки
+- Три компактные текстовые строки с числами 01/02/03 в один ряд на десктопе, столбиком на мобильном
+- Каждый шаг — короткий заголовок + одна строка описания (без буллетов «культура/проблема/сроки», которые в блоке сейчас)
+- Занимать примерно на треть меньше вертикали
+
+Avoid: aggressive sales communication; marketplace style.
 
 ---
 
-# 5. Manufacturers Section
+# 6. Manufacturers Section
 
 ## Purpose
 
@@ -352,8 +277,6 @@ Show quality of assortment and demonstrate confirmed dealership status with the 
 ## Structure
 
 The section consists of two parts.
-
----
 
 ### Part 1. АО «Август» dealership (main accent)
 
@@ -366,20 +289,10 @@ Supporting text:
 Около 80% нашего ассортимента — препараты производства АО «Август». Гарантия производителя на всю реализуемую продукцию.
 
 Visual:
+- логотип АО «Август» (разрешён к использованию по дилерскому письму)
+- ссылка «Подтверждение дилерского статуса» → скан дилерского письма
 
-- логотип АО «Август» (разрешён к использованию по дилерскому письму);
-- логотип подаётся сдержанно, в стиле «Уверенная классика»;
-- рядом — ссылка «Подтверждение дилерского статуса» → открывается скан дилерского письма.
-
-Legal basis for logo usage:
-
-Дилерское письмо № 26-03/05 от 05.03.2026, действует до 31.12.2026.
-
-Source file:
-
-`00-management/documents/avgust-dealer-letter-2026.jpg`
-
----
+Legal basis for logo usage: Дилерское письмо № 26-03/05 от 05.03.2026, действует до 31.12.2026. Source file: `00-management/documents/avgust-dealer-letter-2026.jpg`.
 
 ### Part 2. Прочие производители (secondary mention)
 
@@ -387,36 +300,19 @@ Main message:
 
 В нашем ассортименте также препараты других производителей
 
-Supporting text (пример):
+Supporting text (пример): БАСФ, Байер, ФМРус, Листерра и другие производители.
 
-БАСФ, Байер, ФМРус, Листерра и другие производители.
-
-Visual:
-
-- логотипы НЕ используются (нет дилерских писем от этих производителей);
-- нейтральное текстовое перечисление;
-- в шрифте секции, без выделений.
-
----
+Visual: логотипы НЕ используются; нейтральное текстовое перечисление; в шрифте секции, без выделений.
 
 ## Important restrictions
 
-Do NOT use:
+Do NOT use: «Наши партнёры», «Официальные дистрибьюторы», «Прямые дистрибьюторы», «Эксклюзивный представитель»; логотипы производителей помимо АО «Август».
 
-- «Наши партнёры» — применительно ко всем производителям;
-- «Официальные дистрибьюторы» — во множественном числе;
-- «Прямые дистрибьюторы» — применительно ко всем производителям;
-- «Эксклюзивный представитель»;
-- логотипы производителей помимо АО «Август» (нет разрешений).
-
-Do NOT display:
-
-- Гарант Оптима (Китай) — единичные позиции, малая доля;
-- Щёлково Агрохим — малая доля, прямой конкурент АО «Август», риск конфликта интересов с ключевым дилерским партнёром.
+Do NOT display: Гарант Оптима (Китай); Щёлково Агрохим.
 
 ---
 
-# 6. Final CTA Section
+# 7. Final CTA Section
 
 ## Purpose
 
@@ -432,40 +328,20 @@ Convert visitor interest into contact.
 
 ## CTA
 
-Primary:
+Primary: Получить консультацию
 
-Получить консультацию
-
-Secondary:
-
-Позвонить специалисту
+Secondary: Позвонить специалисту
 
 ## Visual direction
 
-Use:
-
-- dark green background;
-- cream/white text;
-- amber CTA button.
+Use: dark green background; cream/white text; amber CTA button.
 
 ---
 
 # Final Design Principles
 
-The website should communicate:
+The website should communicate: expertise; reliability; personal involvement; practical agricultural knowledge.
 
-- expertise;
-- reliability;
-- personal involvement;
-- practical agricultural knowledge.
+The website should avoid: exaggerated scale claims; unsupported partnership claims; marketplace style; price-driven communication.
 
-The website should avoid:
-
-- exaggerated scale claims;
-- unsupported partnership claims;
-- marketplace style;
-- price-driven communication.
-
-Core customer feeling:
-
-"Этой компании можно доверить задачу защиты урожая."
+Core customer feeling: "Этой компании можно доверить задачу защиты урожая."
