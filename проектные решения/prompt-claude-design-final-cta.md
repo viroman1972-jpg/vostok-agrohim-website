@@ -55,7 +55,7 @@ Homepage logic: Trust (Hero) → Positioning (Company Expertise) → Solution (�
 
 **Secondary CTA (кнопка или ссылка):**
 
-> Позвонить специалисту
+> Позвонить нам
 
 Действие при клике: `tel:+73517500920` — телефон офиса. Визуально уступает primary (outline, подчёркнутый текст, или иная менее контрастная форма).
 
@@ -89,7 +89,7 @@ Homepage logic: Trust (Hero) → Positioning (Company Expertise) → Solution (�
 - Border-radius: 2-4px (в духе классической подачи Direction A) или прямые углы
 - Без тени или лёгкая теневая проработка
 
-**Secondary — «Позвонить специалисту»:**
+**Secondary — «Позвонить нам»:**
 
 Один из вариантов на усмотрение дизайна:
 
