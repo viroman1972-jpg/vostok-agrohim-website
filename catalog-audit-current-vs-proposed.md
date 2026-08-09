@@ -1,0 +1,1 @@
+$(cat /home/claude/output/catalog-audit-current-vs-proposed.md)
