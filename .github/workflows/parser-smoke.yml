@@ -21,8 +21,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install deps
-        run: pip install requests
+      - name: Install Python deps
+        run: pip install requests playwright
+
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
 
       - name: Run smoke parser
         run: |
@@ -30,6 +33,7 @@ jobs:
           python run_smoke.py --url "${{ inputs.url }}" --out ../phase-4-content/parsed_v2
 
       - name: Commit results
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -37,6 +41,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Нет изменений для коммита"
           else
-            git commit -m "smoke: parser_v2 test run [skip ci]"
+            git commit -m "smoke: parser_v2 test run (Playwright) [skip ci]"
             git push
           fi
