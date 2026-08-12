@@ -1,0 +1,42 @@
+name: Parser Smoke Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL карточки для теста'
+        required: true
+        default: 'https://vostok-agrohim.ru/p/v45626617-balerina-se-410-g-l-7-4-g-l/'
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run smoke parser
+        run: |
+          cd scripts
+          python run_smoke.py --url "${{ inputs.url }}" --out ../phase-4-content/parsed_v2
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add phase-4-content/parsed_v2/
+          if git diff --staged --quiet; then
+            echo "Нет изменений для коммита"
+          else
+            git commit -m "smoke: parser_v2 test run [skip ci]"
+            git push
+          fi
