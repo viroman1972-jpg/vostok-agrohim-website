@@ -1,7 +1,118 @@
-<!--
-  ЗАГЛУШКА — не финальный файл.
-  Замени этот файл настоящим Hero.dc.html из ZIP
-  "Восток-Агрохим_Hero_блок__39_.zip" (размер 65 927 байт).
-  Способ: через веб-интерфейс GitHub, drag-and-drop поверх этого файла.
-  См. README в этой же папке.
--->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  a { color: #1B4332; text-decoration: none; }
+  a:hover { color: #143026; }
+</style>
+</helmet>
+<div style="min-height:100vh; background:#EDE8DB; padding:64px 48px; font-family:'Manrope',sans-serif; display:flex; flex-direction:column; align-items:center; gap:72px;">
+
+  <!-- DESKTOP FRAME 1440 -->
+  <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
+    <div style="font-family:'Manrope',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#8A8578; font-weight:600;">Десктоп · 1440px</div>
+    <div style="width:1440px; background:#F8F4E9; box-shadow:0 24px 60px rgba(27,67,50,0.10); overflow:hidden; position:relative;">
+      <!-- top bar -->
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:28px 80px; border-bottom:1px solid rgba(27,67,50,0.10);">
+        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:22px; color:#1B4332; letter-spacing:-0.01em;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
+        <nav style="display:flex; gap:36px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+          <a href="#">Как мы работаем</a>
+          <a href="#">Задачи защиты</a>
+          <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
+            <a href="#" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+            <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
+                <a href="#" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По типу — гербициды, инсектициды, фунгициды</a>
+                <a href="#" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По культурам — пшеница, кукуруза, ячмень…</a>
+                <a href="#" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">От вредителей и болезней</a>
+                <a href="#" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По действующим веществам</a>
+              </div>
+            </sc-if>
+          </div>
+          <a href="#">Производители</a>
+          <a href="#">Контакты</a>
+        </nav>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+          <div style="display:flex; align-items:center; gap:9px;">
+            <a href="tel:+79227500920" style="font-size:16px; font-weight:700; color:#1B4332;">+7 (922) 750-09-20</a>
+            <a href="{{ telegramLink }}" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram директору" style="display:inline-flex; cursor:pointer; transition:opacity .15s, transform .15s;" style-hover="opacity:0.85; transform:scale(1.05);"><img src="uploads/pasted-1784359408681-0.png" alt="Telegram" title="Telegram" style="width:24px; height:24px; border-radius:50%; display:block;"></a>
+            <a href="{{ maxLink }}" target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX директору" style="display:inline-flex; cursor:pointer; transition:opacity .15s, transform .15s;" style-hover="opacity:0.85; transform:scale(1.05);"><img src="uploads/pasted-1784358941175-0.png" alt="MAX" title="MAX" style="width:24px; height:24px; border-radius:6px; display:block;"></a>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <a href="tel:+73517500920" style="font-size:14px; font-weight:500; color:#6E6A5E;">+7 (351) 750-09-20</a>
+            <span style="font-size:12px; color:#8A8578;">офис</span>
+          </div>
+        </div>
+      </div>
+      <!-- hero body -->
+      <div style="display:grid; grid-template-columns:2.35fr 1fr; align-items:center; gap:40px; padding:88px 48px 96px;">
+        <div style="display:flex; flex-direction:column; align-items:flex-start;">
+          <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:50px; line-height:1.18; color:#1A1D1F; margin:0 0 26px; letter-spacing:-0.01em; width:100%; text-wrap:balance;">Помогаем подобрать эффективное средство защиты растений</h1>
+          <p style="font-size:19px; line-height:1.6; color:#4A4D4E; margin:0 0 40px; width:100%; text-wrap:pretty;">Препараты проверенных производителей — с учётом культуры, условий и особенностей обработки.</p>
+          <div style="display:flex; gap:16px; align-items:center; margin-bottom:28px;">
+            <a href="#" style="background:#E4A853; color:#1A1D1F; font-size:16px; font-weight:700; padding:16px 30px; border-radius:2px; box-shadow:0 6px 16px rgba(228,168,83,0.35);" style-hover="background:#d99a3f;">Получить консультацию</a>
+            <a href="#" style="border:1.5px solid #1B4332; color:#1B4332; font-size:16px; font-weight:600; padding:15px 28px; border-radius:2px;" style-hover="background:#1B4332; color:#F8F4E9;">Посмотреть каталог</a>
+          </div>
+          <div style="font-size:14px; color:#8A8578; display:flex; align-items:center; gap:10px; flex-wrap:wrap; line-height:1.5;">
+            <span onClick="{{ openLetter }}" style="cursor:pointer; display:inline-flex; align-items:center; gap:3px; border-bottom:1px solid transparent; color:#6E6A5E;" style-hover="border-bottom-color:#8A8578; color:#4A4D4E;">Официальный дилер АО Фирма «Август»<span style="font-size:11px;">↗</span></span>
+            <span style="color:#C4BEAE;">·</span>
+            <span>В отрасли с 2011 года</span>
+            <span style="color:#C4BEAE;">·</span>
+            <span>Челябинская область</span>
+          </div>
+        </div>
+        <div style="aspect-ratio:4/5; width:100%; background:#E7E1D2; border:1px solid rgba(27,67,50,0.14); overflow:hidden;">
+          <img src="uploads/ChatGPT Image 19 июл. 2026 г., 14_28_18.png" alt="Специалист консультирует клиента по препаратам" style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+      </div>
+      <!-- expertise desktop -->
+      <div style="border-top:1px solid rgba(27,67,50,0.10); background:#F8F4E9; padding:60px 48px 64px;">
+        <div style="max-width:960px; margin:0 auto;">
+          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:30px; line-height:1.28; color:#1A1D1F; margin:0 0 14px; letter-spacing:-0.01em; text-wrap:balance;">Знаем продукт. Понимаем задачи хозяйства.</h2>
+          <p style="font-size:17px; line-height:1.55; color:#6E6A5E; margin:0 0 30px;">С 2011 года помогаем защищать урожай.</p>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;">
+            <sc-for list="{{ expertise }}" as="item" hint-placeholder-count="5">
+              <li style="display:flex; align-items:baseline; gap:14px; font-size:18px; line-height:1.5; color:#1A1D1F; padding:6px 0;"><span style="color:#E4A853; font-size:20px; line-height:1; flex-shrink:0; transform:translateY(1px);">•</span><span style="text-wrap:pretty;">{{ item }}</span></li>
+            </sc-for>
+          </ul>
+        </div>
+      </div>
+      <!-- tasks desktop -->
+      <div style="border-top:1px solid rgba(27,67,50,0.10); padding:96px 48px 104px;">
+        <div style="max-width:1200px; margin:0 auto;">
+          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 56px; letter-spacing:-0.01em;">С какой проблемой столкнулись?</h2>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
+            <a href="/catalog?task=weeds" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg></div>
+              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Сорняки</div>
+              <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Гербициды</div>
+              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Осот, пырей, марь белая, овсюг</div>
+            </a>
+            <a href="/catalog?task=diseases" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg></div>
+              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Болезни</div>
+              <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Фунгициды и протравители</div>
+              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Ржавчина, септориоз, корневые гнили</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+[TRUNCATED FOR TOOL CALL SIZE — placeholder]
+
+</div>
+</x-dc>
+</body>
+</html>
