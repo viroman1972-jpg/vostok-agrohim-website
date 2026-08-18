@@ -1,7 +1,702 @@
-<!--
-  ЗАГЛУШКА — не финальный файл.
-  Замени этот файл настоящим Product_card_balerina.dc.html из ZIP
-  "Восток-Агрохим_Hero_блок__39_.zip" (размер 69 658 байт).
-  Способ: через веб-интерфейс GitHub, drag-and-drop поверх этого файла.
-  См. README в этой же папке.
--->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --header-h: 80px; }
+  @media (max-width: 768px) { :root { --header-h: 60px; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FFFFFF; }
+  a { color: #26543E; text-decoration: none; }
+  a:hover { color: #1B4332; }
+  input, button, textarea { font-family: inherit; }
+</style>
+</helmet>
+<div style="font-family:'Manrope',sans-serif; color:#1A1D1F; background:#FFFFFF; min-height:100vh; padding-bottom:{{ pageBottomPad }};">
+
+  <header style="position:sticky; top:0; z-index:40; background:#F8F4E9; border-bottom:1px solid rgba(38,84,62,0.10);">
+    <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px {{ pagePad }};">
+      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#1B4332; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
+      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+        <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
+          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+          <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
+              <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
+                <a href="/catalog/" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По типу препарата<span style="font-size:10px; color:#8A8578;">▸</span></a>
+                <sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute; top:-8px; left:100%; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:230px; z-index:60;">
+                    <a href="/catalog/gerbitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Гербициды</a>
+                    <a href="/catalog/insektitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Инсектициды</a>
+                    <a href="/catalog/fungitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Фунгициды</a>
+                    <a href="/catalog/protraviteli/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Протравители</a>
+                    <a href="/catalog/stimulyatory-rosta/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Стимуляторы роста</a>
+                    <a href="/catalog/adyuvanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Адьюванты</a>
+                    <a href="/catalog/desikanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Десиканты</a>
+                  </div>
+                </sc-if>
+              </div>
+              <a href="/catalog/kultura/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По культурам</a>
+              <a href="/catalog/vrednyy-obekt/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По вредителям, сорнякам и болезням</a>
+              <a href="/catalog/dv/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По действующим веществам</a>
+            </div>
+          </sc-if>
+        </div>
+        <a href="/#tasks">Задачи защиты</a>
+        <a href="/#how-we-work">Как мы работаем</a>
+        <a href="/#manufacturers">Производители</a>
+        <a href="/contacts/">Контакты</a>
+      </nav>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+        <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (922) 750-09-20</a>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:#6E6A5E; white-space:nowrap;">+7 (351) 750-09-20</a>
+          <span style="font-size:12px; color:#8A8578;">офис</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:1200px; margin:0 auto; padding:0 {{ pagePad }};">
+
+    <div style="padding-top:24px; font-size:14px; color:#26543E;">
+      <a href="/">Главная</a><span style="color:#E4A853; padding:0 8px;">·</span><a href="/catalog/">Каталог</a><span style="color:#E4A853; padding:0 8px;">·</span><a href="/catalog/gerbitsidy/">Гербициды</a><span style="color:#E4A853; padding:0 8px;">·</span><span style="opacity:0.7;">Балерина, СЭ</span>
+    </div>
+
+    <div style="margin-top:24px; display:grid; grid-template-columns:{{ heroCols }}; gap:{{ heroGap }}; align-items:start;">
+      <div>
+        <div style="position:relative; aspect-ratio:1/1; background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px; overflow:hidden; padding:36px;">
+          <div role="img" aria-label="{{ photoAlt }}" style="{{ photoStyle }}" onMouseMove="{{ onZoomMove }}" onMouseEnter="{{ onZoomEnter }}" onMouseLeave="{{ onZoomLeave }}"></div>
+          <button onClick="{{ openLightbox }}" aria-label="Увеличить фото" style="position:absolute; top:12px; right:12px; width:40px; height:40px; border-radius:50%; background:#FFFFFF; border:1px solid rgba(38,84,62,0.16); box-shadow:0 4px 12px rgba(38,84,62,0.14); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;" style-hover="border-color:#E4A853;">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="8.5" cy="8.5" r="5.5" stroke="#26543E" stroke-width="1.6"></circle>
+              <path d="M12.8 12.8L17.5 17.5" stroke="#26543E" stroke-width="1.6" stroke-linecap="round"></path>
+              <path d="M8.5 6.2v4.6M6.2 8.5h4.6" stroke="#26543E" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </button>
+          <div style="position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:8px;">
+            <button onClick="{{ showFront }}" aria-label="Лицевая сторона упаковки" style="{{ dotFrontStyle }}"></button>
+            <button onClick="{{ showBack }}" aria-label="Тыльная сторона упаковки" style="{{ dotBackStyle }}"></button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
+          <span style="background:#26543E; color:#FFFFFF; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">Гербицид</span>
+          <span style="background:#26543E; color:#FFFFFF; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">АО Август</span>
+          <span style="background:#D97706; color:#FFFFFF; font-size:14px; font-weight:700; padding:5px 14px; border-radius:3px;">Класс 2</span>
+        </div>
+        <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h1Size }}; line-height:1.18; color:#1A1D1F; margin:0 0 14px; letter-spacing:-0.01em;">Балерина, СЭ</h1>
+        <div style="font-size:17px; font-weight:600; color:#26543E; line-height:1.5; margin-bottom:12px;">2,4-Д (2-этилгексиловый эфир), 410 г/л + Флорасулам, 7,4 г/л</div>
+        <p style="font-size:16px; line-height:1.6; color:#6B7280; margin:0 0 26px; max-width:56ch; text-wrap:pretty;">Системный послевсходовый гербицид против однолетних двудольных сорняков в зерновых, кукурузе, просо и сорго</p>
+
+        <div style="background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px; padding:24px;">
+          <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;">
+            <span style="font-family:'Merriweather',serif; font-weight:700; font-size:32px; color:#B27F2C;">812 ₽/л</span>
+          </div>
+          <div style="margin-top:4px; font-size:13px; color:#6B7280;">Минимальный заказ: <strong>5 л</strong></div>
+          <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#E4A853; color:#26543E; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">Только оптом</span>
+            <span style="background:#26543E; color:#FFFFFF; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">Доставка ТК по РФ</span>
+          </div>
+          <div style="margin-top:22px; display:flex; flex-direction:{{ ctaDir }}; gap:12px;">
+            <button onClick="{{ openModal }}" style="background:#E4A853; color:#26543E; border:none; border-radius:4px; padding:15px 28px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="background:#B27F2C; color:#FFFFFF;">Получить консультацию</button>
+            <a href="tel:+73517500920" style="border:1.5px solid #26543E; color:#26543E; border-radius:4px; padding:14px 26px; font-size:16px; font-weight:600; text-align:center;" style-hover="background:#26543E; color:#F8F4E9;">Позвонить нам</a>
+          </div>
+          <div style="margin-top:16px; display:flex; align-items:center; flex-wrap:wrap; gap:14px; font-size:14px; color:#6B7280;">
+            <span>Или пишите нам:</span>
+            <a href="https://t.me/+79227500920" target="_blank" rel="noopener noreferrer" style="color:#26543E; font-weight:600; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#26543E;">Telegram</a>
+            <a href="max://user/+79227500920" style="color:#26543E; font-weight:600; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#26543E;">MAX</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:{{ sectionGap }};">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h2Size }}; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Характеристики</h2>
+      <sc-if value="{{ specsInline }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column;">
+          <sc-for list="{{ specsBase }}" as="s" hint-placeholder-count="4">
+            <div style="display:grid; grid-template-columns:{{ specCols }}; gap:16px; padding:16px 0; border-bottom:1px solid rgba(38,84,62,0.10);">
+              <div style="font-size:15px; color:#6B7280;">{{ s.k }}</div>
+              <div style="font-size:16px; font-weight:600; color:#1A1D1F; line-height:1.5;">{{ s.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-for list="{{ specAccordions }}" as="a" hint-placeholder-count="1">
+        <div style="margin-top:16px; background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+          <button onClick="{{ a.toggle }}" style="width:100%; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; text-align:left;">
+            <span style="font-size:18px; font-weight:700; color:#1A1D1F;">{{ a.title }}</span>
+            <span style="font-size:14px; color:#26543E;">{{ a.chevron }}</span>
+          </button>
+          <div style="display:{{ a.bodyDisplay }}; padding:0 22px 20px;">
+            <sc-for list="{{ a.rows }}" as="r" hint-placeholder-count="4">
+              <div style="display:grid; grid-template-columns:{{ specCols }}; gap:16px; padding:12px 0; border-top:1px solid rgba(38,84,62,0.10);">
+                <div style="font-size:15px; color:#6B7280;">{{ r.k }}</div>
+                <div style="font-size:15px; color:#1A1D1F; line-height:1.5;">{{ r.v }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+      <a href="https://www.agroxxi.ru/goshandbook/prep/balerina-se-5.html" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:18px; font-size:15px; font-weight:700; color:#B27F2C; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#B27F2C;">Смотреть карточку в госреестре РФ&nbsp;→</a>
+    </section>
+
+    <section style="margin-top:{{ sectionGap }};">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h2Size }}; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Регламент применения</h2>
+      <div style="overflow-x:auto; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+        <table style="border-collapse:collapse; width:100%; min-width:820px; font-size:15px;">
+          <thead>
+            <tr style="background:#F8F4E9;">
+              <th style="text-align:left; font-size:13px; font-weight:700; color:#26543E; padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.14); white-space:nowrap;">Норма, л/га</th>
+              <th style="text-align:left; font-size:13px; font-weight:700; color:#26543E; padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.14);">Культура</th>
+              <th style="text-align:left; font-size:13px; font-weight:700; color:#26543E; padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.14);">Вредный объект</th>
+              <th style="text-align:left; font-size:13px; font-weight:700; color:#26543E; padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.14);">Способ и время обработки</th>
+              <th style="text-align:left; font-size:13px; font-weight:700; color:#26543E; padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.14); white-space:nowrap;">Срок ожидания, дней (кратность)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,3–0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Пшеница озимая и яровая, ячмень яровой</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Однолетние двудольные, устойчивые к 2,4-Д и МЦПА, + некоторые многолетние</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в фазе кущения культуры, ранние фазы роста сорняков</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">53 (1)</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Пшеница озимая и яровая, ячмень яровой</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">То же + подмаренник цепкий</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в фазе выхода в трубку (1–2 междоузлия)</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">53 (1)</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,3–0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Кукуруза (в т.ч. на силос)</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Однолетние двудольные + некоторые многолетние</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в фазе 3–5 листьев культуры</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">60 (1)</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,3–0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Просо</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">То же</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в фазе кущения</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">60 (1)</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,3–0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Сорго</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">То же</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в фазе 3–6 листьев</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">60 (1)</td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); font-weight:700; color:#1A1D1F; white-space:nowrap;">0,3–0,5</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5;">Овёс</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">То же + виды ромашки, горца, осот, бодяк</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); line-height:1.5; color:#6B7280;">Опрыскивание в период кущения — выход в трубку</td>
+              <td style="padding:14px 16px; border-bottom:1px solid rgba(38,84,62,0.08); white-space:nowrap;">53 (1)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px; display:flex; flex-wrap:wrap; gap:28px; font-size:15px; color:#1A1D1F;">
+        <div><span style="color:#6B7280;">Расход рабочей жидкости:</span> <strong>50–300 л/га</strong></div>
+        <div><span style="color:#6B7280;">Срок выхода для механизированных работ:</span> <strong>4 дня</strong></div>
+      </div>
+    </section>
+
+    <section style="margin-top:{{ sectionGap }};">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h2Size }}; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Область применения</h2>
+      <div style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#6B7280; margin-bottom:12px;">Работает на культурах</div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <sc-for list="{{ crops }}" as="c" hint-placeholder-count="6">
+          <a href="{{ c.href }}" style="background:#F8F4E9; color:#26543E; font-size:15px; font-weight:500; padding:9px 18px; border-radius:20px; border:1px solid transparent;" style-hover="border-color:#E4A853;">{{ c.name }}</a>
+        </sc-for>
+      </div>
+      <div style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#6B7280; margin:28px 0 12px;">Против объектов</div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <sc-for list="{{ objects }}" as="o" hint-placeholder-count="7">
+          <a href="{{ o.href }}" style="background:#F8F4E9; color:#26543E; font-size:15px; font-weight:500; padding:9px 18px; border-radius:20px; border:1px solid transparent;" style-hover="border-color:#E4A853;">{{ o.name }}</a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top:{{ sectionGap }}; display:flex; flex-direction:column; gap:12px;">
+      <sc-for list="{{ procedureAccordions }}" as="a" hint-placeholder-count="2">
+        <div style="background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+          <button onClick="{{ a.toggle }}" style="width:100%; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; text-align:left;">
+            <span style="font-size:18px; font-weight:700; color:#1A1D1F; line-height:1.35;">{{ a.title }}</span>
+            <span style="font-size:14px; color:#26543E;">{{ a.chevron }}</span>
+          </button>
+          <div style="display:{{ a.bodyDisplay }}; padding:0 22px 22px;">
+            <sc-for list="{{ a.lines }}" as="l" hint-placeholder-count="2">
+              <p style="margin:0 0 10px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;">{{ l.t }}</p>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+
+      <div style="background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+        <button onClick="{{ toggleFirstAid }}" style="width:100%; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; text-align:left;">
+          <span style="font-size:18px; font-weight:700; color:#1A1D1F; line-height:1.35;">Первая помощь при отравлении</span>
+          <span style="font-size:14px; color:#26543E;">{{ firstAidChevron }}</span>
+        </button>
+        <div style="display:{{ firstAidBody }}; padding:0 22px 22px;">
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;"><strong>При случайном проглатывании</strong> — немедленно дать пострадавшему выпить несколько стаканов тёплой воды с активированным углём (из расчёта 1 г сорбента на 1 кг массы тела), затем раздражением задней стенки глотки вызвать рвоту. Повторить несколько раз для более полного удаления препарата из организма.</p>
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;"><strong>При вдыхании</strong> — вывести пострадавшего на свежий воздух.</p>
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;"><strong>При попадании на кожу</strong> — удалить препарат куском ткани, ваты или мягкой бумаги, избегая грубого растирания кожи, затем обмыть загрязнённый участок большим количеством воды с мылом.</p>
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;"><strong>При попадании в глаза</strong> — тотчас промыть глаза при разомкнутых веках мягкой струёй чистой проточной воды.</p>
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;">Лиц, подвергнувшихся воздействию токсического агента, нужно немедленно отстранить от работы, вывести из зоны загрязнения и обратиться за медицинской помощью. После оказания первой помощи необходимо обратиться к врачу.</p>
+          <p style="margin:0; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;">Информация для врача: лечение симптоматическое, специфических антидотов нет. При необходимости — консультация ФГБУ «Научно-практический токсикологический центр» ФМБА России: 129090, Москва, Большая Сухаревская площадь, д. 3, к. 7, тел. <a href="tel:+74956281687" style="font-weight:700;">(495) 628-16-87</a>.</p>
+        </div>
+      </div>
+
+      <sc-for list="{{ procedureTail }}" as="a" hint-placeholder-count="2">
+        <div style="background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+          <button onClick="{{ a.toggle }}" style="width:100%; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; text-align:left;">
+            <span style="font-size:18px; font-weight:700; color:#1A1D1F; line-height:1.35;">{{ a.title }}</span>
+            <span style="font-size:14px; color:#26543E;">{{ a.chevron }}</span>
+          </button>
+          <div style="display:{{ a.bodyDisplay }}; padding:0 22px 22px;">
+            <sc-for list="{{ a.lines }}" as="l" hint-placeholder-count="3">
+              <p style="margin:0 0 10px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;">{{ l.t }}</p>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="margin-top:{{ sectionGap }};">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h2Size }}; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Как работает препарат</h2>
+      <sc-for list="{{ mechanismAccordions }}" as="a" hint-placeholder-count="1">
+        <div style="background:#F8F4E9; border:1px solid rgba(38,84,62,0.10); border-radius:4px;">
+          <button onClick="{{ a.toggle }}" style="width:100%; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; text-align:left;">
+            <span style="font-size:18px; font-weight:700; color:#1A1D1F; line-height:1.35;">{{ a.title }}</span>
+            <span style="font-size:14px; color:#26543E;">{{ a.chevron }}</span>
+          </button>
+          <div style="display:{{ a.bodyDisplay }}; padding:0 22px 22px;">
+            <sc-for list="{{ a.lines }}" as="l" hint-placeholder-count="3">
+              <p style="margin:0 0 10px; font-size:16px; line-height:1.65; color:#1A1D1F; text-wrap:pretty;">{{ l.t }}</p>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="margin-top:{{ sectionGap }};">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h2Size }}; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Смотрите также</h2>
+      <div style="display:grid; grid-template-columns:{{ crossCols }}; gap:{{ crossGap }};">
+        <sc-for list="{{ crossSell }}" as="p" hint-placeholder-count="4">
+          <a href="{{ p.href }}" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid rgba(38,84,62,0.12); border-radius:8px; padding:20px; transition:box-shadow .15s, border-color .15s;" style-hover="box-shadow:0 12px 30px rgba(38,84,62,0.14); border-color:#E4A853;">
+            <div style="aspect-ratio:1/1; background:#F8F4E9; border-radius:6px; overflow:hidden; margin-bottom:16px;">
+              <div role="img" aria-label="{{ p.name }}" style="{{ p.photoStyle }}"></div>
+            </div>
+            <span style="background:#26543E; color:#FFFFFF; font-size:11px; font-weight:600; padding:4px 10px; border-radius:3px; align-self:flex-start; margin-bottom:12px;">{{ p.cat }}</span>
+            <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F; margin-bottom:8px; line-height:1.3;">{{ p.name }}</div>
+            <div style="font-size:14px; line-height:1.45; color:#6B7280; margin-bottom:16px;">{{ p.dv }}</div>
+            <span style="margin-top:auto; display:block; background:#E4A853; color:#26543E; text-align:center; font-size:15px; font-weight:700; padding:12px; border-radius:4px;">Подробнее →</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="margin-top:40px; padding-top:20px; border-top:1px solid rgba(38,84,62,0.10);">
+      <a href="/return-policy/" style="font-size:14px; color:#6B7280; border-bottom:1px solid transparent;" style-hover="color:#26543E; border-bottom-color:#26543E;">Условия возврата и обмена&nbsp;→</a>
+    </div>
+  </div>
+
+  <footer style="margin-top:64px; background:#26543E; color:#F8F4E9; padding:48px {{ pagePad }} 0; border-top:1px solid rgba(248,244,233,0.14);">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:{{ footerCols }}; gap:40px;">
+      <div>
+        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:26px; margin-bottom:24px;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
+        <div style="display:flex; flex-direction:column; gap:16px; font-size:15px; line-height:1.5;">
+          <div style="display:flex; flex-direction:column; gap:3px;">
+            <a href="tel:+73517500920" style="color:#F8F4E9; font-size:18px; font-weight:700; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">+7 (351) 750-09-20</a>
+            <span style="opacity:0.7; font-size:13px;">офис</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <a href="tel:+79227500920" style="color:#F8F4E9; font-size:18px; font-weight:700; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">+7 (922) 750-09-20</a>
+            <div style="display:flex; gap:18px; font-size:14px;">
+              <a href="https://t.me/+79227500920" target="_blank" rel="noopener noreferrer" style="color:#F8F4E9; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Telegram</a>
+              <a href="max://user/+79227500920" style="color:#F8F4E9; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">MAX</a>
+            </div>
+          </div>
+          <a href="mailto:vostokxim@mail.ru" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">vostokxim@mail.ru</a>
+          <div style="opacity:0.9; line-height:1.55; max-width:40ch;">454006, Россия, Челябинская обл., г. Челябинск, ул. Российская, д. 35, корп. А, оф. 21</div>
+          <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Показать на карте</a>
+          <div style="margin-top:4px; display:flex; flex-direction:column; gap:4px; opacity:0.9; font-size:14px;">
+            <span>Пн–Чт: 9:00–17:00</span>
+            <span>Пт: 9:00–16:00</span>
+            <span>Обед: 12:30–13:30</span>
+            <span>Сб–Вс: выходные</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.7; margin-bottom:20px;">Навигация</div>
+        <div style="display:flex; flex-direction:column; gap:11px; font-size:15px;">
+          <a href="/#how-we-work" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Как мы работаем</a>
+          <a href="/#tasks" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Задачи защиты</a>
+          <a href="/catalog/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Каталог</a>
+          <a href="/#manufacturers" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Производители</a>
+          <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
+          <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
+          <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
+          <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
+          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
+          <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
+          <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.7; margin-bottom:20px;">Юридическая информация</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:15px; line-height:1.5;">
+          <span>ООО «Восток АгроХим»</span>
+          <span>ИНН 7447186421</span>
+          <span>КПП 744701001</span>
+          <span>ОГРН 1117447002694</span>
+          <a href="/privacy-policy/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start; margin-top:6px;" style-hover="border-bottom-color:#E4A853;">Политика обработки персональных данных</a>
+          <span style="opacity:0.7; font-size:13px; margin-top:2px;">Оператор персональных данных № 74-22-014520</span>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+  </footer>
+
+  <sc-if value="{{ stickyCta }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; left:0; right:0; bottom:0; z-index:45; background:#FFFFFF; border-top:1px solid rgba(38,84,62,0.14); box-shadow:0 -6px 20px rgba(38,84,62,0.10); padding:12px 16px;">
+      <button onClick="{{ openModal }}" style="width:100%; background:#E4A853; color:#26543E; border:none; border-radius:4px; padding:16px; font-size:16px; font-weight:700; cursor:pointer;">Получить консультацию</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showTop }}" hint-placeholder-val="{{ false }}">
+    <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:fixed; right:24px; bottom:{{ topBtnBottom }}; z-index:44; width:50px; height:50px; border-radius:50%; background:#26543E; border:none; color:#E4A853; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,0.28); display:flex; align-items:center; justify-content:center;">↑</button>
+  </sc-if>
+
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:80; background:rgba(26,29,31,0.82); display:flex; align-items:center; justify-content:center; padding:24px;" onClick="{{ closeLightbox }}">
+      <div style="position:relative; width:min(860px,100%); max-height:92vh; background:#F8F4E9; border-radius:6px; padding:24px; display:flex; flex-direction:column; gap:16px;" onClick="{{ stop }}">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+          <span style="font-size:15px; font-weight:600; color:#26543E;">{{ photoAlt }}</span>
+          <button onClick="{{ closeLightbox }}" aria-label="Закрыть" style="background:none; border:none; font-size:22px; color:#26543E; cursor:pointer; line-height:1;">✕</button>
+        </div>
+        <div style="{{ lightboxImgStyle }}" role="img" aria-label="{{ photoAlt }}" onClick="{{ toggleLightboxZoom }}"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div style="display:flex; gap:8px;">
+            <button onClick="{{ showFront }}" style="{{ lbFrontStyle }}">Лицевая сторона</button>
+            <button onClick="{{ showBack }}" style="{{ lbBackStyle }}">Тыльная сторона</button>
+          </div>
+          <span style="font-size:13px; color:#6B7280;">{{ lightboxHint }}</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:70; background:rgba(26,29,31,0.55); display:flex; align-items:center; justify-content:center; padding:16px;" onClick="{{ closeModal }}">
+      <div style="width:min(560px,100%); max-height:90vh; overflow-y:auto; background:#FFFFFF; border-radius:6px; padding:28px;" onClick="{{ stop }}">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:6px;">
+          <div style="font-family:'Merriweather',serif; font-weight:700; font-size:22px; color:#1A1D1F; line-height:1.3;">{{ modalTitle }}</div>
+          <button onClick="{{ closeModal }}" aria-label="Закрыть" style="background:none; border:none; font-size:22px; color:#26543E; cursor:pointer; line-height:1;">✕</button>
+        </div>
+        <div style="font-size:13px; color:#6B7280; margin-bottom:22px;">{{ modalStepLabel }}</div>
+
+        <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            <sc-for list="{{ clientTypes }}" as="t" hint-placeholder-count="4">
+              <button onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+          <input type="text" placeholder="Как к вам обращаться" aria-label="Имя" style="width:100%; border:1px solid rgba(38,84,62,0.20); border-radius:4px; padding:14px; font-size:16px; color:#1A1D1F;">
+        </sc-if>
+
+        <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+          <input type="tel" placeholder="+7 (___) ___-__-__" aria-label="Телефон" style="width:100%; border:1px solid rgba(38,84,62,0.20); border-radius:4px; padding:14px; font-size:16px; color:#1A1D1F;">
+        </sc-if>
+
+        <sc-if value="{{ step4 }}" hint-placeholder-val="{{ false }}">
+          <textarea rows="4" placeholder="Опишите задачу: культура, объект защиты, объём препарата" aria-label="Задача" style="width:100%; border:1px solid rgba(38,84,62,0.20); border-radius:4px; padding:14px; font-size:16px; color:#1A1D1F; resize:vertical;"></textarea>
+        </sc-if>
+
+        <sc-if value="{{ step5 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="background:#F8F4E9; border-radius:4px; padding:14px 16px; font-size:15px; color:#1A1D1F;">По препарату: <strong>Балерина, СЭ</strong></div>
+            <label style="display:flex; gap:10px; align-items:flex-start; margin-top:18px; font-size:14px; line-height:1.5; color:#6B7280;">
+              <input type="checkbox" style="margin-top:3px;">
+              <span>Согласен на обработку персональных данных в соответствии с <a href="/privacy-policy/">политикой</a></span>
+            </label>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ stepDone }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <p style="margin:0 0 14px; font-size:16px; line-height:1.6; color:#1A1D1F;">Заявка принята. Специалист свяжется в рабочее время — Пн–Чт 9:00–17:00, Пт 9:00–16:00.</p>
+            <p style="margin:0; font-size:16px; color:#6B7280;">Срочный вопрос — <a href="tel:+73517500920" style="font-weight:700;">+7 (351) 750-09-20</a></p>
+          </div>
+        </sc-if>
+
+        <div style="display:{{ modalNavDisplay }}; margin-top:24px; gap:12px; align-items:center; justify-content:space-between;">
+          <button onClick="{{ prevStep }}" style="display:{{ backDisplay }}; background:none; border:none; font-size:15px; color:#6B7280; cursor:pointer;">← Назад</button>
+          <button onClick="{{ nextStep }}" style="margin-left:auto; background:#E4A853; color:#26543E; border:none; border-radius:4px; padding:14px 28px; font-size:16px; font-weight:700; cursor:pointer;">{{ nextLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SPECS_BASE = [
+  ["Действующее вещество", "2,4-Д (2-этилгексиловый эфир), 410 г/л + Флорасулам, 7,4 г/л"],
+  ["Форма препарата", "СЭ (суспензионная эмульсия)"],
+  ["Тип применения", "Послевсходовый, избирательного действия"],
+  ["Страна производства", "Россия"],
+  ["Регистрационный номер", "021-03-4447-1 (действителен до 10.03.2034)"],
+  ["Регистрант", "АО Фирма «Август»"]
+];
+const SPECS_MORE = [
+  ["Химический класс ДВ", "Феноксикарбоксилаты + пиримидины (триазолопиримидины)"],
+  ["Код МДА (HRAC)", "4 (O) + 2 (B)"],
+  ["Способ проникновения", "Системный"],
+  ["Класс ДОПОГ (перевозка)", "3 / 6.1 + 6.1"],
+  ["Класс опасности для пчёл", "3 (малоопасное)"],
+  ["Дата выдачи свидетельства о регистрации", "11.03.2024"],
+  ["Фитотоксичность", "Не оказывает фитотоксического действия на обрабатываемые культуры при соблюдении регламентов применения"]
+];
+const REGULATION = [
+  ["0,3–0,5", "Пшеница озимая и яровая, ячмень яровой", "Однолетние двудольные, устойчивые к 2,4-Д и МЦПА, + некоторые многолетние", "Опрыскивание в фазе кущения культуры, ранние фазы роста сорняков", "53 (1)"],
+  ["0,5", "Пшеница озимая и яровая, ячмень яровой", "То же + подмаренник цепкий", "Опрыскивание в фазе выхода в трубку (1–2 междоузлия)", "53 (1)"],
+  ["0,3–0,5", "Кукуруза (в т.ч. на силос)", "Однолетние двудольные + некоторые многолетние", "Опрыскивание в фазе 3–5 листьев культуры", "60 (1)"],
+  ["0,3–0,5", "Просо", "То же", "Опрыскивание в фазе кущения", "60 (1)"],
+  ["0,3–0,5", "Сорго", "То же", "Опрыскивание в фазе 3–6 листьев", "60 (1)"],
+  ["0,3–0,5", "Овёс", "То же + виды ромашки, горца, осот, бодяк", "Опрыскивание в период кущения — выход в трубку", "53 (1)"]
+];
+const PROCEDURES = [
+  ["prep", "Приготовление рабочего раствора", [
+    "Рабочий раствор готовят непосредственно перед опрыскиванием. Отмеряют требуемое количество препарата на одну заправку опрыскивателя и вводят его прямо в бак при работающей гидравлической мешалке; бак при этом должен быть заполнен водой не менее чем наполовину.",
+    "Если требуется маточный раствор, его концентрация не должна превышать 15 % — например, 1,5 л препарата на 7,5 л воды в десятилитровой ёмкости. Готовый маточный раствор нельзя держать дольше 5–10 минут: сразу после перемешивания его добавляют в заполненный водой бак опрыскивателя и перемешивают до однородной суспоэмульсии. Ёмкость из-под гербицида несколько раз ополаскивают водой, сливая смыв в бак.",
+    "Значение pH воды для приготовления раствора: 5,5–6,5. Температурный режим при обработке — от 5 до 25 °С, оптимально 8–25 °С. Не рекомендуется обрабатывать в дни, когда прогнозируются ночные заморозки, и сразу после них.",
+    "Приготовление раствора и заправку опрыскивателя проводят на специальных площадках с последующим обеззараживанием."
+  ]],
+  ["mix", "Совместимость в баковых смесях", [
+    "Препарат совместим с различными пестицидами, за исключением препаратов с сильнощелочной или сильнокислой реакцией. Можно комбинировать с гербицидами Бомба, Кантата и Магнум, фунгицидом Бенорад, инсектицидом Брейк, а также с мочевиной. Препарат несовместим с сульфатом аммония.",
+    "В каждом конкретном случае необходимо проверять совместимость компонентов перед приготовлением баковой смеси, а готовую смесь — на фитотоксичность по отношению к обрабатываемой культуре.",
+    "Порядок добавления компонентов в бак: СП (водорастворимые пакеты) → СП → ВДГ (СТС) → СК (ВСК) → Балерина → КНЭ (КМЭ, МЭ, КЭ, ЭМВ) → ВРГ → ВРК (ВР) → ПАВ. Каждый последующий компонент добавляется после полного растворения (диспергирования) предыдущего."
+  ]],
+  ["store", "Хранение и упаковка", [
+    "Упаковка: канистры 5 и 10 л.",
+    "Условия хранения: в специально предназначенных для пестицидов складских помещениях, в герметично закрытой, без повреждений заводской упаковке.",
+    "Температурный режим: от −10 до +35 °C. Не допускать замерзания препарата при хранении.",
+    "Срок хранения: 3 года со дня изготовления препарата при соблюдении условий хранения."
+  ]],
+];
+// 6C «Первая помощь» — статичная разметка в шаблоне (жирные лид-ины + кликабельный телефон).
+const PROCEDURES_TAIL = [
+  ["rotation", "Ограничения по севообороту", [
+    "Балерина не обладает последействием — её можно применять во всех типах севооборотов без ограничений.",
+    "Запрещается применять гербицид на зерновых с подсевом бобовых культур. В случае пересева использовать только злаки. Не допускать сноса препарата на поля, занятые широколистными культурами."
+  ]],
+  ["transport", "Транспортировка и утилизация", [
+    "Транспортировка — только в заводской упаковке с заводской этикеткой, всеми видами транспорта в соответствии с правилами перевозки опасных грузов. Транспортировка и хранение совместно с пищевыми продуктами и комбикормами категорически запрещены.",
+    "Работы с препаратом проводят только специалисты по защите растений или лица, прошедшие специальную подготовку, обязательно со средствами индивидуальной защиты органов дыхания, зрения и кожи. Запрещено применение в личных подсобных хозяйствах, авиационным способом и в санитарной зоне рыбохозяйственных водоёмов.",
+    "Срок безопасного выхода людей на обработанные площади для механизированных работ — 4 дня.",
+    "Разлитый препарат засыпают сорбентом (песок, опилки, земля), загрязнённый сорбент и почву обезвреживают 10 % раствором кальцинированной соды или 7 % кашицей хлорной извести, собирают в промаркированные контейнеры и удаляют в места, согласованные с природоохранными органами. Загрязнённую землю перекапывают на глубину штыка лопаты. Запрещается сливать препарат в канализацию и любые водоёмы.",
+    "Обезвреживание и утилизация тары, остатков препарата и промывных вод — по СанПиН 1.2.1077-01."
+  ]],
+  ["eco", "Охрана окружающей среды", [
+    "2,4-Д кислота нестойка или среднестойка, флорасулам нестоек в почве. Оба вещества слаботоксичны или практически нетоксичны для млекопитающих, птиц, дождевых червей и почвенных микроорганизмов.",
+    "Класс опасности для пчёл — 3 (малоопасный). Меры безопасности при обработке: проводить обработку в утреннее или вечернее время при скорости ветра до 4–5 м/с; погранично-защитная зона для пчёл — не менее 2–3 км; ограничение лёта пчёл — 3–4 часа; обязательное предварительное оповещение местных пчеловодов за 4–5 суток о сроках и зонах применения.",
+    "Запрещается применение препарата в санитарной зоне рыбохозяйственных водоёмов."
+  ]],
+];
+const MECHANISM = [
+  ["mech", "Как работает 2,4-Д + флорасулам", [
+    "Балерина сочетает две действующих вещества из разных химических классов с разным механизмом действия. 2,4-Д (2-этилгексиловый эфир) — синтетический ауксин из группы феноксикарбоксилатов; проникает через листья, распространяется по растению и вызывает нарушение роста двудольных сорняков. Флорасулам — представитель пиримидинов, ингибитор фермента ALS; блокирует синтез аминокислот в тканях сорных растений.",
+    "Сочетание двух ДВ из разных классов повышает эффективность против устойчивых к 2,4-Д и МЦПА сорняков и снижает риск возникновения резистентности. Симптомы поражения: скручивание и хлороз листьев, эпинастия, замедление роста, гибель через 2–3 недели после обработки.",
+    "Балерина не имеет последействия — применима во всех типах севооборотов; на культурных злаках проявляет высокую избирательность при соблюдении регламентов применения."
+  ]],
+  ["timing", "Скорость и симптомы воздействия", [
+    "Рост обработанных препаратом сорняков прекращается через сутки после опрыскивания.",
+    "Видимые признаки действия — обесцвечивание и скручивание листьев, сокращение междоузлий — проявляются через 3–4 дня. Окончательная гибель сорняков происходит через 2–3 недели после обработки.",
+    "Период защитного действия: гербицид обеспечивает защиту посевов от момента обработки до появления новой «волны» сорняков."
+  ]],
+  ["spectrum", "Спектр действия", [
+    "Чувствительны: амброзия полыннолистная, василёк синий, горчица (виды), дымянка лекарственная, мак (виды), осот (виды), подмаренник цепкий (до 5 мутовок или до 0,2 м), подсолнечник (падалица), рапс (падалица), редька дикая, сурепица, ярутка полевая и др.",
+    "Среднечувствительны: бодяк (виды), ромашка (виды), конопля сорная, льнянка обыкновенная, пикульник (виды), полынь обыкновенная и др.",
+    "Слабочувствительны: вероника (виды), яснотка (виды), вьюнок полевой, молочай (виды), паслён чёрный, фиалка полевая, хвощ (виды) и др."
+  ]],
+  ["resistance", "Возможность возникновения резистентности", [
+    "Рекомендуется чередовать использование препарата с гербицидами из других химических классов и с различным механизмом действия.",
+    "Комбинация 2,4-Д и флорасулама в составе Балерины сама по себе снижает риск резистентности — два разных химических класса ДВ воздействуют на сорняки параллельно."
+  ]]
+];
+const CROPS = [["Пшеница","pshenitsa"],["Ячмень","yachmen"],["Кукуруза","kukuruza"],["Просо","proso"],["Сорго","sorgo"],["Овёс","oves"]];
+const OBJECTS = [["Однолетние двудольные сорняки","odnoletnie-dvudolnye"],["Многолетние корнеотпрысковые","kornevotpryskovye"],["Подмаренник цепкий","podmarennik"],["Ромашка","romashka"],["Осот","osot"],["Бодяк","bodyak"],["Молочай лозный","molochay"]];
+const PHOTO_BASE = "uploads/";
+const CROSS_SELL = [
+  { name: "Альбит, ТПС", cat: "Биопрепарат", href: "/catalog/biopreparaty/albit-tps/", photo: PHOTO_BASE + "albit-tps.webp",
+    dv: "Биостимулятор + фунгицид. Усиливает эффект гербицидной обработки, стимулирует восстановление культуры." },
+  { name: "Магнум, ВДГ", cat: "Гербицид", href: "/catalog/gerbitsidy/magnum-vdg/", photo: PHOTO_BASE + "magnum-vdg.webp",
+    dv: "Метсульфурон-метил, 600 г/кг. Партнёр по баковой смеси — расширяет спектр против двудольных сорняков." },
+  { name: "Ластик Топ, МКЭ", cat: "Гербицид", href: "/catalog/gerbitsidy/lastik-top/", photo: PHOTO_BASE + "lastik-top-mke.webp",
+    dv: "Феноксапроп-П-этил + клодинафоп + клоквинтосет. Против злаковых сорняков на пшенице — комплексная защита." },
+  { name: "Колосаль Про, КМЭ", cat: "Фунгицид", href: "/catalog/fungitsidy/kolosal-pro/", photo: PHOTO_BASE + "kolosal-pro-kme.webp",
+    dv: "Протиоконазол + тебуконазол. Фунгицид на зерновых — мучнистая роса, септориоз, бурая ржавчина." }
+];
+const CLIENT_TYPES = ["Юрлицо", "ИП", "КФХ", "Самозанятый"];
+const STEP_TITLES = [
+  "Кто вы?",
+  "Как к вам обращаться?",
+  "Ваш телефон",
+  "Опишите задачу",
+  "Подтверждение",
+  "Спасибо за заявку"
+];
+
+class Component extends DCLogic {
+  state = {
+    w: typeof window !== "undefined" ? window.innerWidth : 1440,
+    open: {}, showTop: false, modalOpen: false, step: 0, clientType: "", side: "front",
+    zoom: false, zoomPos: "50% 50%", lightboxOpen: false, lbZoom: false
+  };
+  componentDidMount() {
+    this._r = () => this.setState({ w: window.innerWidth });
+    this._s = () => { const v = window.scrollY > 600; if (v !== this.state.showTop) this.setState({ showTop: v }); };
+    window.addEventListener("resize", this._r);
+    window.addEventListener("scroll", this._s, { passive: true });
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._r);
+    window.removeEventListener("scroll", this._s);
+  }
+  acc(key, title, rowsOrLines, isRows) {
+    const isOpen = !!this.state.open[key];
+    const item = {
+      title, chevron: isOpen ? "▲" : "▼",
+      bodyDisplay: isOpen ? "block" : "none",
+      toggle: () => this.setState(s => ({ open: { ...s.open, [key]: !s.open[key] } }))
+    };
+    if (isRows) item.rows = rowsOrLines.map(([k, v]) => ({ k, v }));
+    else item.lines = rowsOrLines.map(t => ({ t }));
+    return item;
+  }
+  renderVals() {
+    const w = this.state.w, mobileL = w < 640, tiny = w < 480, tablet = w < 960;
+    const step = this.state.step;
+    const specAccordions = [];
+    if (mobileL) specAccordions.push(this.acc("specsAll", "Характеристики препарата", SPECS_BASE.concat(SPECS_MORE), true));
+    else specAccordions.push(this.acc("specsMore", "Подробнее о характеристиках", SPECS_MORE, true));
+    const front = this.state.side === "front";
+    const dot = active => "width:9px; height:9px; border-radius:50%; border:none; padding:0; cursor:pointer; background:"
+      + (active ? "#26543E" : "rgba(38,84,62,0.25)") + ";";
+    const src = "uploads/" + (front
+      ? "balerina-se-410-g-l-7-4-g-l_de9b50b1f03169c_1920x9000_1.webp"
+      : "balerina-se-410-g-l-7-4-g-l_3fc7ff43e3072ed_1920x9000_1.webp");
+    const zoomed = this.state.zoom && !mobileL;
+    const lbTab = active => "border-radius:4px; padding:9px 16px; font-size:14px; font-weight:600; cursor:pointer; border:1.5px solid #26543E; "
+      + (active ? "background:#26543E; color:#F8F4E9;" : "background:transparent; color:#26543E;");
+    return {
+      photoAlt: front ? "Балерина, СЭ — лицевая сторона упаковки (канистра 5 л)" : "Балерина, СЭ — тыльная сторона упаковки (канистра 5 л)",
+      photoStyle: "width:100%; height:100%; background-repeat:no-repeat; background-image:url('" + src + "'); cursor:zoom-in; transition:background-size .12s ease-out; "
+        + (zoomed ? "background-size:230%; background-position:" + this.state.zoomPos + ";" : "background-size:contain; background-position:center;"),
+      onZoomEnter: () => { if (!mobileL) this.setState({ zoom: true }); },
+      onZoomLeave: () => this.setState({ zoom: false }),
+      onZoomMove: e => {
+        if (mobileL) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100, y = ((e.clientY - r.top) / r.height) * 100;
+        this.setState({ zoom: true, zoomPos: x.toFixed(1) + "% " + y.toFixed(1) + "%" });
+      },
+      lightboxOpen: this.state.lightboxOpen,
+      openLightbox: () => this.setState({ lightboxOpen: true, lbZoom: false, zoom: false }),
+      closeLightbox: () => this.setState({ lightboxOpen: false }),
+      toggleLightboxZoom: () => this.setState(s => ({ lbZoom: !s.lbZoom })),
+      lightboxImgStyle: "flex:1; min-height:" + (mobileL ? "300px" : "460px") + "; background-color:#FFFFFF; border-radius:4px; background-image:url('" + src
+        + "'); background-repeat:no-repeat; background-position:center; "
+        + (this.state.lbZoom ? "background-size:200%; cursor:zoom-out;" : "background-size:contain; cursor:zoom-in;"),
+      lightboxHint: this.state.lbZoom ? "Клик по фото — уменьшить" : "Клик по фото — приблизить",
+      lbFrontStyle: lbTab(front),
+      lbBackStyle: lbTab(!front),
+      dotFrontStyle: dot(front),
+      dotBackStyle: dot(!front),
+      showFront: () => this.setState({ side: "front" }),
+      showBack: () => this.setState({ side: "back" }),
+      pagePad: mobileL ? "16px" : "32px",
+      pageBottomPad: mobileL ? "84px" : "0px",
+      logoSize: mobileL ? "18px" : "21px",
+      headPhoneSize: mobileL ? "14px" : "16px",
+      navDisplay: w < 1100 ? "none" : "flex",
+      catOpen: !!this.state.catOpen,
+      openCat: () => this.setState({ catOpen: true }),
+      closeCat: () => this.setState({ catOpen: false, subOpen: false }),
+      subOpen: !!this.state.subOpen,
+      openSub: () => this.setState({ subOpen: true }),
+      closeSub: () => this.setState({ subOpen: false }),
+      heroCols: mobileL ? "minmax(0,1fr)" : (w < 1200 ? "45fr 55fr" : "1fr 1fr"),
+      heroGap: mobileL ? "24px" : "48px",
+      h1Size: mobileL ? "30px" : "42px",
+      h2Size: mobileL ? "24px" : "30px",
+      sectionGap: mobileL ? "44px" : "64px",
+      specCols: tablet ? "minmax(0,1fr)" : "260px minmax(0,1fr)",
+      crossCols: tiny ? "minmax(0,1fr)" : (tablet ? "repeat(2,minmax(0,1fr))" : "repeat(4,minmax(0,1fr))"),
+      crossGap: mobileL ? "12px" : "24px",
+      ctaDir: tiny ? "column" : "row",
+      footerCols: tablet ? "minmax(0,1fr)" : "40% 30% 30%",
+      specsInline: !mobileL,
+      specsBase: SPECS_BASE.map(([k, v]) => ({ k, v })),
+      specAccordions,
+      regulation: REGULATION.map(([rate, crop, object, method, wait]) => ({ rate, crop, object, method, wait })),
+      crops: CROPS.map(([name, slug]) => ({ name, href: "/catalog/kultura/" + slug + "/" })),
+      objects: OBJECTS.map(([name, slug]) => ({ name, href: "/catalog/vrednyy-obekt/" + slug + "/" })),
+      procedureAccordions: PROCEDURES.map(([key, title, lines]) => this.acc(key, title, lines, false)),
+      procedureTail: PROCEDURES_TAIL.map(([key, title, lines]) => this.acc(key, title, lines, false)),
+      firstAidOpen: !!this.state.open.help,
+      firstAidChevron: this.state.open.help ? "▲" : "▼",
+      firstAidBody: this.state.open.help ? "block" : "none",
+      toggleFirstAid: () => this.setState(s => ({ open: { ...s.open, help: !s.open.help } })),
+      mechanismAccordions: MECHANISM.map(([key, title, lines]) => this.acc(key, title, lines, false)),
+      crossSell: CROSS_SELL.map(p => ({ ...p,
+        photoStyle: "width:100%; height:100%; background-image:url('" + p.photo + "'); background-size:contain; background-position:center; background-repeat:no-repeat;" })),
+      showTop: this.state.showTop,
+      topBtnBottom: mobileL ? "96px" : "24px",
+      stickyCta: mobileL,
+      scrollTop: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      modalOpen: this.state.modalOpen,
+      openModal: () => this.setState({ modalOpen: true, step: 0 }),
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: e => e.stopPropagation(),
+      modalTitle: STEP_TITLES[step],
+      modalStepLabel: step < 5 ? "Шаг " + (step + 1) + " из 5" : "Готово",
+      step1: step === 0, step2: step === 1, step3: step === 2, step4: step === 3, step5: step === 4, stepDone: step === 5,
+      clientTypes: CLIENT_TYPES.map(label => ({
+        label,
+        style: "border-radius:4px; padding:13px 22px; font-size:15px; font-weight:600; cursor:pointer; border:1.5px solid #26543E; "
+          + (this.state.clientType === label ? "background:#26543E; color:#F8F4E9;" : "background:#FFFFFF; color:#26543E;"),
+        pick: () => this.setState({ clientType: label, step: 1 })
+      })),
+      modalNavDisplay: step === 5 ? "none" : "flex",
+      backDisplay: step === 0 ? "none" : "block",
+      nextLabel: step === 4 ? "Отправить заявку" : "Далее",
+      nextStep: () => this.setState(s => ({ step: Math.min(s.step + 1, 5) })),
+      prevStep: () => this.setState(s => ({ step: Math.max(s.step - 1, 0) }))
+    };
+  }
+}
+</script>
+</body>
+</html>
