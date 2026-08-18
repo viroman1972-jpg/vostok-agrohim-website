@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --header-h: 80px; }
+  @media (max-width: 768px) { :root { --header-h: 60px; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FFFFFF; }
+  a { color: #26543E; text-decoration: none; }
+  a:hover { color: #1B4332; }
+  input, button { font-family: inherit; }
+  input[type=range].va-range { -webkit-appearance: none; appearance: none; position: absolute; left: 0; top: 0; width: 100%; height: 16px; margin: 0; background: transparent; pointer-events: none; }
+  input[type=range].va-range::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #26543E; border: none; pointer-events: auto; cursor: pointer; }
+  input[type=range].va-range::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #26543E; border: none; pointer-events: auto; cursor: pointer; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Гербициды",
+  "description": "Препараты для защиты посевов от сорняков — от селективных для зерновых до сплошного действия для промышленных площадей.",
+  "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/",
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 44,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/alsion-vdg/", "name": "Алсион, ВДГ" },
+      { "@type": "ListItem", "position": 2, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/balerina-super-se/", "name": "Балерина Супер, СЭ" },
+      { "@type": "ListItem", "position": 3, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/balerina-forte-se/", "name": "Балерина Форте, СЭ" },
+      { "@type": "ListItem", "position": 4, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/balerina-se/", "name": "Балерина, СЭ" },
+      { "@type": "ListItem", "position": 5, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/galion-vr/", "name": "Галион, ВР" },
+      { "@type": "ListItem", "position": 6, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/gambit-sk/", "name": "Гамбит, СК" },
+      { "@type": "ListItem", "position": 7, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/gaur-ke/", "name": "Гаур, КЭ" },
+      { "@type": "ListItem", "position": 8, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/gerbitoks-vrk/", "name": "Гербитокс, ВРК" },
+      { "@type": "ListItem", "position": 9, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/gerbitoks-l-vrk/", "name": "Гербитокс-Л, ВРК" },
+      { "@type": "ListItem", "position": 10, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/gorgon-vrk/", "name": "Горгон, ВРК" },
+      { "@type": "ListItem", "position": 11, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/greyder-vgr/", "name": "Грейдер, ВГР" },
+      { "@type": "ListItem", "position": 12, "url": "https://vostok-agrohim.ru/catalog/gerbitsidy/drakon-ke/", "name": "Дракон, КЭ" }
+    ]
+  }
+}
+</script>
+</helmet>
+<div style="font-family:'Manrope',sans-serif; color:#1A1D1F; background:#FFFFFF; min-height:100vh;">
+
+  <header style="position:sticky; top:0; z-index:40; background:#F8F4E9; border-bottom:1px solid rgba(27,67,50,0.10);">
+    <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px {{ pagePad }};">
+      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#1B4332; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
+      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+        <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
+          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+          <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
+              <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
+                <a href="/catalog/" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По типу препарата<span style="font-size:10px; color:#8A8578;">▸</span></a>
+                <sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute; top:-8px; left:100%; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:230px; z-index:60;">
+                    <a href="/catalog/gerbitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Гербициды</a>
+                    <a href="/catalog/insektitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Инсектициды</a>
+                    <a href="/catalog/fungitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Фунгициды</a>
+                    <a href="/catalog/protraviteli/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Протравители</a>
+                    <a href="/catalog/stimulyatory-rosta/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Стимуляторы роста</a>
+                    <a href="/catalog/adyuvanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Адьюванты</a>
+                    <a href="/catalog/desikanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Десиканты</a>
+                  </div>
+                </sc-if>
+              </div>
+              <a href="/catalog/kultura/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По культурам</a>
+              <a href="/catalog/vrednyy-obekt/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По вредителям, сорнякам и болезням</a>
+              <a href="/catalog/dv/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По действующим веществам</a>
+            </div>
+          </sc-if>
+        </div>
+        <a href="/#tasks">Задачи защиты</a>
+        <a href="/#how-we-work">Как мы работаем</a>
+        <a href="/#manufacturers">Производители</a>
+        <a href="/contacts/">Контакты</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <span aria-hidden="true" style="display:{{ searchDisplay }}; width:34px; height:34px; border-radius:50%; border:1px solid rgba(27,67,50,0.20); display:flex; align-items:center; justify-content:center; color:#26543E; font-size:15px;">⌕</span>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+          <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (922) 750-09-20</a>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:#6E6A5E; white-space:nowrap;">+7 (351) 750-09-20</a>
+            <span style="font-size:12px; color:#8A8578;">офис</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:1400px; margin:0 auto; padding:0 {{ pagePad }};">
+
+    <div style="padding-top:24px; font-size:14px; color:#26543E;">
+      <a href="/">Главная</a><span style="color:#E4A853; padding:0 8px;">·</span><a href="/catalog/">Каталог</a><span style="color:#E4A853; padding:0 8px;">·</span><span style="opacity:0.7;">Гербициды</span>
+    </div>
+
+    <div style="margin-top:16px; display:flex; flex-direction:{{ titleDir }}; align-items:{{ titleAlign }}; justify-content:space-between; gap:12px;">
+      <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:{{ h1Size }}; line-height:1.15; color:#26543E; margin:0; letter-spacing:-0.01em;">Гербициды</h1>
+      <div style="font-size:16px; font-weight:600; color:#26543E; white-space:nowrap;">{{ countLabel }}</div>
+    </div>
+    <p style="margin:14px 0 0; font-size:18px; line-height:1.55; color:#1A1D1F; max-width:70ch; text-wrap:pretty;">Препараты для защиты посевов от сорняков — от селективных для зерновых до сплошного действия для промышленных площадей.</p>
+
+    <div style="margin-top:32px; display:flex; flex-direction:column; gap:14px;">
+      <div style="display:flex; align-items:center; gap:12px; overflow-x:auto; padding-bottom:2px;">
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#8A8578; white-space:nowrap;">Серии</span>
+        <sc-for list="{{ series }}" as="s" hint-placeholder-count="5">
+          <a href="{{ s.href }}" style="background:#F8F4E9; color:#26543E; font-size:14px; font-weight:500; padding:8px 16px; border-radius:20px; border:1px solid transparent; white-space:nowrap;" style-hover="border-color:#E4A853;">{{ s.name }}</a>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; overflow-x:auto; padding-bottom:2px;">
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#8A8578; white-space:nowrap;">Действующее вещество</span>
+        <sc-for list="{{ dvPills }}" as="s" hint-placeholder-count="3">
+          <a href="{{ s.href }}" style="background:#F8F4E9; color:#26543E; font-size:14px; font-weight:500; padding:8px 16px; border-radius:20px; border:1px solid transparent; white-space:nowrap;" style-hover="border-color:#E4A853;">ДВ: {{ s.name }}</a>
+        </sc-for>
+        <a href="/catalog/gerbitsidy/?dejstvie=sploshnoy" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Сплошного действия</a>
+        <a href="/catalog/gerbitsidy/?producer=Август" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Только Август</a>
+        <a href="/catalog/gerbitsidy/promyshlennye/" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Промышленным заказчикам</a>
+      </div>
+    </div>
+
+    <div style="position:{{ barPos }}; top:var(--header-h); z-index:30; background:#FFFFFF; margin-top:36px; padding:16px 0; border-bottom:1px solid #E8E4D9; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;">
+      <div style="position:relative;">
+        <button onClick="{{ toggleSort }}" style="background:#FFFFFF; border:1px solid #E8E4D9; border-radius:4px; padding:10px 16px; font-size:14px; font-weight:600; color:#26543E; cursor:pointer; display:flex; align-items:center; gap:8px;" style-hover="border-color:#E4A853;">Сортировка: {{ sortLabel }}<span style="font-size:10px; color:#8A8578;">▾</span></button>
+        <sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute; top:calc(100% + 6px); left:0; min-width:250px; background:#FFFFFF; border:1px solid #E8E4D9; border-radius:4px; box-shadow:0 16px 40px rgba(38,84,62,0.16); padding:6px 0; z-index:45;">
+            <sc-for list="{{ sortOptions }}" as="o" hint-placeholder-count="5">
+              <button onClick="{{ o.pick }}" style="display:block; width:100%; text-align:left; background:none; border:none; padding:10px 18px; font-size:14px; color:#1A1D1F; cursor:pointer;" style-hover="background:#F8F4E9;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="font-size:14px; color:#666;">Показано 12 из 44</div>
+      <button onClick="{{ openDrawer }}" style="display:{{ drawerBtnDisplay }}; flex:1 0 100%; background:#26543E; color:#F8F4E9; border:none; border-radius:4px; padding:11px 18px; font-size:14px; font-weight:600; cursor:pointer;">Ещё фильтры</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns:{{ shellCols }}; gap:32px; margin-top:32px; align-items:start;">
+
+      <aside style="display:{{ sidebarDisplay }}; flex-direction:column; gap:24px; position:sticky; top:calc(var(--header-h) + 78px);">
+        <div style="background:#F8F4E9; border-radius:8px; padding:18px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;">
+            <span style="font-size:15px; font-weight:700; color:#26543E;">Активные фильтры</span>
+            <button onClick="{{ resetAll }}" style="background:none; border:1px solid #26543E; color:#26543E; border-radius:4px; font-size:12px; font-weight:600; padding:5px 10px; cursor:pointer;" style-hover="background:#26543E; color:#F8F4E9;">Сбросить все</button>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="2">
+              <button onClick="{{ c.remove }}" style="background:rgba(228,168,83,0.22); color:#26543E; border:none; border-radius:4px; font-size:13px; font-weight:600; padding:6px 10px; cursor:pointer; display:flex; align-items:center; gap:7px;">{{ c.label }}<span style="opacity:0.6;">×</span></button>
+            </sc-for>
+            <sc-if value="{{ noActive }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:13px; color:#8A8578;">Фильтры не выбраны</span>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-for list="{{ visibleGroups }}" as="g" hint-placeholder-count="4">
+          <div style="border-bottom:1px solid #E8E4D9; padding-bottom:24px;">
+            <div style="font-size:15px; font-weight:700; color:#26543E; margin-bottom:12px;">{{ g.title }}</div>
+            <div style="display:flex; flex-direction:column; gap:9px;">
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="6">
+                <button onClick="{{ it.toggle }}" style="display:flex; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; text-align:left;">
+                  <span style="{{ it.boxStyle }}">{{ it.mark }}</span>
+                  <span style="font-size:14px; color:#1A1D1F; line-height:1.35;">{{ it.label }}</span>
+                  <span style="font-size:13px; color:#666;">({{ it.count }})</span>
+                </button>
+              </sc-for>
+              <sc-if value="{{ g.more }}" hint-placeholder-val="{{ true }}">
+                <a href="#" style="font-size:13px; font-weight:600; color:#B27F2C; margin-top:2px;">Показать ещё {{ g.more }}…</a>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{ showPrice }}" hint-placeholder-val="{{ false }}">
+          <div style="border-bottom:1px solid #E8E4D9; padding-bottom:24px;">
+            <div style="font-size:15px; font-weight:700; color:#26543E; margin-bottom:12px;">{{ priceTitle }}</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="text" inputmode="numeric" value="{{ priceFromText }}" onChange="{{ onPriceFrom }}" placeholder="{{ priceFromPh }}" aria-label="Цена от" style="width:100%; min-width:0; border:1px solid #E8E4D9; border-radius:4px; padding:9px 10px; font-size:14px; color:#1A1D1F;">
+              <span style="color:#8A8578;">—</span>
+              <input type="text" inputmode="numeric" value="{{ priceToText }}" onChange="{{ onPriceTo }}" placeholder="{{ priceToPh }}" aria-label="Цена до" style="width:100%; min-width:0; border:1px solid #E8E4D9; border-radius:4px; padding:9px 10px; font-size:14px; color:#1A1D1F;">
+            </div>
+            <div style="margin-top:22px; position:relative; height:16px;">
+              <div style="position:absolute; left:0; right:0; top:6px; height:4px; border-radius:2px; background:#E8E4D9;">
+                <span style="{{ priceFillStyle }}"></span>
+              </div>
+              <input class="va-range" type="range" min="{{ priceMin }}" max="{{ priceMax }}" step="{{ priceStep }}" value="{{ priceFrom }}" onChange="{{ onPriceFrom }}" aria-label="Цена от, слайдер">
+              <input class="va-range" type="range" min="{{ priceMin }}" max="{{ priceMax }}" step="{{ priceStep }}" value="{{ priceTo }}" onChange="{{ onPriceTo }}" aria-label="Цена до, слайдер">
+            </div>
+          </div>
+        </sc-if>
+
+        <button onClick="{{ toggleMore }}" style="background:none; border:1px solid #26543E; color:#26543E; border-radius:4px; padding:12px 16px; font-size:14px; font-weight:600; cursor:pointer;" style-hover="background:#26543E; color:#F8F4E9;">{{ moreLabel }}</button>
+      </aside>
+
+      <div>
+        <div style="display:grid; grid-template-columns:{{ gridCols }}; gap:{{ gridGap }};">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="12">
+            <a href="#" style="display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #E8E4D9; border-radius:8px; padding:20px; transition:box-shadow .15s, border-color .15s;" style-hover="box-shadow:0 4px 12px rgba(38,84,62,0.15); border-color:#E4A853;">
+              <div style="aspect-ratio:1/1; background:#F8F4E9; border-radius:6px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; overflow:hidden;">
+                <sc-if value="{{ p.img }}" hint-placeholder-val="{{ false }}">
+                  <div role="img" aria-label="{{ p.name }}" style="{{ p.imgStyle }}"></div>
+                </sc-if>
+                <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ true }}">
+                  <svg width="72" height="88" viewBox="0 0 72 88" fill="none" aria-hidden="true">
+                    <rect x="8" y="20" width="56" height="60" rx="6" fill="#E4A853" opacity="0.85"></rect>
+                    <rect x="26" y="6" width="20" height="16" rx="3" fill="#26543E" opacity="0.75"></rect>
+                    <rect x="18" y="34" width="36" height="24" rx="3" fill="#F8F4E9" opacity="0.9"></rect>
+                  </svg>
+                </sc-if>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; min-height:22px;" data-signals="наличие · класс опасности · доставка">
+                <sc-for list="{{ p.badges }}" as="b" hint-placeholder-count="1">
+                  <span style="{{ b.style }}">{{ b.label }}</span>
+                </sc-for>
+              </div>
+              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; line-height:1.3; color:#1A1D1F; margin-bottom:8px;">{{ p.name }}</div>
+              <div style="font-size:14px; line-height:1.45; color:#666; margin-bottom:16px; min-height:40px; overflow-wrap:anywhere;">{{ p.dv }}</div>
+              <div style="margin-top:auto;">
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:22px; color:#B27F2C;">{{ p.price }}</div>
+                <span style="display:block; margin-top:16px; background:#E4A853; color:#26543E; text-align:center; font-size:15px; font-weight:700; padding:12px; border-radius:4px;">Подробнее →</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:40px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+          <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600;">
+            <span style="color:#8A8578; padding:8px 12px;">‹ Пред</span>
+            <span style="background:#E4A853; color:#FFFFFF; padding:8px 14px; border-radius:4px;">1</span>
+            <a href="#" style="padding:8px 14px;">2</a>
+            <a href="#" style="padding:8px 14px;">3</a>
+            <a href="#" style="padding:8px 14px;">4</a>
+            <a href="#" style="padding:8px 12px;">След ›</a>
+          </div>
+          <a href="#" style="border:1px solid #26543E; color:#26543E; border-radius:4px; padding:11px 20px; font-size:14px; font-weight:600;" style-hover="background:#26543E; color:#F8F4E9;">Показать всё</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px; max-width:720px; margin-left:auto; margin-right:auto;">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:26px; line-height:1.3; color:#26543E; margin:0 0 20px; letter-spacing:-0.01em;">Гербициды для профессионального применения</h2>
+      <div style="display:{{ seoDisplay }}; flex-direction:column; gap:16px; font-size:16px; line-height:1.6; color:#1A1D1F;">
+        <p style="margin:0;">Гербициды — препараты для уничтожения сорной растительности в посевах сельскохозяйственных культур и на неземледельческих площадях. Избирательные препараты подавляют сорняки, не угнетая культуру; препараты сплошного действия применяют до посева, после уборки и на промышленных территориях.</p>
+        <p style="margin:0;">Выбор препарата определяется культурой, фазой её развития, видовым составом сорняков и почвенно-климатическими условиями хозяйства. Для зерновых колосовых чаще применяют баковые смеси на основе 2,4-Д и флорасулама, для пропашных — почвенные препараты, для паров и промышленных площадей — глифосатсодержащие составы.</p>
+        <p style="margin:0;">Восток АгроХим поставляет гербициды для защиты зерновых, овощных и технических культур в объёмах от одного флакона до оптовых партий. Мы официальный дилер АО Фирма «Август», в ассортименте также препараты БАСФ, Байер, ФМРус, Листерра, ООО НПФ «Альбит», ООО «Гарант Оптима» и других проверенных производителей.</p>
+        <p style="margin:0;">Специалист компании помогает подобрать схему защиты под конкретное поле и согласовать сроки поставки. Отгрузка со склада в Челябинске, доставка транспортными компаниями по России, полный пакет документов на каждую партию.</p>
+      </div>
+      <button onClick="{{ toggleSeo }}" style="display:{{ seoBtnDisplay }}; margin-top:14px; background:none; border:none; padding:0; font-size:15px; font-weight:700; color:#B27F2C; cursor:pointer;">{{ seoBtnLabel }}</button>
+    </div>
+
+    <div style="margin-top:48px; max-width:1200px; margin-left:auto; margin-right:auto;">
+      <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#26543E; margin:0 0 16px; letter-spacing:-0.01em;">Похожие подборки</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <sc-for list="{{ relatedTags }}" as="t" hint-placeholder-count="8">
+          <a href="{{ t.href }}" style="background:#F8F4E9; color:#26543E; font-size:14px; font-weight:500; padding:7px 14px; border-radius:20px; border:1px solid transparent;" style-hover="border-color:#E4A853;">{{ t.name }}</a>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;">
+      <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:24px; color:#26543E; margin:0 0 24px; letter-spacing:-0.01em;">Другие категории каталога</h2>
+      <div style="display:grid; grid-template-columns:{{ catCols }}; gap:16px;">
+        <sc-for list="{{ categories }}" as="c" hint-placeholder-count="5">
+          <a href="{{ c.href }}" style="background:#F8F4E9; border:1px solid transparent; border-radius:8px; padding:{{ catPad }}; min-width:0; display:flex; flex-direction:column; gap:12px;" style-hover="border-color:#E4A853;">
+            <span style="width:48px; height:48px; border-radius:50%; background:#E4A853; color:#26543E; display:flex; align-items:center; justify-content:center; font-family:'Merriweather',serif; font-weight:900; font-size:20px;">{{ c.letter }}</span>
+            <span style="font-family:'Merriweather',serif; font-weight:700; font-size:16px; color:#26543E; line-height:1.3; overflow-wrap:anywhere;">{{ c.name }}</span>
+            <span style="font-size:13px; color:#666;">{{ c.count }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <footer style="margin-top:64px; background:#1E4331; color:#F8F4E9; padding:48px 32px 0; border-top:1px solid rgba(248,244,233,0.14);">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:{{ footerCols }}; gap:40px;">
+      <div>
+        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:26px; margin-bottom:24px;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
+        <div style="display:flex; flex-direction:column; gap:16px; font-size:15px; line-height:1.5;">
+          <div style="display:flex; flex-direction:column; gap:3px;">
+            <a href="tel:+73517500920" style="color:#F8F4E9; font-size:18px; font-weight:700; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">+7 (351) 750-09-20</a>
+            <span style="opacity:0.7; font-size:13px;">офис</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <a href="tel:+79227500920" style="color:#F8F4E9; font-size:18px; font-weight:700; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">+7 (922) 750-09-20</a>
+            <div style="display:flex; gap:18px; font-size:14px;">
+              <a href="https://t.me/+79227500920" target="_blank" rel="noopener noreferrer" style="color:#F8F4E9; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Telegram</a>
+              <a href="max://user/+79227500920" style="color:#F8F4E9; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">MAX</a>
+            </div>
+          </div>
+          <a href="mailto:vostokxim@mail.ru" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">vostokxim@mail.ru</a>
+          <div style="opacity:0.9; line-height:1.55; max-width:40ch;">454006, Россия, Челябинская обл., г. Челябинск, ул. Российская, д. 35, корп. А, оф. 21</div>
+          <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Показать на карте</a>
+          <div style="margin-top:4px; display:flex; flex-direction:column; gap:4px; opacity:0.9; font-size:14px;">
+            <span>Пн–Чт: 9:00–17:00</span>
+            <span>Пт: 9:00–16:00</span>
+            <span>Обед: 12:30–13:30</span>
+            <span>Сб–Вс: выходные</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.7; margin-bottom:20px;">Навигация</div>
+        <div style="display:flex; flex-direction:column; gap:11px; font-size:15px;">
+          <a href="/#how-we-work" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Как мы работаем</a>
+          <a href="/#tasks" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Задачи защиты</a>
+          <a href="/catalog/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Каталог</a>
+          <a href="/#manufacturers" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Производители</a>
+          <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
+          <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
+          <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
+          <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
+          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
+          <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
+          <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.7; margin-bottom:20px;">Юридическая информация</div>
+        <div style="display:flex; flex-direction:column; gap:9px; font-size:15px; line-height:1.5;">
+          <span>ООО «Восток АгроХим»</span>
+          <span>ИНН 7447186421</span>
+          <span>КПП 744701001</span>
+          <span>ОГРН 1117447002694</span>
+          <a href="/privacy-policy/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start; margin-top:6px;" style-hover="border-bottom-color:#E4A853;">Политика обработки персональных данных</a>
+          <span style="opacity:0.7; font-size:13px; margin-top:2px;">Оператор персональных данных № 74-22-014520</span>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+  </footer>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:60; background:rgba(26,29,31,0.45);" onClick="{{ closeDrawer }}">
+      <div style="position:absolute; top:0; right:0; bottom:0; width:min(400px,92vw); background:#FFFFFF; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:22px;" onClick="{{ stop }}">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-family:'Merriweather',serif; font-weight:700; font-size:20px; color:#26543E;">Фильтры</span>
+          <button onClick="{{ closeDrawer }}" aria-label="Закрыть" style="background:none; border:none; font-size:22px; color:#26543E; cursor:pointer;">✕</button>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="2">
+            <button onClick="{{ c.remove }}" style="background:rgba(228,168,83,0.22); color:#26543E; border:none; border-radius:4px; font-size:13px; font-weight:600; padding:6px 10px; cursor:pointer; display:flex; align-items:center; gap:7px;">{{ c.label }}<span style="opacity:0.6;">×</span></button>
+          </sc-for>
+        </div>
+        <sc-for list="{{ visibleGroups }}" as="g" hint-placeholder-count="4">
+          <div style="border-bottom:1px solid #E8E4D9; padding-bottom:20px;">
+            <div style="font-size:15px; font-weight:700; color:#26543E; margin-bottom:12px;">{{ g.title }}</div>
+            <div style="display:flex; flex-direction:column; gap:11px;">
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="6">
+                <button onClick="{{ it.toggle }}" style="display:flex; align-items:center; gap:10px; background:none; border:none; padding:0; cursor:pointer; text-align:left; min-height:32px;">
+                  <span style="{{ it.boxStyle }}">{{ it.mark }}</span>
+                  <span style="font-size:14px; color:#1A1D1F; line-height:1.35;">{{ it.label }}</span>
+                  <span style="font-size:13px; color:#666;">({{ it.count }})</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ showPrice }}" hint-placeholder-val="{{ false }}">
+          <div style="border-bottom:1px solid #E8E4D9; padding-bottom:20px;">
+            <div style="font-size:15px; font-weight:700; color:#26543E; margin-bottom:12px;">{{ priceTitle }}</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="text" inputmode="numeric" value="{{ priceFromText }}" onChange="{{ onPriceFrom }}" placeholder="{{ priceFromPh }}" aria-label="Цена от" style="width:100%; min-width:0; border:1px solid #E8E4D9; border-radius:4px; padding:11px 10px; font-size:15px; color:#1A1D1F;">
+              <span style="color:#8A8578;">—</span>
+              <input type="text" inputmode="numeric" value="{{ priceToText }}" onChange="{{ onPriceTo }}" placeholder="{{ priceToPh }}" aria-label="Цена до" style="width:100%; min-width:0; border:1px solid #E8E4D9; border-radius:4px; padding:11px 10px; font-size:15px; color:#1A1D1F;">
+            </div>
+            <div style="margin-top:22px; position:relative; height:16px;">
+              <div style="position:absolute; left:0; right:0; top:6px; height:4px; border-radius:2px; background:#E8E4D9;">
+                <span style="{{ priceFillStyle }}"></span>
+              </div>
+              <input class="va-range" type="range" min="{{ priceMin }}" max="{{ priceMax }}" step="{{ priceStep }}" value="{{ priceFrom }}" onChange="{{ onPriceFrom }}" aria-label="Цена от, слайдер">
+              <input class="va-range" type="range" min="{{ priceMin }}" max="{{ priceMax }}" step="{{ priceStep }}" value="{{ priceTo }}" onChange="{{ onPriceTo }}" aria-label="Цена до, слайдер">
+            </div>
+          </div>
+        </sc-if>
+        <button onClick="{{ toggleMore }}" style="background:none; border:1px solid #26543E; color:#26543E; border-radius:4px; padding:12px 16px; font-size:15px; font-weight:600; cursor:pointer;">{{ moreLabel }}</button>
+        <button onClick="{{ closeDrawer }}" style="background:#E4A853; color:#26543E; border:none; border-radius:4px; padding:14px 16px; font-size:15px; font-weight:700; cursor:pointer;">Показать результаты</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showTop }}" hint-placeholder-val="{{ false }}">
+    <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:fixed; right:24px; bottom:24px; z-index:50; width:50px; height:50px; border-radius:50%; background:#26543E; border:none; color:#E4A853; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,0.28); display:flex; align-items:center; justify-content:center;">↑</button>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const BOX_OFF = "width:16px; height:16px; flex:none; border:1px solid #C9C4B4; border-radius:3px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:11px; color:#26543E;";
+const BOX_ON = "width:16px; height:16px; flex:none; border:1px solid #E4A853; border-radius:3px; background:#E4A853; display:flex; align-items:center; justify-content:center; font-size:11px; color:#26543E; font-weight:700;";
+const RADIO_OFF = "width:16px; height:16px; flex:none; border:1px solid #C9C4B4; border-radius:50%; background:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:9px; color:#26543E;";
+const RADIO_ON = "width:16px; height:16px; flex:none; border:1px solid #E4A853; border-radius:50%; background:#E4A853; display:flex; align-items:center; justify-content:center; font-size:9px; color:#26543E;";
+
+// Фильтры: 4 развёрнутых (ДМ23) + остальные под кнопкой «Ещё фильтры» (extra: true).
+// Порядок и состав — catalog-ia-v1.md v1.4 §8 (15 универсальных + категорийный «Тег применения»).
+const GROUPS = [
+  { key: "dv", title: "Действующее вещество", type: "multi", more: 6, items: [["Глифосат",12],["2,4-Д",8],["Флорасулам",4],["Клопиралид",5],["МЦПА-кислота",3],["Прометрин",2],["Метсульфурон-метил",3],["Имазапир",2],["Дикват",1]] },
+  { key: "cult", title: "Культура", type: "multi", more: 5, items: [["Пшеница",28],["Ячмень",24],["Кукуруза",18],["Подсолнечник",12],["Соя",10],["Картофель",8],["Рапс",7],["Свёкла сахарная",6]] },
+  { key: "obj", title: "Вредный объект", type: "multi", more: 8, items: [["Однолетние двудольные сорняки",32],["Многолетние двудольные сорняки",18],["Однолетние злаковые сорняки",20],["Многолетние злаковые сорняки (пырей, гумай)",12],["Осот (виды)",14],["Подмаренник цепкий",10]] },
+  { key: "form", title: "Форма выпуска", type: "multi", more: 2, items: [["СЭ (суспензионная эмульсия)",8],["ВДГ (водно-диспергируемые гранулы)",6],["ВРК (водорастворимый концентрат)",7],["КЭ (концентрат эмульсии)",9],["ВР (водный раствор)",5],["СК (суспензионный концентрат)",3],["МКЭ (микроэмульсия)",4]] },
+  // Химический класс ДВ — новый фильтр после ПИ09. Заполнение справочника — ОВ21 (Phase 4).
+  { key: "chem", title: "Химический класс ДВ", type: "multi", extra: true, items: [["Производные глицина",12],["Производные арилоксиалканкарбоновых кислот",9],["Триазолопиримидины",4],["Производные пиридинкарбоновых кислот",7],["Сульфонилмочевины",5],["Триазины",2],["Имидазолиноны",2],["Производные бипиридилия",1]] },
+  // Производитель = регистрант в госреестре (ОВ20 закрыт 09.08.2026), значения по факту ассортимента.
+  { key: "maker", title: "Производитель", type: "multi", extra: true, items: [["Август",32],["Гарант Оптима",4],["Агрохиминвест",3],["Альбит НПФ",2],["НПК Химия",2],["НПО РЭТ",1]] },
+  { key: "ptype", title: "Тип препарата", type: "multi", extra: true, items: [["Органический",41],["Неорганический",3]] },
+  { key: "organism", title: "Действие на организм", type: "multi", extra: true, items: [["Системное",34],["Контактное",14],["Кишечное",3],["Фумигативное",1]] },
+  { key: "action", title: "Характер действия", type: "single", extra: true, items: [["Все",44],["Избирательный",36],["Сплошного действия",8]] },
+  { key: "method", title: "Способ применения", type: "multi", extra: true, items: [["Опрыскивание вегетирующих растений",38],["Опрыскивание почвы",9],["Обработка семян",2],["Полив",1]] },
+  { key: "pack", title: "Упаковка", type: "multi", extra: true, items: [["Канистра 5 л",22],["Канистра 10 л",17],["Канистра 20 л",6],["Мешок 5 кг",4],["Пакет 1 кг",5],["Флакон 1 л",8]] },
+  { key: "term", title: "Срок применения", type: "multi", extra: true, items: [["Грунтовой",7],["Довсходовый",9],["Послевсходовый",28],["В период вегетации",31]] },
+  // Стартовый словарь по catalog-ia-v1.md v1.4 §5.
+  // Финальные значения — при миграции контента (Phase 4), по этикеткам производителей.
+  { key: "country", title: "Страна производства", type: "multi", extra: true, items: [["Россия",38],["Китай",4],["Венгрия",2]] },
+  { key: "danger", title: "Класс опасности для человека", type: "multi", extra: true, items: [["1 класс — чрезвычайно опасное",0],["2 класс — высокоопасное",15],["3 класс — умеренно опасное",26],["4 класс — малоопасное",3]] },
+  { key: "delivery", title: "Флаг доставки", type: "single", extra: true, items: [["Все",44],["Только ТК по РФ",38],["Только самовывоз",6]] },
+  // Фильтр «Наличие» удалён по ПИ11 — склад не ведётся, все препараты доступны под заявку.
+  // Категорийный фильтр, только для гербицидов (ПИ08 уточнение 09.08.2026).
+  { key: "tag", title: "Тег применения", type: "single", extra: true, items: [["Все",44],["Только десиканты",1]] },
+  // Границы — плейсхолдер; в Phase 5 min/max считаются по текущей выборке.
+  { key: "price", title: "Цена, ₽", type: "range", extra: true, min: 500, max: 12000, step: 100, unit: "₽/л" }
+];
+const PRICE = GROUPS.find(g => g.key === "price");
+const rub = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+const B = (bg, color) => "background:" + bg + "; color:" + color + "; font-size:11px; font-weight:600; padding:4px 10px; border-radius:3px; white-space:nowrap;";
+// Бейдж наличия убран по ПИ11 (15–17.08.2026): склада нет, поставка под заявку.
+// Класс опасности: 1 — красный … 4 — зелёный (схема §4.E).
+const DANGER = {
+  1: B("#C0392B", "#FFFFFF"), 2: B("#D97A2B", "#FFFFFF"),
+  3: B("#F5C844", "#1A1D1F"), 4: B("#2E7D4F", "#FFFFFF")
+};
+const DELIVERY = {
+  tk: { label: "ТК по РФ", style: B("#26543E", "#FFFFFF") },
+  self: { label: "Только самовывоз", style: B("#E4A853", "#26543E") }
+};
+const BADGE = {
+  avgust: { label: "Август", style: B("#26543E", "#FFFFFF") },
+  des: { label: "Десикант", style: B("#E4A853", "#26543E") }
+};
+
+// [name, price, ДВ, наличие, класс опасности, флаг доставки, доп. бейджи]
+const PRODUCTS = [
+  ["Алсион, ВДГ", "8 540 ₽/кг", "Метсульфурон-метил, 750 г/кг", "in", 3, "tk", ["avgust"]],
+  ["Балерина Супер, СЭ", "1 068 ₽/л", "2,4-Д 410 г/л + флорасулам 15 г/л", "in", 3, "tk", ["avgust"]],
+  ["Балерина Форте, СЭ", "1 170 ₽/л", "2,4-Д 300 г/л + аминопиралид 37,5 г/л + флорасулам 10 г/л", "in", 3, "tk", ["avgust"]],
+  ["Балерина, СЭ", "812 ₽/л", "2,4-Д 410 г/л + флорасулам 7,4 г/л", "in", 3, "tk", ["avgust"]],
+  ["Галион, ВР", "4 364 ₽/л", "Клопиралид 300 г/л + пиклорам 75 г/л", "order", 3, "tk", ["avgust"]],
+  ["Гамбит, СК", "1 110 ₽/л", "Прометрин, 500 г/л", "in", 2, "self", []],
+  ["Гаур, КЭ", "2 520 ₽/л", "Клетодим, 240 г/л", "in", 3, "tk", []],
+  ["Гербитокс, ВРК", "896 ₽/л", "МЦПА-кислота, 500 г/л", "in", 3, "tk", ["avgust"]],
+  ["Гербитокс-Л, ВРК", "624 ₽/л", "МЦПА-кислота, 300 г/л", "out", 3, "tk", ["avgust"]],
+  ["Горгон, ВРК", "2 220 ₽/л", "Пиклорам 350 г/л + клопиралид 150 г/л", "in", 2, "tk", ["avgust"]],
+  ["Грейдер, ВГР", "3 190 ₽/л", "Имазапир, 250 г/л", "order", 3, "self", ["avgust"]],
+  ["Дракон, КЭ", "2 364 ₽/л", "3 ДВ (140 + 90 + 60 г/л)", "in", 2, "tk", ["avgust", "des"]]
+];
+
+const SORTS = ["По популярности", "По названию А-Я", "По цене ↑", "По цене ↓", "По классу опасности"];
+
+class Component extends DCLogic {
+  state = {
+    w: typeof window !== "undefined" ? window.innerWidth : 1440,
+    checked: { "cult|Пшеница": true, "dv|Флорасулам": true },
+    // Дефолт «А-Я» до закрытия ОВ13 (метрика популярности не согласована).
+    moreOpen: false, sortOpen: false, sort: "По названию А-Я",
+    drawerOpen: false, showTop: false, seoOpen: false,
+    priceFrom: 500, priceTo: 12000
+  };
+  setPrice(which, raw) {
+    const v = parseInt(String(raw).replace(/\D/g, ""), 10);
+    this.setState(s => {
+      if (isNaN(v)) return which === "from" ? { priceFrom: PRICE.min } : { priceTo: PRICE.max };
+      if (which === "from") return { priceFrom: Math.min(Math.max(v, PRICE.min), s.priceTo) };
+      return { priceTo: Math.max(Math.min(v, PRICE.max), s.priceFrom) };
+    });
+  }
+  componentDidMount() {
+    this._r = () => this.setState({ w: window.innerWidth });
+    this._s = () => { const v = window.scrollY > 600; if (v !== this.state.showTop) this.setState({ showTop: v }); };
+    window.addEventListener("resize", this._r);
+    window.addEventListener("scroll", this._s, { passive: true });
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._r);
+    window.removeEventListener("scroll", this._s);
+  }
+  toggle(group, label, type) {
+    this.setState(s => {
+      const c = { ...s.checked };
+      const key = group + "|" + label;
+      if (type === "single") Object.keys(c).forEach(k => { if (k.split("|")[0] === group) delete c[k]; });
+      if (c[key]) delete c[key]; else c[key] = true;
+      return { checked: c };
+    });
+  }
+  renderVals() {
+    const w = this.state.w, checked = this.state.checked;
+    const mobile = w < 960, narrow = w < 640, tiny = w < 480;
+    const groups = GROUPS.filter(g => g.type !== "range" && (this.state.moreOpen || !g.extra)).map(g => ({
+      title: g.title,
+      more: g.more && !this.state.moreOpen ? g.more : "",
+      items: g.items.map(([label, count]) => {
+        const on = !!checked[g.key + "|" + label];
+        const single = g.type === "single";
+        return {
+          label, count, mark: on ? (single ? "●" : "✓") : "",
+          boxStyle: single ? (on ? RADIO_ON : RADIO_OFF) : (on ? BOX_ON : BOX_OFF),
+          toggle: () => this.toggle(g.key, label, g.type)
+        };
+      })
+    }));
+    const chips = Object.keys(checked).map(k => {
+      const [gk, label] = k.split("|");
+      const g = GROUPS.find(x => x.key === gk);
+      return { label: gk === "dv" ? "ДВ: " + label : label, remove: () => this.toggle(gk, label, g && g.type) };
+    });
+    const pf = this.state.priceFrom, pt = this.state.priceTo;
+    const resetPrice = () => this.setState({ priceFrom: PRICE.min, priceTo: PRICE.max });
+    if (pf > PRICE.min || pt < PRICE.max) {
+      const label = pf > PRICE.min && pt < PRICE.max ? "Цена: " + rub(pf) + " – " + rub(pt) + " ₽"
+        : (pf > PRICE.min ? "Цена: от " + rub(pf) + " ₽" : "Цена: до " + rub(pt) + " ₽");
+      chips.push({ label, remove: resetPrice });
+    }
+    return {
+      navDisplay: w < 1100 ? "none" : "flex",
+      catOpen: !!this.state.catOpen,
+      openCat: () => this.setState({ catOpen: true }),
+      closeCat: () => this.setState({ catOpen: false, subOpen: false }),
+      subOpen: !!this.state.subOpen,
+      openSub: () => this.setState({ subOpen: true }),
+      closeSub: () => this.setState({ subOpen: false }),
+      pagePad: narrow ? "16px" : "32px",
+      catPad: narrow ? "18px 14px" : "24px",
+      searchDisplay: narrow ? "none" : "flex",
+      logoSize: narrow ? "18px" : "21px",
+      headPhoneSize: narrow ? "14px" : "16px",
+      titleDir: narrow ? "column" : "row",
+      titleAlign: narrow ? "flex-start" : "baseline",
+      h1Size: narrow ? "32px" : "48px",
+      barPos: mobile ? "static" : "sticky",
+      shellCols: mobile ? "1fr" : (w < 1200 ? "220px 1fr" : "280px 1fr"),
+      sidebarDisplay: mobile ? "none" : "flex",
+      drawerBtnDisplay: mobile ? "block" : "none",
+      gridCols: tiny ? "minmax(0,1fr)" : (w < 1200 ? "repeat(2,minmax(0,1fr))" : "repeat(3,minmax(0,1fr))"),
+      gridGap: narrow ? "12px" : (mobile ? "16px" : "24px"),
+      catCols: narrow ? "repeat(2,minmax(0,1fr))" : "repeat(3,minmax(0,1fr))",
+      footerCols: mobile ? "1fr" : "40% 30% 30%",
+      seoDisplay: (!narrow || this.state.seoOpen) ? "flex" : "none",
+      seoBtnDisplay: narrow ? "block" : "none",
+      seoBtnLabel: this.state.seoOpen ? "Свернуть" : "Читать дальше",
+      toggleSeo: () => this.setState(s => ({ seoOpen: !s.seoOpen })),
+      // Серии рендерятся динамически: показываются торговые серии, у которых в текущей категории ≥2 препаратов (ПИ06).
+      // Значения для гербицидов на 09.08.2026: Торнадо (Торнадо 540 + Торнадо 500). Логика заполнения — Phase 5.
+      series: ["Торнадо", "Балерина", "Лазурит", "Ластик", "Дракон"].map(n => ({ name: n, href: "/catalog/seriya/" + n.toLowerCase() + "/" })),
+      // Топ-N ДВ: механика заполнения — ОВ18 (пока открытый вопрос). Варианты: (а) авто по частоте;
+      // (б) редакционно фиксированный список; (в) гибрид. На 09.08.2026 отображается плейсхолдер:
+      // Глифосат, Метсульфурон-метил, 2,4-Д. Финальный список — на этапе миграции контента (Phase 4/5).
+      dvPills: [["Глифосат", "glifosat"], ["Метсульфурон-метил", "metsulfuron-metil"], ["2,4-Д", "2-4-d"]].map(([name, slug]) => ({ name, href: "/catalog/dv/" + slug + "/" })),
+      countLabel: "44 препарата",
+      // Плейсхолдеры SEO-тегов; финальный набор — при миграции контента (Phase 4).
+      relatedTags: [
+        { name: "Гербициды Август", href: "/catalog/gerbitsidy/?producer=Август" },
+        { name: "Против осота", href: "/catalog/obj/osot/" },
+        { name: "Для зерновых", href: "/catalog/cult/pshenitsa/" },
+        { name: "Для рапса", href: "/catalog/cult/raps/" },
+        { name: "Довсходовые гербициды", href: "/catalog/gerbitsidy/?term=dovshodovyj" },
+        { name: "Гербициды для картофеля", href: "/catalog/cult/kartofel/" },
+        { name: "Клопиралид", href: "/catalog/dv/klopiralid/" },
+        { name: "Пиклорам", href: "/catalog/dv/piklorama/" }
+      ],
+      hiddenCount: GROUPS.filter(g => g.extra).length,
+      sortLabel: this.state.sort,
+      sortOpen: this.state.sortOpen,
+      toggleSort: () => this.setState(s => ({ sortOpen: !s.sortOpen })),
+      sortOptions: SORTS.map(label => ({ label, pick: () => this.setState({ sort: label, sortOpen: false }) })),
+      visibleGroups: groups,
+      activeChips: chips,
+      noActive: chips.length === 0,
+      resetAll: () => this.setState({ checked: {}, priceFrom: PRICE.min, priceTo: PRICE.max }),
+      showPrice: this.state.moreOpen,
+      priceTitle: PRICE.title,
+      priceMin: PRICE.min, priceMax: PRICE.max, priceStep: PRICE.step,
+      priceFrom: pf, priceTo: pt,
+      priceFromText: rub(pf), priceToText: rub(pt),
+      priceFromPh: "От " + rub(PRICE.min), priceToPh: "До " + rub(PRICE.max),
+      onPriceFrom: e => this.setPrice("from", e.target.value),
+      onPriceTo: e => this.setPrice("to", e.target.value),
+      priceFillStyle: "position:absolute; top:0; bottom:0; border-radius:2px; background:#E4A853; left:"
+        + ((pf - PRICE.min) / (PRICE.max - PRICE.min) * 100) + "%; right:"
+        + ((PRICE.max - pt) / (PRICE.max - PRICE.min) * 100) + "%;",
+      moreLabel: this.state.moreOpen ? "Свернуть фильтры" : "Ещё фильтры (" + GROUPS.filter(g => g.extra).length + ")",
+      hiddenTotal: GROUPS.filter(g => g.extra).length,
+      toggleMore: () => this.setState(s => ({ moreOpen: !s.moreOpen })),
+      drawerOpen: this.state.drawerOpen,
+      openDrawer: () => this.setState({ drawerOpen: true }),
+      closeDrawer: () => this.setState({ drawerOpen: false }),
+      stop: e => e.stopPropagation(),
+      products: PRODUCTS.map(([name, price, dv, avail, dclass, delivery, badges]) => {
+        const PHOTOS = {
+          "Балерина Форте": "uploads/pack-balerina-forte.png",
+          "Гаур": "uploads/pack-gaur.png",
+          "Галион": "uploads/pack-galion.png",
+          "Гербитокс-Л": "uploads/pack-gerbitoks-l.png",
+          "Гербитокс,": "uploads/pack-gerbitoks.png",
+          "Алсион": "uploads/pack-alsion.png",
+          "Балерина Супер": "uploads/pack-balerina-super.png",
+          "Балерина,": "uploads/pack-balerina.png",
+          "Гамбит": "uploads/pack-gambit.png",
+          "Горгон": "uploads/pack-gorgon.png",
+          "Грейдер": "uploads/pack-greyder.png",
+          "Дракон": "uploads/prod-drakon-v6.png"
+        };
+        let img = "";
+        for (const k in PHOTOS) { if (name.indexOf(k) === 0) { img = PHOTOS[k]; break; } }
+        const signals = [
+          { label: "Класс опасности " + dclass, style: DANGER[dclass] },
+          DELIVERY[delivery]
+        ].concat(badges.map(b => BADGE[b]));
+        const imgStyle = img ? "width:100%; height:100%; background-image:url('" + img + "'); background-size:contain; background-position:center; background-repeat:no-repeat;" : "";
+        return { name, price, dv, img, imgStyle, noImg: !img, badges: signals };
+      }),
+      categories: [
+        { name: "Инсектициды", count: "15 препаратов", letter: "И", href: "/catalog/insektitsidy/" },
+        { name: "Фунгициды", count: "11 препаратов", letter: "Ф", href: "/catalog/fungitsidy/" },
+        { name: "Протравители", count: "15 препаратов", letter: "П", href: "/catalog/protraviteli/" },
+        { name: "Стимуляторы роста", count: "1 препарат", letter: "С", href: "/catalog/stimulyatory/" },
+        { name: "Адъюванты (ПАВы)", count: "4 препарата", letter: "А", href: "/catalog/adyuvanty/" }
+      ],
+      showTop: this.state.showTop,
+      scrollTop: () => window.scrollTo({ top: 0, behavior: "smooth" })
+    };
+  }
+}
+</script>
+</body>
+</html>
