@@ -27,12 +27,42 @@
     <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px {{ pagePad }};">
       <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#1B4332; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
       <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
-        <a href="/catalog/">Каталог</a>
-        <a href="/about/">О компании</a>
-        <a href="/articles/">Полезное</a>
+        <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
+          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+          <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
+              <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
+                <a href="/catalog/" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По типу препарата<span style="font-size:10px; color:#8A8578;">▸</span></a>
+                <sc-if value="{{ subOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute; top:-8px; left:100%; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:230px; z-index:60;">
+                    <a href="/catalog/gerbitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Гербициды</a>
+                    <a href="/catalog/insektitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Инсектициды</a>
+                    <a href="/catalog/fungitsidy/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Фунгициды</a>
+                    <a href="/catalog/protraviteli/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Протравители</a>
+                    <a href="/catalog/stimulyatory-rosta/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Стимуляторы роста</a>
+                    <a href="/catalog/adyuvanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Адьюванты</a>
+                    <a href="/catalog/desikanty/" style="display:block; padding:10px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">Десиканты</a>
+                  </div>
+                </sc-if>
+              </div>
+              <a href="/catalog/kultura/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По культурам</a>
+              <a href="/catalog/vrednyy-obekt/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По вредителям, сорнякам и болезням</a>
+              <a href="/catalog/dv/" style="display:block; padding:11px 22px; font-size:14px; color:#3A3D3E;" style-hover="background:rgba(27,67,50,0.05); color:#1B4332;">По действующим веществам</a>
+            </div>
+          </sc-if>
+        </div>
+        <a href="/#tasks">Задачи защиты</a>
+        <a href="/#how-we-work">Как мы работаем</a>
+        <a href="/#manufacturers">Производители</a>
         <a href="/contacts/">Контакты</a>
       </nav>
-      <a href="tel:+73517500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (351) 750-09-20</a>
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+        <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (922) 750-09-20</a>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:#6E6A5E; white-space:nowrap;">+7 (351) 750-09-20</a>
+          <span style="font-size:12px; color:#8A8578;">офис</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -76,7 +106,6 @@
           </div>
           <div style="margin-top:4px; font-size:13px; color:#6B7280;">Минимальный заказ: <strong>5 л</strong></div>
           <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:8px;">
-            <span style="background:#22C55E; color:#FFFFFF; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">В наличии</span>
             <span style="background:#E4A853; color:#26543E; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">Только оптом</span>
             <span style="background:#26543E; color:#FFFFFF; font-size:12px; font-weight:600; padding:5px 12px; border-radius:3px;">Доставка ТК по РФ</span>
           </div>
@@ -325,10 +354,10 @@
           <a href="/#manufacturers" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Производители</a>
           <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
           <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
+          <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
           <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
           <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
           <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
-          <a href="/articles/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Полезное</a>
           <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
         </div>
       </div>
@@ -523,7 +552,7 @@ const CROSS_SELL = [
   { name: "Альбит, ТПС", cat: "Биопрепарат", href: "/catalog/biopreparaty/albit-tps/", photo: PHOTO_BASE + "albit-tps.webp",
     dv: "Биостимулятор + фунгицид. Усиливает эффект гербицидной обработки, стимулирует восстановление культуры." },
   { name: "Магнум, ВДГ", cat: "Гербицид", href: "/catalog/gerbitsidy/magnum-vdg/", photo: PHOTO_BASE + "magnum-vdg.webp",
-    dv: "Метсульфурон-метил, 600 г/кг. Баковая смесь с Балериной — расширяет спектр действия и снижает стоимость обработки." },
+    dv: "Метсульфурон-метил, 600 г/кг. Партнёр по баковой смеси — расширяет спектр против двудольных сорняков." },
   { name: "Ластик Топ, МКЭ", cat: "Гербицид", href: "/catalog/gerbitsidy/lastik-top/", photo: PHOTO_BASE + "lastik-top-mke.webp",
     dv: "Феноксапроп-П-этил + клодинафоп + клоквинтосет. Против злаковых сорняков на пшенице — комплексная защита." },
   { name: "Колосаль Про, КМЭ", cat: "Фунгицид", href: "/catalog/fungitsidy/kolosal-pro/", photo: PHOTO_BASE + "kolosal-pro-kme.webp",
@@ -612,6 +641,12 @@ class Component extends DCLogic {
       logoSize: mobileL ? "18px" : "21px",
       headPhoneSize: mobileL ? "14px" : "16px",
       navDisplay: w < 1100 ? "none" : "flex",
+      catOpen: !!this.state.catOpen,
+      openCat: () => this.setState({ catOpen: true }),
+      closeCat: () => this.setState({ catOpen: false, subOpen: false }),
+      subOpen: !!this.state.subOpen,
+      openSub: () => this.setState({ subOpen: true }),
+      closeSub: () => this.setState({ subOpen: false }),
       heroCols: mobileL ? "minmax(0,1fr)" : (w < 1200 ? "45fr 55fr" : "1fr 1fr"),
       heroGap: mobileL ? "24px" : "48px",
       h1Size: mobileL ? "30px" : "42px",
