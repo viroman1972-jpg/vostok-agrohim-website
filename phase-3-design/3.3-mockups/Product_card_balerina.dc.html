@@ -23,12 +23,12 @@
 </helmet>
 <div style="font-family:'Manrope',sans-serif; color:#1A1D1F; background:#FFFFFF; min-height:100vh; padding-bottom:{{ pageBottomPad }};">
 
-  <header style="position:sticky; top:0; z-index:40; background:#F8F4E9; border-bottom:1px solid rgba(38,84,62,0.10);">
+  <header style="position:sticky; top:0; z-index:40; background:#1E4331; border-bottom:1px solid rgba(248,244,233,0.14);">
     <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px {{ pagePad }};">
-      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#1B4332; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
-      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#F8F4E9; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
+      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:rgba(248,244,233,0.88);">
         <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
-          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px; color:rgba(248,244,233,0.88);">Каталог<span style="font-size:10px; color:rgba(248,244,233,0.55);">▾</span></a>
           <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
               <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
@@ -51,16 +51,16 @@
             </div>
           </sc-if>
         </div>
-        <a href="/#tasks">Задачи защиты</a>
-        <a href="/#how-we-work">Как мы работаем</a>
-        <a href="/#manufacturers">Производители</a>
-        <a href="/contacts/">Контакты</a>
+        <a href="/#tasks" style="color:rgba(248,244,233,0.88);">Задачи защиты</a>
+        <a href="/#how-we-work" style="color:rgba(248,244,233,0.88);">Как мы работаем</a>
+        <a href="/#manufacturers" style="color:rgba(248,244,233,0.88);">Производители</a>
+        <a href="/contacts/" style="color:rgba(248,244,233,0.88);">Контакты</a>
       </nav>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-        <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (922) 750-09-20</a>
+        <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#F8F4E9; white-space:nowrap;">+7 (922) 750-09-20</a>
         <div style="display:flex; align-items:center; gap:8px;">
-          <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:#6E6A5E; white-space:nowrap;">+7 (351) 750-09-20</a>
-          <span style="font-size:12px; color:#8A8578;">офис</span>
+          <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:rgba(248,244,233,0.72); white-space:nowrap;">+7 (351) 750-09-20</a>
+          <span style="font-size:12px; color:rgba(248,244,233,0.55);">офис</span>
         </div>
       </div>
     </div>
@@ -318,7 +318,7 @@
     </div>
   </div>
 
-  <footer style="margin-top:64px; background:#26543E; color:#F8F4E9; padding:48px {{ pagePad }} 0; border-top:1px solid rgba(248,244,233,0.14);">
+  <footer style="margin-top:64px; background:#1E4331; color:#F8F4E9; padding:48px {{ pagePad }} 0; border-top:1px solid rgba(248,244,233,0.14);">
     <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:{{ footerCols }}; gap:40px;">
       <div>
         <div style="font-family:'Merriweather',serif; font-weight:900; font-size:26px; margin-bottom:24px;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
@@ -355,10 +355,9 @@
           <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
           <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
           <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
-          <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
-          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
           <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
           <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
         </div>
       </div>
       <div>
@@ -373,7 +372,7 @@
         </div>
       </div>
     </div>
-    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© ООО «Восток АгроХим»</div>
   </footer>
 
   <sc-if value="{{ stickyCta }}" hint-placeholder-val="{{ false }}">
@@ -546,7 +545,10 @@ const MECHANISM = [
   ]]
 ];
 const CROPS = [["Пшеница","pshenitsa"],["Ячмень","yachmen"],["Кукуруза","kukuruza"],["Просо","proso"],["Сорго","sorgo"],["Овёс","oves"]];
-const OBJECTS = [["Однолетние двудольные сорняки","odnoletnie-dvudolnye"],["Многолетние корнеотпрысковые","kornevotpryskovye"],["Подмаренник цепкий","podmarennik"],["Ромашка","romashka"],["Осот","osot"],["Бодяк","bodyak"],["Молочай лозный","molochay"]];
+// ПИ09: в блоке «Против объектов» — только обобщённые классы. Конкретные виды сорняков
+// (подмаренник, ромашка, осот, бодяк и др.) перенесены в блок «Спектр действия» ниже,
+// чтобы не создавать у покупателя ложного впечатления об ограниченной применимости препарата.
+const OBJECTS = [["Однолетние двудольные сорняки","odnoletnie-dvudolnye"],["Многолетние корнеотпрысковые двудольные","kornevotpryskovye"]];
 const PHOTO_BASE = "uploads/";
 const CROSS_SELL = [
   { name: "Альбит, ТПС", cat: "Биопрепарат", href: "/catalog/biopreparaty/albit-tps/", photo: PHOTO_BASE + "albit-tps.webp",
