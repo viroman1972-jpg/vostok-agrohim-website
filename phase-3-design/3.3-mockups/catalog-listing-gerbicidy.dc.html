@@ -53,12 +53,12 @@
 </helmet>
 <div style="font-family:'Manrope',sans-serif; color:#1A1D1F; background:#FFFFFF; min-height:100vh;">
 
-  <header style="position:sticky; top:0; z-index:40; background:#F8F4E9; border-bottom:1px solid rgba(27,67,50,0.10);">
+  <header style="position:sticky; top:0; z-index:40; background:#1E4331; border-bottom:1px solid rgba(248,244,233,0.14);">
     <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px {{ pagePad }};">
-      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#1B4332; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
-      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+      <a href="/" style="font-family:'Merriweather',serif; font-weight:900; font-size:{{ logoSize }}; color:#F8F4E9; letter-spacing:-0.01em; white-space:nowrap;">Восток<span style="color:#E4A853;">·</span>АгроХим</a>
+      <nav style="display:{{ navDisplay }}; gap:30px; align-items:center; font-size:15px; font-weight:500; color:rgba(248,244,233,0.88);">
         <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
-          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+          <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px; color:rgba(248,244,233,0.88);">Каталог<span style="font-size:10px; color:rgba(248,244,233,0.55);">▾</span></a>
           <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
               <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
@@ -81,18 +81,18 @@
             </div>
           </sc-if>
         </div>
-        <a href="/#tasks">Задачи защиты</a>
-        <a href="/#how-we-work">Как мы работаем</a>
-        <a href="/#manufacturers">Производители</a>
-        <a href="/contacts/">Контакты</a>
+        <a href="/#tasks" style="color:rgba(248,244,233,0.88);">Задачи защиты</a>
+        <a href="/#how-we-work" style="color:rgba(248,244,233,0.88);">Как мы работаем</a>
+        <a href="/#manufacturers" style="color:rgba(248,244,233,0.88);">Производители</a>
+        <a href="/contacts/" style="color:rgba(248,244,233,0.88);">Контакты</a>
       </nav>
       <div style="display:flex; align-items:center; gap:12px; min-width:0;">
-        <span aria-hidden="true" style="display:{{ searchDisplay }}; width:34px; height:34px; border-radius:50%; border:1px solid rgba(27,67,50,0.20); display:flex; align-items:center; justify-content:center; color:#26543E; font-size:15px;">⌕</span>
+        <span aria-hidden="true" style="display:{{ searchDisplay }}; width:34px; height:34px; border-radius:50%; border:1px solid rgba(248,244,233,0.30); display:flex; align-items:center; justify-content:center; color:#F8F4E9; font-size:15px;">⌕</span>
         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
-          <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#1B4332; white-space:nowrap;">+7 (922) 750-09-20</a>
+          <a href="tel:+79227500920" style="font-size:{{ headPhoneSize }}; font-weight:700; color:#F8F4E9; white-space:nowrap;">+7 (922) 750-09-20</a>
           <div style="display:flex; align-items:center; gap:8px;">
-            <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:#6E6A5E; white-space:nowrap;">+7 (351) 750-09-20</a>
-            <span style="font-size:12px; color:#8A8578;">офис</span>
+            <a href="tel:+73517500920" style="font-size:13px; font-weight:500; color:rgba(248,244,233,0.72); white-space:nowrap;">+7 (351) 750-09-20</a>
+            <span style="font-size:12px; color:rgba(248,244,233,0.55);">офис</span>
           </div>
         </div>
       </div>
@@ -119,13 +119,16 @@
         </sc-for>
       </div>
       <div style="display:flex; align-items:center; gap:12px; overflow-x:auto; padding-bottom:2px;">
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#8A8578; white-space:nowrap;">Задачи защиты</span>
+        <sc-for list="{{ taskPills }}" as="t" hint-placeholder-count="5">
+          <a href="{{ t.href }}" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">{{ t.name }}</a>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; overflow-x:auto; padding-bottom:2px;">
         <span style="font-size:13px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#8A8578; white-space:nowrap;">Действующее вещество</span>
-        <sc-for list="{{ dvPills }}" as="s" hint-placeholder-count="3">
+        <sc-for list="{{ dvPills }}" as="s" hint-placeholder-count="5">
           <a href="{{ s.href }}" style="background:#F8F4E9; color:#26543E; font-size:14px; font-weight:500; padding:8px 16px; border-radius:20px; border:1px solid transparent; white-space:nowrap;" style-hover="border-color:#E4A853;">ДВ: {{ s.name }}</a>
         </sc-for>
-        <a href="/catalog/gerbitsidy/?dejstvie=sploshnoy" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Сплошного действия</a>
-        <a href="/catalog/gerbitsidy/?producer=Август" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Только Август</a>
-        <a href="/catalog/gerbitsidy/promyshlennye/" style="background:#FFFFFF; color:#26543E; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; border:1px solid #E4A853; white-space:nowrap;" style-hover="background:#F8F4E9;">Промышленным заказчикам</a>
       </div>
     </div>
 
@@ -251,14 +254,14 @@
       <div style="display:{{ seoDisplay }}; flex-direction:column; gap:16px; font-size:16px; line-height:1.6; color:#1A1D1F;">
         <p style="margin:0;">Гербициды — препараты для уничтожения сорной растительности в посевах сельскохозяйственных культур и на неземледельческих площадях. Избирательные препараты подавляют сорняки, не угнетая культуру; препараты сплошного действия применяют до посева, после уборки и на промышленных территориях.</p>
         <p style="margin:0;">Выбор препарата определяется культурой, фазой её развития, видовым составом сорняков и почвенно-климатическими условиями хозяйства. Для зерновых колосовых чаще применяют баковые смеси на основе 2,4-Д и флорасулама, для пропашных — почвенные препараты, для паров и промышленных площадей — глифосатсодержащие составы.</p>
-        <p style="margin:0;">Восток АгроХим поставляет гербициды для защиты зерновых, овощных и технических культур в объёмах от одного флакона до оптовых партий. Мы официальный дилер АО Фирма «Август», в ассортименте также препараты БАСФ, Байер, ФМРус, Листерра, ООО НПФ «Альбит», ООО «Гарант Оптима» и других проверенных производителей.</p>
+        <p style="margin:0;">Восток АгроХим поставляет гербициды для защиты зерновых, овощных и технических культур в объёмах от одного флакона до оптовых партий. Мы официальный дилер АО Фирма «Август», в ассортименте также препараты ООО НПФ «Альбит», ООО «Гарант Оптима», АО «ЩЁЛКОВО АГРОХИМ» и других проверенных производителей.</p>
         <p style="margin:0;">Специалист компании помогает подобрать схему защиты под конкретное поле и согласовать сроки поставки. Отгрузка со склада в Челябинске, доставка транспортными компаниями по России, полный пакет документов на каждую партию.</p>
       </div>
       <button onClick="{{ toggleSeo }}" style="display:{{ seoBtnDisplay }}; margin-top:14px; background:none; border:none; padding:0; font-size:15px; font-weight:700; color:#B27F2C; cursor:pointer;">{{ seoBtnLabel }}</button>
     </div>
 
     <div style="margin-top:48px; max-width:1200px; margin-left:auto; margin-right:auto;">
-      <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#26543E; margin:0 0 16px; letter-spacing:-0.01em;">Похожие подборки</h3>
+      <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#26543E; margin:0 0 16px; letter-spacing:-0.01em;">Гербициды по культурам</h3>
       <div style="display:flex; flex-wrap:wrap; gap:8px;">
         <sc-for list="{{ relatedTags }}" as="t" hint-placeholder-count="8">
           <a href="{{ t.href }}" style="background:#F8F4E9; color:#26543E; font-size:14px; font-weight:500; padding:7px 14px; border-radius:20px; border:1px solid transparent;" style-hover="border-color:#E4A853;">{{ t.name }}</a>
@@ -317,10 +320,9 @@
           <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
           <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
           <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
-          <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
-          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
           <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
           <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+          <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
         </div>
       </div>
       <div>
@@ -335,7 +337,7 @@
         </div>
       </div>
     </div>
-    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+    <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© ООО «Восток АгроХим»</div>
   </footer>
 
   <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
@@ -399,27 +401,16 @@ const RADIO_OFF = "width:16px; height:16px; flex:none; border:1px solid #C9C4B4;
 const RADIO_ON = "width:16px; height:16px; flex:none; border:1px solid #E4A853; border-radius:50%; background:#E4A853; display:flex; align-items:center; justify-content:center; font-size:9px; color:#26543E;";
 
 // Фильтры: 4 развёрнутых (ДМ23) + остальные под кнопкой «Ещё фильтры» (extra: true).
-// Порядок и состав — catalog-ia-v1.md v1.4 §8 (15 универсальных + категорийный «Тег применения»).
+// Состав сокращён 19.08.2026: оставлены ДВ, Культура, Вредный объект, Производитель (развёрнуты),
+// Характер действия, Упаковка, Тег применения, Цена.
 const GROUPS = [
   { key: "dv", title: "Действующее вещество", type: "multi", more: 6, items: [["Глифосат",12],["2,4-Д",8],["Флорасулам",4],["Клопиралид",5],["МЦПА-кислота",3],["Прометрин",2],["Метсульфурон-метил",3],["Имазапир",2],["Дикват",1]] },
   { key: "cult", title: "Культура", type: "multi", more: 5, items: [["Пшеница",28],["Ячмень",24],["Кукуруза",18],["Подсолнечник",12],["Соя",10],["Картофель",8],["Рапс",7],["Свёкла сахарная",6]] },
   { key: "obj", title: "Вредный объект", type: "multi", more: 8, items: [["Однолетние двудольные сорняки",32],["Многолетние двудольные сорняки",18],["Однолетние злаковые сорняки",20],["Многолетние злаковые сорняки (пырей, гумай)",12],["Осот (виды)",14],["Подмаренник цепкий",10]] },
-  { key: "form", title: "Форма выпуска", type: "multi", more: 2, items: [["СЭ (суспензионная эмульсия)",8],["ВДГ (водно-диспергируемые гранулы)",6],["ВРК (водорастворимый концентрат)",7],["КЭ (концентрат эмульсии)",9],["ВР (водный раствор)",5],["СК (суспензионный концентрат)",3],["МКЭ (микроэмульсия)",4]] },
-  // Химический класс ДВ — новый фильтр после ПИ09. Заполнение справочника — ОВ21 (Phase 4).
-  { key: "chem", title: "Химический класс ДВ", type: "multi", extra: true, items: [["Производные глицина",12],["Производные арилоксиалканкарбоновых кислот",9],["Триазолопиримидины",4],["Производные пиридинкарбоновых кислот",7],["Сульфонилмочевины",5],["Триазины",2],["Имидазолиноны",2],["Производные бипиридилия",1]] },
   // Производитель = регистрант в госреестре (ОВ20 закрыт 09.08.2026), значения по факту ассортимента.
-  { key: "maker", title: "Производитель", type: "multi", extra: true, items: [["Август",32],["Гарант Оптима",4],["Агрохиминвест",3],["Альбит НПФ",2],["НПК Химия",2],["НПО РЭТ",1]] },
-  { key: "ptype", title: "Тип препарата", type: "multi", extra: true, items: [["Органический",41],["Неорганический",3]] },
-  { key: "organism", title: "Действие на организм", type: "multi", extra: true, items: [["Системное",34],["Контактное",14],["Кишечное",3],["Фумигативное",1]] },
+  { key: "maker", title: "Производитель", type: "multi", items: [["Август",32],["ЩЁЛКОВО АГРОХИМ",5],["Гарант Оптима",4],["Агрохиминвест",3],["Альбит НПФ",2]] },
   { key: "action", title: "Характер действия", type: "single", extra: true, items: [["Все",44],["Избирательный",36],["Сплошного действия",8]] },
-  { key: "method", title: "Способ применения", type: "multi", extra: true, items: [["Опрыскивание вегетирующих растений",38],["Опрыскивание почвы",9],["Обработка семян",2],["Полив",1]] },
   { key: "pack", title: "Упаковка", type: "multi", extra: true, items: [["Канистра 5 л",22],["Канистра 10 л",17],["Канистра 20 л",6],["Мешок 5 кг",4],["Пакет 1 кг",5],["Флакон 1 л",8]] },
-  { key: "term", title: "Срок применения", type: "multi", extra: true, items: [["Грунтовой",7],["Довсходовый",9],["Послевсходовый",28],["В период вегетации",31]] },
-  // Стартовый словарь по catalog-ia-v1.md v1.4 §5.
-  // Финальные значения — при миграции контента (Phase 4), по этикеткам производителей.
-  { key: "country", title: "Страна производства", type: "multi", extra: true, items: [["Россия",38],["Китай",4],["Венгрия",2]] },
-  { key: "danger", title: "Класс опасности для человека", type: "multi", extra: true, items: [["1 класс — чрезвычайно опасное",0],["2 класс — высокоопасное",15],["3 класс — умеренно опасное",26],["4 класс — малоопасное",3]] },
-  { key: "delivery", title: "Флаг доставки", type: "single", extra: true, items: [["Все",44],["Только ТК по РФ",38],["Только самовывоз",6]] },
   // Фильтр «Наличие» удалён по ПИ11 — склад не ведётся, все препараты доступны под заявку.
   // Категорийный фильтр, только для гербицидов (ПИ08 уточнение 09.08.2026).
   { key: "tag", title: "Тег применения", type: "single", extra: true, items: [["Все",44],["Только десиканты",1]] },
@@ -558,21 +549,29 @@ class Component extends DCLogic {
       // Серии рендерятся динамически: показываются торговые серии, у которых в текущей категории ≥2 препаратов (ПИ06).
       // Значения для гербицидов на 09.08.2026: Торнадо (Торнадо 540 + Торнадо 500). Логика заполнения — Phase 5.
       series: ["Торнадо", "Балерина", "Лазурит", "Ластик", "Дракон"].map(n => ({ name: n, href: "/catalog/seriya/" + n.toLowerCase() + "/" })),
-      // Топ-N ДВ: механика заполнения — ОВ18 (пока открытый вопрос). Варианты: (а) авто по частоте;
-      // (б) редакционно фиксированный список; (в) гибрид. На 09.08.2026 отображается плейсхолдер:
-      // Глифосат, Метсульфурон-метил, 2,4-Д. Финальный список — на этапе миграции контента (Phase 4/5).
-      dvPills: [["Глифосат", "glifosat"], ["Метсульфурон-метил", "metsulfuron-metil"], ["2,4-Д", "2-4-d"]].map(([name, slug]) => ({ name, href: "/catalog/dv/" + slug + "/" })),
-      countLabel: "44 препарата",
-      // Плейсхолдеры SEO-тегов; финальный набор — при миграции контента (Phase 4).
-      relatedTags: [
-        { name: "Гербициды Август", href: "/catalog/gerbitsidy/?producer=Август" },
+      // Задачи защиты: сценарные входы (подборки и подраздел для промышленных заказчиков).
+      taskPills: [
+        { name: "Сплошного действия", href: "/catalog/gerbitsidy/?dejstvie=sploshnoy" },
+        { name: "Промышленным заказчикам", href: "/catalog/gerbitsidy/promyshlennye/" },
         { name: "Против осота", href: "/catalog/obj/osot/" },
-        { name: "Для зерновых", href: "/catalog/cult/pshenitsa/" },
-        { name: "Для рапса", href: "/catalog/cult/raps/" },
-        { name: "Довсходовые гербициды", href: "/catalog/gerbitsidy/?term=dovshodovyj" },
-        { name: "Гербициды для картофеля", href: "/catalog/cult/kartofel/" },
-        { name: "Клопиралид", href: "/catalog/dv/klopiralid/" },
-        { name: "Пиклорам", href: "/catalog/dv/piklorama/" }
+        { name: "Против злаковых сорняков", href: "/catalog/obj/zlakovye/" },
+        { name: "Довсходовые", href: "/catalog/gerbitsidy/?term=dovshodovyj" }
+      ],
+      // Топ-N ДВ: механика заполнения — ОВ18 (пока открытый вопрос). Варианты: (а) авто по частоте;
+      // (б) редакционно фиксированный список; (в) гибрид. Текущий список — по фактической частоте
+      // препаратов на данном ДВ в ассортименте гербицидов. Финальный набор — Phase 4/5.
+      dvPills: [["Глифосат", "glifosat"], ["2,4-Д", "2-4-d"], ["Клопиралид", "klopiralid"], ["Флорасулам", "florasulam"], ["Метсульфурон-метил", "metsulfuron-metil"]].map(([name, slug]) => ({ name, href: "/catalog/dv/" + slug + "/" })),
+      countLabel: "44 препарата",
+      // Плейсхолдеры культур; финальный набор — Phase 4, по ассортименту и Wordstat.
+      relatedTags: [
+        { name: "Для зерновых", href: "/catalog/gerbitsidy/cult/pshenitsa/" },
+        { name: "Для кукурузы", href: "/catalog/gerbitsidy/cult/kukuruza/" },
+        { name: "Для рапса", href: "/catalog/gerbitsidy/cult/raps/" },
+        { name: "Для подсолнечника", href: "/catalog/gerbitsidy/cult/podsolnechnik/" },
+        { name: "Для сои", href: "/catalog/gerbitsidy/cult/soya/" },
+        { name: "Для картофеля", href: "/catalog/gerbitsidy/cult/kartofel/" },
+        { name: "Для свёклы", href: "/catalog/gerbitsidy/cult/svyokla/" },
+        { name: "Для льна", href: "/catalog/gerbitsidy/cult/lyon/" }
       ],
       hiddenCount: GROUPS.filter(g => g.extra).length,
       sortLabel: this.state.sort,
