@@ -25,11 +25,11 @@
     <div style="font-family:'Manrope',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#8A8578; font-weight:600;">Десктоп · 1440px</div>
     <div style="width:1440px; background:#F8F4E9; box-shadow:0 24px 60px rgba(27,67,50,0.10); overflow:hidden; position:relative;">
       <!-- top bar -->
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:28px 80px; border-bottom:1px solid rgba(27,67,50,0.10);">
-        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:22px; color:#1B4332; letter-spacing:-0.01em;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
-        <nav style="display:flex; gap:36px; align-items:center; font-size:15px; font-weight:500; color:#3A3D3E;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:28px 80px; background:#1E4331; border-bottom:1px solid rgba(248,244,233,0.14);">
+        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:22px; color:#F8F4E9; letter-spacing:-0.01em;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
+        <nav style="display:flex; gap:36px; align-items:center; font-size:15px; font-weight:500; color:rgba(248,244,233,0.88);">
           <div style="position:relative;" onMouseEnter="{{ openCat }}" onMouseLeave="{{ closeCat }}">
-            <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px;">Каталог<span style="font-size:10px; color:#8A8578;">▾</span></a>
+            <a href="/catalog/" style="display:inline-flex; align-items:center; gap:5px; color:rgba(248,244,233,0.88);">Каталог<span style="font-size:10px; color:rgba(248,244,233,0.55);">▾</span></a>
             <sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute; top:calc(100% + 14px); left:-16px; background:#F8F4E9; border:1px solid rgba(27,67,50,0.14); box-shadow:0 16px 40px rgba(27,67,50,0.16); border-radius:3px; padding:8px 0; min-width:280px; z-index:50;">
                 <div style="position:relative;" onMouseEnter="{{ openSub }}" onMouseLeave="{{ closeSub }}">
@@ -52,28 +52,28 @@
               </div>
             </sc-if>
           </div>
-          <a href="#tasks">Задачи защиты</a>
-          <a href="#how-we-work">Как мы работаем</a>
-          <a href="#manufacturers">Производители</a>
-          <a href="/contacts/">Контакты</a>
+          <a href="#tasks" style="color:rgba(248,244,233,0.88);">Задачи защиты</a>
+          <a href="#how-we-work" style="color:rgba(248,244,233,0.88);">Как мы работаем</a>
+          <a href="#manufacturers" style="color:rgba(248,244,233,0.88);">Производители</a>
+          <a href="/contacts/" style="color:rgba(248,244,233,0.88);">Контакты</a>
         </nav>
         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
           <div style="display:flex; align-items:center; gap:9px;">
-            <a href="tel:+79227500920" style="font-size:16px; font-weight:700; color:#1B4332;">+7 (922) 750-09-20</a>
+            <a href="tel:+79227500920" style="font-size:16px; font-weight:700; color:#F8F4E9;">+7 (922) 750-09-20</a>
             <a href="{{ telegramLink }}" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram директору" style="display:inline-flex; cursor:pointer; transition:opacity .15s, transform .15s;" style-hover="opacity:0.85; transform:scale(1.05);"><img src="uploads/pasted-1784359408681-0.png" alt="Telegram" title="Telegram" style="width:24px; height:24px; border-radius:50%; display:block;"></a>
             <a href="{{ maxLink }}" target="_blank" rel="noopener noreferrer" aria-label="Написать в MAX директору" style="display:inline-flex; cursor:pointer; transition:opacity .15s, transform .15s;" style-hover="opacity:0.85; transform:scale(1.05);"><img src="uploads/pasted-1784358941175-0.png" alt="MAX" title="MAX" style="width:24px; height:24px; border-radius:6px; display:block;"></a>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <a href="tel:+73517500920" style="font-size:14px; font-weight:500; color:#6E6A5E;">+7 (351) 750-09-20</a>
-            <span style="font-size:12px; color:#8A8578;">офис</span>
+            <a href="tel:+73517500920" style="font-size:14px; font-weight:500; color:rgba(248,244,233,0.72);">+7 (351) 750-09-20</a>
+            <span style="font-size:12px; color:rgba(248,244,233,0.55);">офис</span>
           </div>
         </div>
       </div>
       <!-- hero body -->
-      <div style="display:grid; grid-template-columns:2.35fr 1fr; align-items:center; gap:40px; padding:88px 48px 96px;">
+      <div style="display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:48px; padding:44px 48px 46px;">
         <div style="display:flex; flex-direction:column; align-items:flex-start;">
-          <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:50px; line-height:1.18; color:#1A1D1F; margin:0 0 26px; letter-spacing:-0.01em; width:100%; text-wrap:balance;">Помогаем подобрать эффективное средство защиты растений</h1>
-          <p style="font-size:19px; line-height:1.6; color:#4A4D4E; margin:0 0 40px; width:100%; text-wrap:pretty;">Препараты проверенных производителей — с учётом культуры, условий и особенностей обработки.</p>
+          <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:50px; line-height:1.18; color:#1A1D1F; margin:0 0 26px; letter-spacing:-0.01em; width:100%;">Помогаем подобрать<br>эффективное средство<br>защиты растений</h1>
+          <p style="font-size:19px; line-height:1.6; color:#4A4D4E; margin:0 0 40px; max-width:42ch; text-wrap:pretty;">Препараты проверенных производителей — с учётом культуры, условий и особенностей обработки.</p>
           <div style="display:flex; gap:16px; align-items:center; margin-bottom:28px;">
             <a href="#" style="background:#E4A853; color:#1A1D1F; font-size:16px; font-weight:700; padding:16px 30px; border-radius:2px; box-shadow:0 6px 16px rgba(228,168,83,0.35);" style-hover="background:#d99a3f;">Получить консультацию</a>
             <a href="#" style="border:1.5px solid #1B4332; color:#1B4332; font-size:16px; font-weight:600; padding:15px 28px; border-radius:2px;" style-hover="background:#1B4332; color:#F8F4E9;">Посмотреть каталог</a>
@@ -82,16 +82,21 @@
             <span onClick="{{ openLetter }}" style="cursor:pointer; display:inline-flex; align-items:center; gap:3px; border-bottom:1px solid transparent; color:#6E6A5E;" style-hover="border-bottom-color:#8A8578; color:#4A4D4E;">Официальный дилер АО Фирма «Август»<span style="font-size:11px;">↗</span></span>
             <span style="color:#C4BEAE;">·</span>
             <span>В отрасли с 2011 года</span>
-            <span style="color:#C4BEAE;">·</span>
-            <span>Челябинская область</span>
           </div>
         </div>
-        <div style="aspect-ratio:4/5; width:100%; background:#E7E1D2; border:1px solid rgba(27,67,50,0.14); overflow:hidden;">
-          <img src="uploads/ChatGPT Image 19 июл. 2026 г., 14_28_18.png" alt="Специалист консультирует клиента по препаратам" style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:relative; aspect-ratio:1/1; width:100%; overflow:hidden; border:1px solid rgba(27,67,50,0.14);">
+          <img src="uploads/src-hero-dealer-v4.png" alt="Специалист компании с препаратом АО Фирма «Август» на складе" style="width:100%; height:100%; object-fit:cover; object-position:50% 28%; filter:saturate(1.06) contrast(1.04); display:{{ slide1 }};">
+          <img src="uploads/hero-shelves.png" alt="Склад: препараты АО Фирма «Август» и других производителей на стеллажах" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; filter:saturate(1.06) contrast(1.04); display:{{ slide2 }};">
+          <img src="uploads/hero-field.png" alt="Пшеничное поле перед уборкой" style="width:100%; height:100%; object-fit:cover; object-position:50% 55%; filter:saturate(1.06) contrast(1.04); display:{{ slide3 }};">
+          <div style="position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; gap:8px; background:rgba(248,244,233,0.86); padding:8px 12px; border-radius:20px;">
+            <sc-for list="{{ heroDots }}" as="d" hint-placeholder-count="3">
+              <button onClick="{{ d.go }}" aria-label="{{ d.label }}" style="{{ d.style }}"></button>
+            </sc-for>
+          </div>
         </div>
       </div>
       <!-- expertise desktop -->
-      <div style="border-top:1px solid rgba(27,67,50,0.10); background:#F8F4E9; padding:60px 48px 64px;">
+      <div style="border-top:1px solid rgba(27,67,50,0.10); background:#F8F4E9; padding:32px 48px 34px;">
         <div style="max-width:960px; margin:0 auto;">
           <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:30px; line-height:1.28; color:#1A1D1F; margin:0 0 14px; letter-spacing:-0.01em; text-wrap:balance;">Знаем продукт. Понимаем задачи хозяйства.</h2>
           <p style="font-size:17px; line-height:1.55; color:#6E6A5E; margin:0 0 30px;">С 2011 года помогаем защищать урожай.</p>
@@ -103,31 +108,43 @@
         </div>
       </div>
       <!-- tasks desktop -->
-      <div id="tasks" style="border-top:1px solid rgba(27,67,50,0.10); padding:96px 48px 104px;">
+      <div id="tasks" style="border-top:1px solid rgba(27,67,50,0.10); padding:46px 48px 50px;">
         <div style="max-width:1200px; margin:0 auto;">
-          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 56px; letter-spacing:-0.01em;">С какой проблемой столкнулись?</h2>
+          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 30px; letter-spacing:-0.01em;">С какой проблемой столкнулись?</h2>
           <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
-            <a href="/catalog/vrednyy-obekt/sornyaki/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg></div>
-              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Сорняки</div>
+            <a href="/catalog/vrednyy-obekt/sornyaki/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; overflow:hidden; display:flex; flex-direction:column;  transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-sornyaki.png" alt="Осот в посевах зерновых" style="margin:-34px -28px 0; width:calc(100% + 56px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="display:flex; gap:14px; align-items:center; margin-top:22px; margin-bottom:12px;">
+                <div style="color:#1B4332; flex:none;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F;">Сорняки</div>
+              </div>
               <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Гербициды</div>
-              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Осот, пырей, марь белая, овсюг</div>
+              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Овсюг, осот, чертополох, вьюнок полевой</div>
             </a>
-            <a href="/catalog/vrednyy-obekt/bolezni/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg></div>
-              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Болезни</div>
+            <a href="/catalog/vrednyy-obekt/bolezni/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; overflow:hidden; display:flex; flex-direction:column;  transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-bolezni.png" alt="Ржавчина на листьях зерновых" style="margin:-34px -28px 0; width:calc(100% + 56px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="display:flex; gap:14px; align-items:center; margin-top:22px; margin-bottom:12px;">
+                <div style="color:#1B4332; flex:none;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F;">Болезни</div>
+              </div>
               <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Фунгициды и протравители</div>
-              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Ржавчина, септориоз, корневые гнили</div>
+              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Ржавчина, фитофтороз, головнёвые болезни</div>
             </a>
-            <a href="/catalog/vrednyy-obekt/vrediteli/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="12"/><path d="M24 15v23"/><circle cx="24" cy="11.5" r="3"/><path d="M15 21l-6-3M33 21l6-3M15 27H8M33 27h7M16 34l-5 3M32 34l5 3"/></svg></div>
-              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Вредители</div>
+            <a href="/catalog/vrednyy-obekt/vrediteli/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; overflow:hidden; display:flex; flex-direction:column;  transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-vrediteli.png" alt="Колорадский жук на листе" style="margin:-34px -28px 0; width:calc(100% + 56px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="display:flex; gap:14px; align-items:center; margin-top:22px; margin-bottom:12px;">
+                <div style="color:#1B4332; flex:none;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="12"/><path d="M24 15v23"/><circle cx="24" cy="11.5" r="3"/><path d="M15 21l-6-3M33 21l6-3M15 27H8M33 27h7M16 34l-5 3M32 34l5 3"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F;">Вредители</div>
+              </div>
               <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Инсектициды</div>
-              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Клоп-черепашка, тля, трипсы, злаковые мухи</div>
+              <div style="font-size:14px; line-height:1.5; color:#7A7568;">Тля, колорадский жук, трипсы, блошки</div>
             </a>
-            <a href="/catalog/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; display:flex; flex-direction:column; align-items:flex-start; transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-              <div style="color:#1B4332; margin-bottom:24px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19h13l4 4v17a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V19Z"/><path d="M19 19v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M20 27h8"/><path d="M39 15c2.2 2.7 2.2 5.3 0 7-2.2-1.7-2.2-4.3 0-7Z"/></svg></div>
-              <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F; margin-bottom:8px;">Другие задачи</div>
+            <a href="/catalog/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:34px 28px 30px; overflow:hidden; display:flex; flex-direction:column;  transition:box-shadow .18s, border-color .18s, background .18s;" style-hover="box-shadow:0 14px 30px rgba(27,67,50,0.13); border-color:rgba(228,168,83,0.7); background:#FFFDF7;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-drugie.png" alt="Капли рабочего раствора на листе — работа адъюванта" style="margin:-34px -28px 0; width:calc(100% + 56px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="display:flex; gap:14px; align-items:center; margin-top:22px; margin-bottom:12px;">
+                <div style="color:#1B4332; flex:none;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19h13l4 4v17a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V19Z"/><path d="M19 19v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M20 27h8"/><path d="M39 15c2.2 2.7 2.2 5.3 0 7-2.2-1.7-2.2-4.3 0-7Z"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; color:#1A1D1F;">Другие задачи</div>
+              </div>
               <div style="font-size:14px; font-weight:600; color:#1B4332; margin-bottom:16px;">Стимуляторы, адьюванты, десикация</div>
               <div style="font-size:14px; line-height:1.5; color:#7A7568;">Стимуляция роста, прилипатели, предуборочная сушка</div>
             </a>
@@ -136,9 +153,9 @@
         </div>
       </div>
       <!-- catalog desktop -->
-      <div style="border-top:1px solid rgba(27,67,50,0.10); padding:96px 48px 104px;">
+      <div style="border-top:1px solid rgba(27,67,50,0.10); padding:46px 48px 50px;">
         <div style="max-width:1200px; margin:0 auto;">
-          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 56px; letter-spacing:-0.01em;">Что чаще всего заказывают</h2>
+          <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 30px; letter-spacing:-0.01em;">Что чаще всего заказывают</h2>
           <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
             <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
               <a href="{{ p.href }}" style="background:#FFFFFF; border:1px solid rgba(27,67,50,0.12); border-radius:3px; overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .18s, border-color .18s, transform .18s;" style-hover="box-shadow:0 16px 34px rgba(27,67,50,0.14); border-color:rgba(228,168,83,0.7); transform:translateY(-4px);" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
@@ -160,7 +177,7 @@
         </div>
       </div>
       <!-- manufacturers desktop -->
-      <div id="manufacturers" style="border-top:1px solid rgba(27,67,50,0.10); padding:92px 48px 96px;">
+      <div id="manufacturers" style="border-top:1px solid rgba(27,67,50,0.10); padding:44px 48px 48px;">
         <div style="max-width:1200px; margin:0 auto;">
           <div style="display:inline-flex; align-items:center; gap:10px; margin-bottom:34px; font-size:13px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#1B4332;">
             <span style="width:26px; height:1.5px; background:#E4A853;"></span>
@@ -175,21 +192,25 @@
               <a href="uploads/avgust-dealer-letter-2026.jpg" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; font-size:16px; font-weight:700; color:#B27F2C; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#B27F2C;">Подтверждение дилерского статуса<span>→</span></a>
             </div>
           </div>
-          <div style="margin-top:48px; padding-top:48px; border-top:1px solid rgba(27,67,50,0.12);">
-            <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:28px; line-height:1.3; color:#1A1D1F; margin:0 0 18px; letter-spacing:-0.01em;">Другие производители в нашем ассортименте</h3>
-            <p style="font-size:18px; line-height:1.6; color:#4A4D4E; margin:0; max-width:62ch; text-wrap:pretty;">В нашем ассортименте также препараты БАСФ, Байер, ФМРус, Листерра, ООО НПФ «Альбит», ООО «Гарант Оптима» и других проверенных производителей.</p>
+          <div style="margin-top:28px;">
+            <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:28px; line-height:1.3; color:#1A1D1F; margin:0 0 20px; letter-spacing:-0.01em;">Другие производители в нашем ассортименте</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+              <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:11px 20px; font-size:16px; font-weight:600; color:#1A1D1F; white-space:nowrap;">ООО НПФ «Альбит»</span>
+              <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:11px 20px; font-size:16px; font-weight:600; color:#1A1D1F; white-space:nowrap;">ООО «Гарант Оптима»</span>
+              <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:11px 20px; font-size:16px; font-weight:600; color:#1A1D1F; white-space:nowrap;">АО «ЩЁЛКОВО АГРОХИМ»</span>
+            </div>
           </div>
         </div>
       </div>
       <!-- how-we-work + cta desktop -->
-      <div id="how-we-work" style="border-top:1px solid rgba(27,67,50,0.10); padding:112px 48px 120px;">
+      <div id="how-we-work" style="border-top:1px solid rgba(27,67,50,0.10); padding:52px 48px 56px;">
         <div style="max-width:1200px; margin:0 auto;">
-          <div style="max-width:760px; margin:0 0 56px;">
+          <div style="max-width:900px; margin:0 0 30px;">
             <div style="display:inline-flex; align-items:center; gap:10px; margin-bottom:26px; font-size:13px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#1B4332;">
               <span style="width:26px; height:1.5px; background:#E4A853;"></span>
               Как мы работаем
             </div>
-            <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 22px; letter-spacing:-0.01em; text-wrap:pretty;">Подбираем решения для защиты растений, а не просто продаём препараты</h2>
+            <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:38px; line-height:1.24; color:#1A1D1F; margin:0 0 22px; letter-spacing:-0.01em;">Подбираем решения для защиты растений,<br>а не просто продаём препараты</h2>
             <p style="font-size:18px; line-height:1.6; color:#4A4D4E; margin:0; text-wrap:pretty;">От заявки до отгрузки — три этапа:</p>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:52px;">
@@ -206,7 +227,7 @@
             <div>
               <div style="font-family:'Merriweather',serif; font-weight:700; font-size:34px; color:#E4A853; line-height:1; margin-bottom:18px;">03</div>
               <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:22px; line-height:1.3; color:#1A1D1F; margin:0 0 14px;">Организуем поставку</h3>
-              <p style="font-size:16px; line-height:1.55; color:#4A4D4E; margin:0; text-wrap:pretty;">Отгружаем продукцию с документами и сопровождаем заказ.</p>
+              <p style="font-size:16px; line-height:1.55; color:#4A4D4E; margin:0; text-wrap:pretty;">Отгружаем продукцию с документами.</p>
             </div>
           </div>
           <div style="margin-top:80px; display:flex; flex-direction:column; align-items:center;">
@@ -218,7 +239,7 @@
         </div>
       </div>
       <!-- footer desktop -->
-      <footer style="background:#26543E; color:#F8F4E9; padding:48px 48px 0; font-family:'Manrope',sans-serif; border-top:1px solid rgba(248,244,233,0.14);">
+      <footer style="background:#1E4331; color:#F8F4E9; padding:48px 48px 0; font-family:'Manrope',sans-serif; border-top:1px solid rgba(248,244,233,0.14);">
         <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:40% 30% 30%; gap:40px;">
           <div>
             <div style="font-family:'Merriweather',serif; font-weight:900; font-size:26px; margin-bottom:24px;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
@@ -255,10 +276,9 @@
               <a href="/contacts/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
               <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
               <a href="/about/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">О компании</a>
-              <a href="/opt" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
-              <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
               <a href="/price/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
               <a href="/sitemap/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+              <a href="/comments/" style="color:#F8F4E9; border-bottom:1px solid transparent; align-self:flex-start;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
             </div>
           </div>
           <div>
@@ -273,9 +293,9 @@
             </div>
           </div>
         </div>
-        <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+        <div style="max-width:1200px; margin:36px auto 0; border-top:1px solid rgba(248,244,233,0.18); padding:22px 0 32px; font-size:13px; opacity:0.7;">© ООО «Восток АгроХим»</div>
       </footer>
-      <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:absolute; right:32px; bottom:110px; width:50px; height:50px; border-radius:50%; background:#1B4332; border:none; color:#E4A853; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,0.28); z-index:15; display:flex; align-items:center; justify-content:center;">↑</button>
+      <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:absolute; right:32px; bottom:110px; width:50px; height:50px; border-radius:50%; background:#26543E; border:none; color:#E4A853; font-size:22px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,0.28); z-index:15; display:flex; align-items:center; justify-content:center;">↑</button>
       <sc-if value="{{ showCookie }}" hint-placeholder-val="{{ true }}">
         <div style="position:absolute; left:0; right:0; bottom:0; background:rgba(27,67,50,0.95); color:#F8F4E9; padding:20px 48px; display:flex; align-items:center; gap:28px; z-index:20; font-family:'Manrope',sans-serif;">
           <div style="font-size:14px; line-height:1.5; flex:1;">Сайт использует cookie. Продолжая использовать сайт, вы соглашаетесь с <a href="/privacy-policy/" style="color:#E4A853; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Политикой обработки персональных данных</a>.</div>
@@ -289,19 +309,26 @@
   <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
     <div style="font-family:'Manrope',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#8A8578; font-weight:600;">Мобильный · 375px</div>
     <div style="width:375px; background:#F8F4E9; box-shadow:0 24px 60px rgba(27,67,50,0.10); overflow:hidden; position:relative;">
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid rgba(27,67,50,0.10);">
-        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:18px; color:#1B4332;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 22px; background:#1E4331; border-bottom:1px solid rgba(248,244,233,0.14);">
+        <div style="font-family:'Merriweather',serif; font-weight:900; font-size:18px; color:#F8F4E9;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
         <div style="display:flex; flex-direction:column; gap:4px;">
-          <span style="width:22px; height:2px; background:#1B4332;"></span>
-          <span style="width:22px; height:2px; background:#1B4332;"></span>
-          <span style="width:22px; height:2px; background:#1B4332;"></span>
+          <span style="width:22px; height:2px; background:#F8F4E9;"></span>
+          <span style="width:22px; height:2px; background:#F8F4E9;"></span>
+          <span style="width:22px; height:2px; background:#F8F4E9;"></span>
         </div>
       </div>
       <div style="padding:36px 18px 44px; display:flex; flex-direction:column; align-items:flex-start;">
         <h1 style="font-family:'Merriweather',serif; font-weight:700; font-size:20px; line-height:1.25; color:#1A1D1F; margin:0 0 18px; letter-spacing:-0.01em; text-wrap:pretty;">Помогаем подобрать эффективное средство защиты растений</h1>
         <p style="font-size:13px; line-height:1.6; color:#4A4D4E; margin:0 0 28px; text-wrap:pretty;">Препараты проверенных производителей — с учётом культуры, условий и особенностей обработки.</p>
-        <div style="width:100%; aspect-ratio:4/5; background:#E7E1D2; border:1px solid rgba(27,67,50,0.14); overflow:hidden; margin-bottom:28px;">
-          <img src="uploads/ChatGPT Image 19 июл. 2026 г., 14_28_18.png" alt="Специалист консультирует клиента по препаратам" style="width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block;">
+        <div style="position:relative; width:100%; aspect-ratio:4/5; background:#E7E1D2; border:1px solid rgba(27,67,50,0.14); overflow:hidden; margin-bottom:28px;">
+          <img src="uploads/src-hero-dealer-v4.png" alt="Специалист компании с препаратом АО Фирма «Август» на складе" style="width:100%; height:100%; object-fit:cover; object-position:38% 30%; display:{{ slide1 }};">
+          <img src="uploads/hero-shelves.png" alt="Склад: препараты АО Фирма «Август» и других производителей на стеллажах" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:{{ slide2 }};">
+          <img src="uploads/hero-field.png" alt="Пшеничное поле перед уборкой" style="width:100%; height:100%; object-fit:cover; object-position:50% 55%; display:{{ slide3 }};">
+          <div style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; background:rgba(248,244,233,0.86); padding:8px 12px; border-radius:20px;">
+            <sc-for list="{{ heroDots }}" as="d" hint-placeholder-count="3">
+              <button onClick="{{ d.go }}" aria-label="{{ d.label }}" style="{{ d.style }}"></button>
+            </sc-for>
+          </div>
         </div>
         <div style="display:flex; flex-direction:column; gap:12px; width:100%; margin-bottom:24px;">
           <a href="#" style="background:#E4A853; color:#1A1D1F; font-size:16px; font-weight:700; padding:16px; border-radius:2px; text-align:center;">Получить консультацию</a>
@@ -310,7 +337,6 @@
         <div style="font-size:13px; color:#8A8578; display:flex; flex-direction:column; gap:7px; line-height:1.5; margin-bottom:28px;">
           <span onClick="{{ openLetter }}" style="cursor:pointer; display:inline-flex; align-items:center; gap:3px; color:#6E6A5E; border-bottom:1px solid rgba(138,133,120,0.4); align-self:flex-start;">Официальный дилер АО Фирма «Август»<span style="font-size:11px;">↗</span></span>
           <span>В отрасли с 2011 года</span>
-          <span>Челябинская область</span>
         </div>
         <div style="width:100%; border-top:1px solid rgba(27,67,50,0.12); padding-top:22px; display:flex; flex-direction:column; gap:14px;">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -340,30 +366,42 @@
       <div style="border-top:1px solid rgba(27,67,50,0.10); padding:44px 18px 48px;">
         <h2 style="font-family:'Merriweather',serif; font-weight:700; font-size:28px; line-height:1.26; color:#1A1D1F; margin:0 0 28px; letter-spacing:-0.01em;">С какой проблемой столкнулись?</h2>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-          <a href="/catalog/vrednyy-obekt/sornyaki/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; display:flex; flex-direction:column; align-items:flex-start; transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-            <div style="color:#1B4332; margin-bottom:14px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg></div>
-            <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F; margin-bottom:6px;">Сорняки</div>
-            <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Гербициды</div>
-            <div style="font-size:13px; line-height:1.5; color:#7A7568;">Осот, пырей, марь белая, овсюг</div>
-          </a>
-          <a href="/catalog/vrednyy-obekt/bolezni/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; display:flex; flex-direction:column; align-items:flex-start; transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-            <div style="color:#1B4332; margin-bottom:14px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg></div>
-            <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F; margin-bottom:6px;">Болезни</div>
-            <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Фунгициды и протравители</div>
-            <div style="font-size:13px; line-height:1.5; color:#7A7568;">Ржавчина, септориоз, корневые гнили</div>
-          </a>
-          <a href="/catalog/vrednyy-obekt/vrediteli/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; display:flex; flex-direction:column; align-items:flex-start; transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-            <div style="color:#1B4332; margin-bottom:14px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="12"/><path d="M24 15v23"/><circle cx="24" cy="11.5" r="3"/><path d="M15 21l-6-3M33 21l6-3M15 27H8M33 27h7M16 34l-5 3M32 34l5 3"/></svg></div>
-            <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F; margin-bottom:6px;">Вредители</div>
-            <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Инсектициды</div>
-            <div style="font-size:13px; line-height:1.5; color:#7A7568;">Клоп-черепашка, тля, трипсы, злаковые мухи</div>
-          </a>
-          <a href="/catalog/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; display:flex; flex-direction:column; align-items:flex-start; transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
-            <div style="color:#1B4332; margin-bottom:14px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19h13l4 4v17a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V19Z"/><path d="M19 19v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M20 27h8"/><path d="M39 15c2.2 2.7 2.2 5.3 0 7-2.2-1.7-2.2-4.3 0-7Z"/></svg></div>
-            <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F; margin-bottom:6px;">Другие задачи</div>
-            <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Стимуляторы, адьюванты, десикация</div>
-            <div style="font-size:13px; line-height:1.5; color:#7A7568;">Стимуляция роста, прилипатели, предуборочная сушка</div>
-          </a>
+          <a href="/catalog/vrednyy-obekt/sornyaki/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; overflow:hidden; display:flex; flex-direction:column;  transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-sornyaki.png" alt="Осот в посевах зерновых" style="margin:-20px -16px 0; width:calc(100% + 32px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="margin-top:16px; margin-bottom:10px;">
+                <div style="color:#1B4332; margin-bottom:8px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F;">Сорняки</div>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Гербициды</div>
+              <div style="font-size:13px; line-height:1.5; color:#7A7568;">Овсюг, осот, чертополох, вьюнок полевой</div>
+            </a>
+          <a href="/catalog/vrednyy-obekt/bolezni/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; overflow:hidden; display:flex; flex-direction:column;  transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-bolezni.png" alt="Ржавчина на листьях зерновых" style="margin:-20px -16px 0; width:calc(100% + 32px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="margin-top:16px; margin-bottom:10px;">
+                <div style="color:#1B4332; margin-bottom:8px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F;">Болезни</div>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Фунгициды и протравители</div>
+              <div style="font-size:13px; line-height:1.5; color:#7A7568;">Ржавчина, фитофтороз, головнёвые болезни</div>
+            </a>
+          <a href="/catalog/vrednyy-obekt/vrediteli/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; overflow:hidden; display:flex; flex-direction:column;  transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-vrediteli.png" alt="Колорадский жук на листе" style="margin:-20px -16px 0; width:calc(100% + 32px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="margin-top:16px; margin-bottom:10px;">
+                <div style="color:#1B4332; margin-bottom:8px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="12"/><path d="M24 15v23"/><circle cx="24" cy="11.5" r="3"/><path d="M15 21l-6-3M33 21l6-3M15 27H8M33 27h7M16 34l-5 3M32 34l5 3"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F;">Вредители</div>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Инсектициды</div>
+              <div style="font-size:13px; line-height:1.5; color:#7A7568;">Тля, колорадский жук, трипсы, блошки</div>
+            </a>
+          <a href="/catalog/" style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:3px; padding:20px 16px 18px; overflow:hidden; display:flex; flex-direction:column;  transition:background .15s;" style-active="background:#F0EADA;" style-focus="outline:2px solid #1B4332; outline-offset:2px;">
+              <img src="uploads/tile-drugie.png" alt="Капли рабочего раствора на листе — работа адъюванта" style="margin:-20px -16px 0; width:calc(100% + 32px); aspect-ratio:1/1; object-fit:cover; display:block;">
+              <div style="margin-top:16px; margin-bottom:10px;">
+                <div style="color:#1B4332; margin-bottom:8px;"><svg width="34" height="34" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19h13l4 4v17a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V19Z"/><path d="M19 19v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M20 27h8"/><path d="M39 15c2.2 2.7 2.2 5.3 0 7-2.2-1.7-2.2-4.3 0-7Z"/></svg></div>
+                <div style="font-family:'Merriweather',serif; font-weight:700; font-size:18px; color:#1A1D1F;">Другие задачи</div>
+              </div>
+              <div style="font-size:13px; font-weight:600; color:#1B4332; margin-bottom:12px;">Стимуляторы, адьюванты, десикация</div>
+              <div style="font-size:13px; line-height:1.5; color:#7A7568;">Стимуляция роста, прилипатели, предуборочная сушка</div>
+            </a>
         </div>
         <p style="font-size:15px; line-height:1.6; color:#4A4D4E; margin:28px 0 0; text-wrap:pretty;">Ищете препарат для конкретной культуры, производителя или с определённым действующим веществом? <a href="/catalog" style="color:#B27F2C; font-weight:700;">Все входы в каталог →</a></p>
       </div>
@@ -402,7 +440,11 @@
         </div>
         <div style="margin-top:32px; padding-top:32px; border-top:1px solid rgba(27,67,50,0.12);">
           <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:21px; line-height:1.3; color:#1A1D1F; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:pretty;">Другие производители в нашем ассортименте</h3>
-          <p style="font-size:15px; line-height:1.6; color:#4A4D4E; margin:0; text-wrap:pretty;">В нашем ассортименте также препараты БАСФ, Байер, ФМРус, Листерра, ООО НПФ «Альбит», ООО «Гарант Оптима» и других проверенных производителей.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:9px 15px; font-size:14px; font-weight:600; color:#1A1D1F; white-space:nowrap;">ООО НПФ «Альбит»</span>
+            <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:9px 15px; font-size:14px; font-weight:600; color:#1A1D1F; white-space:nowrap;">ООО «Гарант Оптима»</span>
+            <span style="background:#FCFAF3; border:1px solid rgba(27,67,50,0.12); border-radius:20px; padding:9px 15px; font-size:14px; font-weight:600; color:#1A1D1F; white-space:nowrap;">АО «ЩЁЛКОВО АГРОХИМ»</span>
+          </div>
         </div>
       </div>
       <!-- how-we-work + cta mobile -->
@@ -427,7 +469,7 @@
           <div>
             <div style="font-family:'Merriweather',serif; font-weight:700; font-size:28px; color:#E4A853; line-height:1; margin-bottom:14px;">03</div>
             <h3 style="font-family:'Merriweather',serif; font-weight:700; font-size:19px; line-height:1.3; color:#1A1D1F; margin:0 0 10px;">Организуем поставку</h3>
-            <p style="font-size:15px; line-height:1.55; color:#4A4D4E; margin:0; text-wrap:pretty;">Отгружаем продукцию с документами и сопровождаем заказ.</p>
+            <p style="font-size:15px; line-height:1.55; color:#4A4D4E; margin:0; text-wrap:pretty;">Отгружаем продукцию с документами.</p>
           </div>
         </div>
         <div style="margin-top:44px; display:flex; flex-direction:column; align-items:stretch;">
@@ -438,7 +480,7 @@
         </div>
       </div>
       <!-- footer mobile -->
-      <footer style="background:#26543E; color:#F8F4E9; padding:32px 22px; font-family:'Manrope',sans-serif; border-top:1px solid rgba(248,244,233,0.14);">
+      <footer style="background:#1E4331; color:#F8F4E9; padding:32px 22px; font-family:'Manrope',sans-serif; border-top:1px solid rgba(248,244,233,0.14);">
         <div style="display:flex; flex-direction:column; gap:32px;">
           <div>
             <div style="font-family:'Merriweather',serif; font-weight:900; font-size:20px; margin-bottom:18px;">Восток<span style="color:#E4A853;">·</span>АгроХим</div>
@@ -475,10 +517,9 @@
               <a href="/contacts/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Контакты</a>
               <div style="height:1px; background:rgba(248,244,233,0.15); margin:5px 0;"></div>
               <a href="/about/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">О компании</a>
-              <a href="/opt" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Оптовым покупателям</a>
-              <a href="/comments/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
               <a href="/price/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Прайс-листы</a>
               <a href="/sitemap/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Карта сайта</a>
+              <a href="/comments/" style="color:#F8F4E9; align-self:flex-start; border-bottom:1px solid transparent;" style-hover="border-bottom-color:#E4A853;">Отзывы</a>
             </div>
           </div>
           <div>
@@ -492,10 +533,10 @@
               <span style="opacity:0.7; font-size:12px; margin-top:2px;">Оператор персональных данных № 74-22-014520</span>
             </div>
           </div>
-          <div style="border-top:1px solid rgba(248,244,233,0.18); padding-top:22px; font-size:12px; opacity:0.7;">© 2011–2026 ООО «Восток АгроХим»</div>
+          <div style="border-top:1px solid rgba(248,244,233,0.18); padding-top:22px; font-size:12px; opacity:0.7;">© ООО «Восток АгроХим»</div>
         </div>
       </footer>
-      <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:absolute; right:18px; bottom:96px; width:44px; height:44px; border-radius:50%; background:#1B4332; border:none; color:#E4A853; font-size:19px; line-height:1; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.28); z-index:15; display:flex; align-items:center; justify-content:center;">↑</button>
+      <button aria-label="Наверх" onClick="{{ scrollTop }}" style="position:absolute; right:18px; bottom:96px; width:44px; height:44px; border-radius:50%; background:#26543E; border:none; color:#E4A853; font-size:19px; line-height:1; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.28); z-index:15; display:flex; align-items:center; justify-content:center;">↑</button>
       <sc-if value="{{ showCookie }}" hint-placeholder-val="{{ true }}">
         <div style="position:absolute; left:0; right:0; bottom:0; background:rgba(27,67,50,0.95); color:#F8F4E9; padding:18px 20px; display:flex; flex-direction:column; gap:14px; z-index:20; font-family:'Manrope',sans-serif;">
           <div style="font-size:13px; line-height:1.5;">Сайт использует cookie. Продолжая использовать сайт, вы соглашаетесь с <a href="/privacy-policy/" style="color:#E4A853; border-bottom:1px solid transparent;">Политикой обработки персональных данных</a>.</div>
@@ -532,12 +573,24 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { letterOpen: false, catOpen: false, subOpen: false, cookieDismissed: false };
+  state = { letterOpen: false, catOpen: false, subOpen: false, cookieDismissed: false, heroSlide: 0 };
   componentDidMount() {
     try { if (localStorage.getItem('va_cookie') === '1') this.setState({ cookieDismissed: true }); } catch (e) {}
   }
   renderVals() {
+    const HERO = [
+      ["uploads/src-hero-dealer-v4.png", "Специалист компании с препаратом АО Фирма «Август» на складе", "50% 28%", "38% 30%"],
+      ["uploads/hero-shelves.png", "Склад: препараты АО Фирма «Август» и других производителей на стеллажах", "50% 50%", "50% 50%"],
+      ["uploads/hero-field.png", "Пшеничное поле на закате", "50% 55%", "50% 55%"]
+    ];
+    const hi = this.state.heroSlide % HERO.length;
+    const hdot = (n) => "width:9px; height:9px; border-radius:50%; border:none; padding:0; cursor:pointer; background:"
+      + (n === hi ? "#1B4332" : "rgba(27,67,50,0.30)") + ";";
     return {
+      slide1: hi === 0 ? "block" : "none",
+      slide2: hi === 1 ? "block" : "none",
+      slide3: hi === 2 ? "block" : "none",
+      heroDots: HERO.map((h, n) => ({ style: hdot(n), label: h[1], go: () => this.setState({ heroSlide: n }) })),
       letterOpen: this.state.letterOpen,
       openLetter: () => this.setState({ letterOpen: true }),
       closeLetter: () => this.setState({ letterOpen: false }),
@@ -554,9 +607,9 @@ class Component extends DCLogic {
       acceptCookie: () => { try { localStorage.setItem('va_cookie', '1'); } catch (e) {} this.setState({ cookieDismissed: true }); },
       scrollTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
       products: [
-        { name: "Торнадо 540", maker: "АО Фирма «Август»", type: "Гербицид сплошного действия", desc: "Однолетние и многолетние сорняки. Действующее вещество — глифосат, 540 г/л.", href: "/catalog/tornado-540", img: "uploads/prod-tornado-fit.png" },        { name: "Ордан", maker: "АО Фирма «Август»", type: "Фунгицид", desc: "Фитофтороз, альтернариоз и другие болезни картофеля, томата, огурца, лука. Меди хлорокись + цимоксанил.", href: "/catalog/ordan", img: "uploads/prod-ordan-fit.png" },
-        { name: "Борей Нео", maker: "АО Фирма «Август»", type: "Инсектицид", desc: "Комплекс вредителей на зерновых, овощных, плодовых и других культурах. Три действующих вещества, быстрый нокдаун + системная защита.", href: "/catalog/borey-neo", img: "uploads/prod-borey-fit.png" },
-        { name: "Суховей", maker: "АО Фирма «Август»", type: "Десикант", desc: "Предуборочное подсушивание подсолнечника, сои, рапса, зерновых колосовых, картофеля. Дикват, 150 г/л.", href: "/catalog/suhovey", img: "uploads/prod-suhovey-fit.png" },
+        { name: "Торнадо 540", maker: "АО Фирма «Август»", type: "Гербицид сплошного действия", desc: "Однолетние и многолетние сорняки. Действующее вещество — глифосат, 540 г/л.", href: "/catalog/tornado-540", img: "uploads/prod-tornado-clean.png" },        { name: "Ордан", maker: "АО Фирма «Август»", type: "Фунгицид", desc: "Фитофтороз, альтернариоз и другие болезни картофеля, томата, огурца, лука. Меди хлорокись + цимоксанил.", href: "/catalog/ordan", img: "uploads/prod-ordan-clean.png" },
+        { name: "Борей Нео", maker: "АО Фирма «Август»", type: "Инсектицид", desc: "Комплекс вредителей на зерновых, овощных, плодовых и других культурах. Три действующих вещества, быстрый нокдаун + системная защита.", href: "/catalog/borey-neo", img: "uploads/prod-borey-clean.png" },
+        { name: "Суховей", maker: "АО Фирма «Август»", type: "Десикант", desc: "Предуборочное подсушивание подсолнечника, сои, рапса, зерновых колосовых, картофеля. Дикват, 150 г/л.", href: "/catalog/suhovey", img: "uploads/prod-suhovey-clean.png" },
       ].map(p => ({ ...p, imgStyle: "max-width:100%; max-height:100%; width:100%; height:100%; background-image:url('" + p.img + "'); background-size:contain; background-position:center; background-repeat:no-repeat;" })),
       expertise: [
         "Подберём препараты под вашу задачу",
