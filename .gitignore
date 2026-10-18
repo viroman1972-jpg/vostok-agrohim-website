@@ -16,3 +16,8 @@ venv/
 
 # Local exports
 *.log
+
+# Самописный сайт (НР18)
+dist/
+design-reference/
+zayavki-log/
