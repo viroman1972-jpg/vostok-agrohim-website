@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>{{ p.name }}</h1>
+<p>Производитель: {{ p.manufacturer }}</p>
+<p>Цена: {{ p.price_text }} за {{ p.unit }}</p>
+<dl>
+<dt>Действующее вещество</dt><dd>{{ p.active_substance }}</dd>
+<dt>Форма препарата</dt><dd>{{ p.form }}</dd>
+<dt>Упаковка</dt><dd>{{ p.packaging }}</dd>
+</dl>
+<form method="post" action="/send.php">
+<label>Имя <input name="name" required></label>
+<label>Телефон <input name="phone" required></label>
+<label><input type="checkbox" name="consent" required>
+Согласен на обработку персональных данных для связи по заявке (<a href="/privacy/">политика</a>)</label>
+<button>Отправить</button>
+</form>
+{% endblock %}

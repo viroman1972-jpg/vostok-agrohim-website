@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>Гербициды</h1>
+<ul>
+{% for p in products %}
+<li><a href="/p/{{ p.slug }}/">{{ p.name }}</a> — {{ p.price_text }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
