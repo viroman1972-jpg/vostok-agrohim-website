@@ -3,12 +3,129 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ title }} — {{ s.company }}</title>
-<meta name="robots" content="noindex">
+<title>{{ title }}</title>
+{% if description is defined %}<meta name="description" content="{{ description }}">{% endif %}
+{% if canonical is defined %}<link rel="canonical" href="{{ s.site_url }}{{ canonical }}">{% endif %}
+{% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<meta property="og:type" content="website"><meta property="og:title" content="{{ title }}"><meta property="og:locale" content="ru_RU">
+<link rel="preload" href="/static/fonts/manrope-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/site.css">
+{% block head %}{% endblock %}
 </head>
-<body>
-<header><a href="/">{{ s.company }}</a> · <a href="/gerbicidy/">Гербициды</a></header>
-<main>{% block main %}{% endblock %}</main>
-<footer>{{ s.email }}</footer>
+<body class="{% block bodyclass %}{% endblock %}">
+<a class="skip" href="#main">К содержимому</a>
+<header class="site-header">
+  <div class="in">
+    <a class="logo" href="/">Восток<span>·</span>АгроХим</a>
+    <nav class="nav" aria-label="Основное меню">
+      <div class="has-sub">
+        <a href="/catalog/">Каталог<i>▾</i></a>
+        <div class="menu"><div class="menu-box">
+          <div class="sub"><a href="/catalog/">По типу препарата<i style="font-style:normal;font-size:10px;color:#8A8578">▸</i></a>
+            <div class="menu2">{% for c in cats %}<a href="/catalog/{{ c.slug }}/">{{ c.name }}</a>{% endfor %}</div>
+          </div>
+          <a href="/catalog/kultura/">По культурам</a>
+          <a href="/catalog/vrednyy-obekt/">По вредителям, сорнякам и болезням</a>
+          <a href="/catalog/dv/">По действующим веществам</a>
+        </div></div>
+      </div>
+      <a href="/#tasks">Задачи защиты</a>
+      <a href="/#how-we-work">Как мы работаем</a>
+      <a href="/#manufacturers">Производители</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="head-phones">
+      <a class="p1" href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a>
+      <div class="p2"><a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a><span>офис</span></div>
+    </div>
+    <details class="burger">
+      <summary aria-label="Меню">☰</summary>
+      <div class="panel">
+        <a href="/catalog/">Каталог</a>
+        <div class="sm">{% for c in cats %}<a href="/catalog/{{ c.slug }}/">{{ c.name }}</a>{% endfor %}</div>
+        <a href="/#tasks">Задачи защиты</a>
+        <a href="/#how-we-work">Как мы работаем</a>
+        <a href="/#manufacturers">Производители</a>
+        <a href="/contacts/">Контакты</a>
+      </div>
+    </details>
+  </div>
+</header>
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="cols">
+    <div>
+      <div class="logo2">Восток<span>·</span>АгроХим</div>
+      <div class="col">
+        <div style="display:flex;flex-direction:column;gap:3px"><a class="big" href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a><span class="dim">офис</span></div>
+        <a class="big" href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a>
+        <a href="mailto:{{ s.email }}">{{ s.email }}</a>
+        <div style="opacity:.9;line-height:1.55;max-width:40ch">{{ s.address }}</div>
+        <a href="/contacts/">Показать на карте</a>
+        <div style="margin-top:4px;display:flex;flex-direction:column;gap:4px;opacity:.9;font-size:14px">{% for h in s.hours %}<span>{{ h }}</span>{% endfor %}</div>
+      </div>
+    </div>
+    <div>
+      <div class="h">Навигация</div>
+      <div class="list">
+        <a href="/#how-we-work">Как мы работаем</a>
+        <a href="/#tasks">Задачи защиты</a>
+        <a href="/catalog/">Каталог</a>
+        <a href="/#manufacturers">Производители</a>
+        <a href="/contacts/">Контакты</a>
+        <hr>
+        <a href="/about/">О компании</a>
+        <a href="/sitemap/">Карта сайта</a>
+        <a href="/comments/">Отзывы</a>
+      </div>
+    </div>
+    <div>
+      <div class="h">Юридическая информация</div>
+      <div class="legal">
+        <span>{{ s.company }}</span>
+        <span>ИНН {{ s.legal.inn }}</span>
+        <span>КПП {{ s.legal.kpp }}</span>
+        <span>ОГРН {{ s.legal.ogrn }}</span>
+        <a href="/privacy-policy/" style="margin-top:6px">Политика обработки персональных данных</a>
+        <span class="dim" style="margin-top:2px">Оператор персональных данных № {{ s.legal.pd_operator }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="copy">© {{ s.company }}</div>
+</footer>
+
+<button class="totop" id="totop" type="button" aria-label="Наверх">↑</button>
+
+<dialog id="lead" aria-labelledby="lead-title">
+  <form class="modal" method="post" action="/send.php" id="lead-form">
+    <div class="hd">
+      <div class="tt" id="lead-title">Получить консультацию</div>
+      <button class="x" type="button" data-close aria-label="Закрыть">✕</button>
+    </div>
+    <div style="font-size:14px;color:var(--gray)">Оставьте телефон — специалист свяжется в рабочее время.</div>
+    <div class="ref" id="lead-ref" hidden>По препарату: <strong></strong></div>
+    <input type="hidden" name="product" id="lead-product" value="">
+    <input type="hidden" name="page" value="">
+    <div class="hp" aria-hidden="true"><label>Не заполняйте <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="field"><label class="l" for="lead-name">Как к вам обращаться</label><input type="text" id="lead-name" name="name" required autocomplete="name"></div>
+    <div class="field"><label class="l" for="lead-phone">Телефон</label><input type="tel" id="lead-phone" name="phone" required autocomplete="tel" placeholder="+7 (___) ___-__-__"></div>
+    <div class="field"><label class="l" for="lead-msg">Задача (необязательно)</label><textarea id="lead-msg" name="message" rows="3" placeholder="Культура, объект защиты, площадь обработки, объём препарата"></textarea></div>
+    <label class="consent"><input type="checkbox" name="consent" value="1" required><span>Даю согласие на обработку персональных данных для связи по заявке и подготовки коммерческого предложения. Ознакомлен с <a href="/privacy-policy/" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span></label>
+    <div class="act"><button class="btn" type="submit">Отправить заявку</button></div>
+  </form>
+  <div class="modal" id="lead-done" hidden>
+    <div class="hd"><div class="tt">Спасибо за заявку</div><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div>
+    <p style="margin:0 0 14px;font-size:16px;line-height:1.6">Заявка принята. Специалист свяжется в рабочее время — Пн–Чт 9:00–17:00, Пт 9:00–16:00.</p>
+    <p style="margin:0;font-size:16px;color:var(--gray)">Срочный вопрос — <a href="tel:{{ s.phone_office|tel }}" style="font-weight:700">{{ s.phone_office }}</a></p>
+  </div>
+</dialog>
+<div class="cookie" id="cookie" role="region" aria-label="Файлы cookie">
+  <div>Мы используем файлы cookie, чтобы сайт работал, а с вашего согласия — для статистики посещений. Подробнее — в <a href="/privacy-policy/">Политике обработки персональных данных</a>.</div>
+  <div class="acts"><button class="ok" type="button" data-cookie="yes">Принять</button><button class="no" type="button" data-cookie="no">Отклонить</button></div>
+</div>
+<script src="/static/site.js" defer></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

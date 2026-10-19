@@ -1,6 +1,6 @@
 """Автопроверки собранного сайта. Код возврата 1, если есть нарушения.
 Использование: check.py [папка]   |   check.py --selftest"""
-import re, sys
+import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -19,13 +19,43 @@ STOP_PHRASES = [  # (шаблон, причина)
 EXTERNAL = re.compile(r"""(?:<(?:script|img|iframe|source)\b[^>]*\bsrc|<link\b[^>]*\bhref|<form\b[^>]*\baction)\s*=\s*["'](https?:)?//""", re.I)
 CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 
-def check_file(path, text):
+# Страницы, которые ещё не собраны (по site-structure-v1.md). Ссылки на них допустимы до своего этапа.
+PLANNED = ("/catalog/kultura/", "/catalog/vrednyy-obekt/", "/catalog/dv/", "/catalog/seriya/", "/contacts/", "/about/",
+           "/comments/", "/sitemap/", "/privacy-policy/", "/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
+           "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/", "/catalog/desikanty/")
+HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
+PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
+LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+
+
+def link_exists(root, href):
+    p = root / href.lstrip("/")
+    return p.is_file() or (p / "index.html").is_file()
+
+
+def check_file(path, text, root=None):
     errs = []
+    # цена на странице = цена в разметке Offer
+    for m in LD.finditer(text):
+        try:
+            ld = json.loads(m.group(1))
+        except ValueError:
+            errs.append(f"{path}: разметка ld+json не читается"); continue
+        if ld.get("@type") == "Product":
+            shown = PRICE_VIS.search(text)
+            offer = str(ld.get("offers", {}).get("price", ""))
+            if not shown or re.sub(r"\D", "", shown.group(1)) != offer:
+                errs.append(f"{path}: цена на странице не равна цене в разметке ({shown.group(1).strip() if shown else 'нет'} и {offer})")
+    if root is not None:
+        for href in sorted(set(HREF.findall(text))):
+            if not link_exists(root, href) and not href.startswith(PLANNED) and href != "/catalog/":
+                errs.append(f"{path}: битая ссылка {href}")
     low = text.lower()
     for pat, why in STOP_PHRASES:
         if re.search(pat, low):
             errs.append(f"{path}: {why}")
-    if EXTERNAL.search(text) or CSS_URL.search(text):
+    text_ext = re.sub(r'<link rel="canonical"[^>]*>', "", text)  # canonical — не загрузка чужого ресурса
+    if EXTERNAL.search(text_ext) or CSS_URL.search(text_ext):
         errs.append(f"{path}: запрос к чужому серверу (шрифты, скрипты и картинки только свои)")
     for m in re.finditer(r"<input\b[^>]*type\s*=\s*[\"']checkbox[\"'][^>]*>", text, re.I):
         tag = m.group(0)
@@ -40,22 +70,25 @@ def check_file(path, text):
         errs.append(f"{path}: у формы нет указания цели обработки данных (ДЗ07)")
     return errs
 
+
 def check_dir(d):
     errs, n = [], 0
     for f in sorted(Path(d).rglob("*.html")):
         n += 1
-        errs += check_file(f.relative_to(d), f.read_text(encoding="utf-8"))
+        errs += check_file(f.relative_to(d), f.read_text(encoding="utf-8"), Path(d))
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
     return errs, n
 
+
 def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad")
-    expected = ["Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4"]
+    expected = ["Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if missing:
         print("SELFTEST ПРОВАЛЕН, проверки не поймали:", ", ".join(missing)); return 1
     print(f"selftest ок: на плохом примере поймано {len(bad)} нарушений"); return 0
+
 
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
