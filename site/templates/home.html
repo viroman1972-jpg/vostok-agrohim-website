@@ -1,6 +1,99 @@
 {% extends "base.html" %}
+{% macro icon(k) %}
+{% if k == 'weed' %}<svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 42V15"/><path d="M24 15c0-3 2-5 5.5-6.2M24 15c0-3-2-5-5.5-6.2"/><path d="M24 22c0-2.6 2.4-4.2 5.5-4.8M24 22c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 29c0-2.6 2.4-4.2 5.5-4.8M24 29c0-2.6-2.4-4.2-5.5-4.8"/><path d="M24 42c-6.5 0-10-4.5-10.5-10"/></svg>
+{% elif k == 'leaf' %}<svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 38C10 22 22 10 38 10c0 16-12 28-28 28Z"/><path d="M15 33C21 27 29 19 33 15"/><circle cx="27.5" cy="20.5" r="3.4"/></svg>
+{% elif k == 'bug' %}<svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="24" cy="27" rx="9" ry="12"/><path d="M24 15v23"/><circle cx="24" cy="11.5" r="3"/><path d="M15 21l-6-3M33 21l6-3M15 27H8M33 27h7M16 34l-5 3M32 34l5 3"/></svg>
+{% else %}<svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19h13l4 4v17a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2V19Z"/><path d="M19 19v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M20 27h8"/><path d="M39 15c2.2 2.7 2.2 5.3 0 7-2.2-1.7-2.2-4.3 0-7Z"/></svg>{% endif %}
+{% endmacro %}
+{% block bodyclass %}home{% endblock %}
 {% block main %}
-<h1>{{ s.company }}</h1>
-<p>ТЕСТОВАЯ СТРАНИЦА каркаса сборки, не для публикации.</p>
-<p><a href="/gerbicidy/">Гербициды ({{ products|length }})</a></p>
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-text">
+      <h1>{{ h.h1 }}</h1>
+      <p class="hero-lead">{{ h.lead }}</p>
+      <div class="hero-cta">
+        <button class="btn btn-sq" type="button" data-open-lead>Получить консультацию</button>
+        <a class="btn-line btn-sq" href="/catalog/">Посмотреть каталог</a>
+      </div>
+      <div class="hero-proof"><span>{{ h.dealer_line }}</span><span class="dot">·</span><span>{{ h.since_line }}</span></div>
+    </div>
+    <div class="hero-photo" id="hero-photo">
+      {% for sl in h.hero_slides %}
+      <img src="/static/img/home/{{ sl.img }}.webp" alt="{{ sl.alt }}" style="object-position:{{ sl.pos }}"{% if not loop.first %} hidden{% endif %} data-slide="{{ loop.index0 }}"{% if loop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %}>
+      {% endfor %}
+      <div class="hero-dots">{% for sl in h.hero_slides %}<button type="button" data-go="{{ loop.index0 }}" aria-label="{{ sl.alt }}" aria-pressed="{{ 'true' if loop.first else 'false' }}"></button>{% endfor %}</div>
+    </div>
+  </div>
+</section>
+
+<section class="expertise">
+  <div class="inner">
+    <h2>{{ h.expertise_title }}</h2>
+    <p class="sub">{{ h.expertise_sub }}</p>
+    <ul>{% for t in h.expertise %}<li><span>•</span><span>{{ t }}</span></li>{% endfor %}</ul>
+  </div>
+</section>
+
+<section class="blk" id="tasks">
+  <div class="wrap">
+    <h2 class="h-big">{{ h.tasks_title }}</h2>
+    <div class="tiles">
+      {% for t in h.tasks %}
+      <a class="tile" href="{{ t.href }}">
+        <img src="/static/img/home/{{ t.img }}.webp" alt="{{ t.alt }}" width="640" height="640" loading="lazy">
+        <div class="tt"><span class="ic">{{ icon(t.icon) }}</span><span class="nm">{{ t.title }}</span></div>
+        <div class="kind">{{ t.kind }}</div>
+        <div class="txt">{{ t.text }}</div>
+      </a>
+      {% endfor %}
+    </div>
+    <p class="hint">{{ h.catalog_hint }} <a href="/catalog/">Все входы в каталог →</a></p>
+  </div>
+</section>
+
+<section class="blk" id="featured">
+  <div class="wrap">
+    <h2 class="h-big">{{ h.featured_title }}</h2>
+    <div class="grid c4 hit">
+      {% for q in featured %}
+      <a class="hcard" href="{{ q.url }}">
+        <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480" loading="lazy"></div>
+        <div class="bd">
+          <div class="tags"><span class="tag tag-cat sm">{{ q.category_one }}</span><span class="tag tag-maker sm">{{ q.maker_badge }}</span></div>
+          <div class="nm">{{ q.name }}</div>
+          <div class="ds">{{ q.description }}</div>
+          <span class="more">Подробнее →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="center"><a class="btn btn-sq big" href="/catalog/">Смотреть каталог</a></div>
+  </div>
+</section>
+
+<section class="blk" id="manufacturers">
+  <div class="wrap">
+    <div class="eyebrow-l"><span></span>Производители</div>
+    <div class="mf">
+      <div class="mf-tile"><h2>{{ h.manufacturers.title }}</h2></div>
+      <div><p>{{ h.manufacturers.text }}</p></div>
+    </div>
+    <div class="others"><h3>{{ h.manufacturers.others_title }}</h3><p>{{ h.manufacturers.others_text }}</p></div>
+  </div>
+</section>
+
+<section class="blk" id="how-we-work">
+  <div class="wrap">
+    <div class="how-head">
+      <div class="eyebrow-l"><span></span>Как мы работаем</div>
+      <h2 class="h-big">{{ h.how.title }}</h2>
+      <p>{{ h.how.lead }}</p>
+    </div>
+    <div class="steps">{% for st in h.how.steps %}<div><div class="n">{{ st.n }}</div><h3>{{ st.title }}</h3><p>{{ st.text }}</p></div>{% endfor %}</div>
+    <div class="center two"><button class="btn btn-sq big" type="button" data-open-lead>Получить консультацию</button><a class="btn-line btn-sq big" href="tel:{{ s.phone_office|tel }}">Позвонить нам</a></div>
+  </div>
+</section>
+<div class="sticky-cta"><button class="btn" type="button" data-open-lead>Получить консультацию</button></div>
 {% endblock %}
+{% block scripts %}<script src="/static/home.js" defer></script>{% endblock %}

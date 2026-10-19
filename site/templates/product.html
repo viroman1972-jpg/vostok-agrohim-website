@@ -1,18 +1,124 @@
 {% extends "base.html" %}
+{% block bodyclass %}has-sticky{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ jsonld|safe }}</script>
+{% endblock %}
+{% macro acc(title, paras, open=false) %}
+<details class="acc"{% if open %} open{% endif %}><summary>{{ title }}</summary><div class="body">{% for t in paras %}<p>{{ t }}</p>{% endfor %}</div></details>
+{% endmacro %}
 {% block main %}
-<h1>{{ p.name }}</h1>
-<p>Производитель: {{ p.manufacturer }}</p>
-<p>Цена: {{ p.price_text }} за {{ p.unit }}</p>
-<dl>
-<dt>Действующее вещество</dt><dd>{{ p.active_substance }}</dd>
-<dt>Форма препарата</dt><dd>{{ p.form }}</dd>
-<dt>Упаковка</dt><dd>{{ p.packaging }}</dd>
-</dl>
-<form method="post" action="/send.php">
-<label>Имя <input name="name" required></label>
-<label>Телефон <input name="phone" required></label>
-<label><input type="checkbox" name="consent" required>
-Согласен на обработку персональных данных для связи по заявке (<a href="/privacy/">политика</a>)</label>
-<button>Отправить</button>
-</form>
+<div class="wrap">
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><a href="/catalog/{{ p.category }}/">{{ category.name }}</a><span class="sep">·</span><span class="cur">{{ p.name }}</span></div>
+
+  <div class="p-hero">
+    <div>
+      <div class="photo" id="photo" data-front="/static/img/products/{{ p.photo }}-1000.webp"{% if p.photo_back %} data-back="/static/img/products/{{ p.photo_back }}-1000.webp"{% endif %} data-alt-front="{{ p.name }} — лицевая сторона упаковки" data-alt-back="{{ p.name }} — тыльная сторона упаковки">
+        <img class="zoom" id="photo-img" src="/static/img/products/{{ p.photo }}-1000.webp" alt="{{ p.name }} — лицевая сторона упаковки" width="1000" height="1000" style="object-fit:contain;transition:transform .12s ease-out">
+        <button class="zbtn" type="button" id="photo-zoom" aria-label="Увеличить фото">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="#26543E" stroke-width="1.6"/><path d="M12.8 12.8L17.5 17.5" stroke="#26543E" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 6.2v4.6M6.2 8.5h4.6" stroke="#26543E" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        {% if p.photo_back %}<div class="dots"><button type="button" data-side="front" aria-pressed="true" aria-label="Лицевая сторона упаковки"></button><button type="button" data-side="back" aria-pressed="false" aria-label="Тыльная сторона упаковки"></button></div>{% endif %}
+      </div>
+    </div>
+    <div>
+      <div class="p-tags"><span class="tag tag-cat">{{ category.name_one }}</span>{% if maker %}<span class="tag tag-maker">{{ maker.badge }}</span>{% endif %}</div>
+      <h1 class="p-title">{{ p.name }}</h1>
+      <div class="p-dv">{{ p.dv_text }}</div>
+      <p class="p-lead">{{ p.description }}</p>
+      <div class="buy">
+        <div><span class="price">{{ p.price_text }}/{{ p.unit }}</span></div>
+        <div class="min">Минимальный заказ: <strong>{{ p.min_order }} {{ p.unit }}</strong></div>
+        <div class="cta">
+          <button class="btn" type="button" data-open-lead data-product="{{ p.name }}">Получить консультацию</button>
+          <a class="btn-line" href="tel:{{ s.phone_office|tel }}">Позвонить нам</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2 class="h2">Характеристики</h2>
+    <dl class="specs only-desktop">
+      {% for k, v in specs[:4] %}<div class="spec"><dt>{{ k }}</dt><dd>{{ v }}</dd></div>{% endfor %}
+    </dl>
+    {% if specs[4:] %}
+    <details class="acc only-desktop specs-more-acc" style="margin-top:16px"><summary>Подробнее о характеристиках</summary><div class="body"><dl class="specs specs-more" style="margin-top:0">{% for k, v in specs[4:] %}<div class="spec"><dt>{{ k }}</dt><dd>{{ v }}</dd></div>{% endfor %}</dl></div></details>
+    {% endif %}
+    <details class="acc only-mobile"><summary>Характеристики препарата</summary><div class="body"><dl class="specs specs-more" style="margin-top:0">{% for k, v in specs %}<div class="spec"><dt>{{ k }}</dt><dd>{{ v }}</dd></div>{% endfor %}</dl></div></details>
+  </section>
+
+  {% if c.regulation %}
+  <section class="section">
+    <h2 class="h2">Регламент применения</h2>
+    <div class="table-wrap"><table class="reg">
+      <thead><tr><th style="white-space:nowrap">Норма, {{ p.unit }}/га</th><th>Культура</th><th>Вредный объект</th><th>Способ и время обработки</th><th style="white-space:nowrap">Срок ожидания, дней (кратность)</th></tr></thead>
+      <tbody>{% for r in c.regulation %}<tr><td class="n">{{ r.rate }}</td><td>{{ r.crop }}</td><td class="m">{{ r.object }}</td><td class="m">{{ r.method }}</td><td class="w">{{ r.wait }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+    <div class="reg-notes">
+      {% if c.regulation_notes.get('liquid_flow') %}<div><span>Расход рабочей жидкости:</span> <strong>{{ c.regulation_notes.liquid_flow }}</strong></div>{% endif %}
+      {% if c.regulation_notes.get('reentry') %}<div><span>Срок выхода для механизированных работ:</span> <strong>{{ c.regulation_notes.reentry }}</strong></div>{% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if crops or pests %}
+  <section class="section">
+    <h2 class="h2">Область применения</h2>
+    {% if crops %}<div class="ctx-label">Работает на культурах</div>
+    <div class="pills">{% for x in crops %}<a class="pill" href="/catalog/kultura/{{ x.slug }}/">{{ x.name }}</a>{% endfor %}</div>{% endif %}
+    {% if pests %}<div class="ctx-label second">Против объектов</div>
+    <div class="pills">{% for x in pests %}<a class="pill" href="/catalog/vrednyy-obekt/{{ x.slug }}/">{{ x.name }}</a>{% endfor %}</div>{% endif %}
+    {% if c.resistant_weeds_note %}<p class="p-text"><strong>Эффективна против устойчивых к 2,4-Д:</strong> {{ c.resistant_weeds_note }}</p>{% endif %}
+  </section>
+  {% endif %}
+
+  {% if c.procedures or c.first_aid or c.procedures_tail %}
+  <section class="section acc-group">
+    {% for a in c.procedures %}{{ acc(a.title, a.paras) }}{% endfor %}
+    {% if c.first_aid %}
+    <details class="acc"><summary>Первая помощь при отравлении</summary><div class="body">
+      {% for f in c.first_aid %}<p>{% if f.get('lead') %}<strong>{{ f.lead }}</strong>{% endif %}{% if f.get('tel') %}{{ f.text.split(' тел. ')[0] }} тел. <a href="tel:{{ f.tel }}" style="font-weight:700">{{ f.text.split(' тел. ')[1].rstrip('.') }}</a>.{% else %}{{ f.text }}{% endif %}</p>{% endfor %}
+    </div></details>
+    {% endif %}
+    {% for a in c.procedures_tail %}{{ acc(a.title, a.paras) }}{% endfor %}
+  </section>
+  {% endif %}
+
+  {% if c.mechanism %}
+  <section class="section">
+    <h2 class="h2">Как работает препарат</h2>
+    <div class="acc-flush">{% for a in c.mechanism %}{{ acc(a.title, a.paras) }}{% endfor %}</div>
+  </section>
+  {% endif %}
+
+  {% if cross %}
+  <section class="section">
+    <h2 class="h2">Смотрите также</h2>
+    <div class="grid c4">
+      {% for q in cross %}
+      <a class="card" href="{{ q.url }}">
+        <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480" loading="lazy"></div>
+        <div class="tags"><span class="tag tag-cat sm">{{ q.category_one }}</span></div>
+        <div class="nm">{{ q.name }}</div>
+        <div class="dv">{{ q.dv_text }}</div>
+        <span class="go">Подробнее →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+
+<div class="sticky-cta"><button class="btn" type="button" data-open-lead data-product="{{ p.name }}">Получить консультацию</button></div>
+
+<dialog id="lightbox" class="lb" aria-label="Фото упаковки">
+  <div class="lbox">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px"><span id="lb-title" style="font-size:15px;font-weight:600;color:var(--green)">{{ p.name }}</span><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div>
+    <div class="big" id="lb-big" role="img" aria-label="{{ p.name }}"></div>
+    <div class="tabs">
+      <div style="display:flex;gap:8px">{% if p.photo_back %}<button class="t" type="button" data-side="front" aria-pressed="true">Лицевая сторона</button><button class="t" type="button" data-side="back" aria-pressed="false">Тыльная сторона</button>{% endif %}</div>
+      <span style="font-size:13px;color:var(--gray)">Клик по фото — приблизить</span>
+    </div>
+  </div>
+</dialog>
 {% endblock %}

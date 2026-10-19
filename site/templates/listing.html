@@ -1,9 +1,75 @@
 {% extends "base.html" %}
 {% block main %}
-<h1>Гербициды</h1>
-<ul>
-{% for p in products %}
-<li><a href="/p/{{ p.slug }}/">{{ p.name }}</a> — {{ p.price_text }}</li>
-{% endfor %}
-</ul>
+<div class="wrap-wide">
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><span class="cur">{{ category.name }}</span></div>
+  <div class="l-title"><h1>{{ category.name }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
+  <p class="l-lead">{{ lead }}</p>
+
+  <div class="quick" id="quick">
+    {% if series_pills %}<div class="row"><span class="lbl">Серии</span>{% for x in series_pills %}<button class="qpill" type="button" data-group="series" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>{% endif %}
+    {% if task_pills %}<div class="row"><span class="lbl">Задачи защиты</span>{% for x in task_pills %}<button class="qpill" type="button" data-group="action" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>{% endif %}
+    {% if dv_pills %}<div class="row"><span class="lbl">Действующее вещество</span>{% for x in dv_pills %}<button class="qpill" type="button" data-group="dv" data-value="{{ x.value }}" aria-pressed="false">ДВ: {{ x.name }}</button>{% endfor %}</div>{% endif %}
+  </div>
+
+  <div class="bar">
+    <label class="visually-hidden" for="sort">Сортировка</label>
+    <select id="sort"><option value="name">Сортировка: по названию А–Я</option><option value="price-asc">Сортировка: по цене ↑</option><option value="price-desc">Сортировка: по цене ↓</option></select>
+    <div class="shown" id="shown" aria-live="polite">Показано {{ items|length }} из {{ items|length }}</div>
+    <button class="fbtn" type="button" id="open-filters">Фильтры</button>
+  </div>
+
+  <div class="shell">
+    <aside class="side" id="side" aria-label="Фильтры">
+      <div class="active">
+        <div class="hd"><span>Активные фильтры</span><button class="reset" type="button" id="reset">Сбросить все</button></div>
+        <div class="chips" id="chips"></div><span class="none" id="none">Фильтры не выбраны</span>
+      </div>
+      {% for g in groups %}
+      <div class="fgroup" data-group="{{ g.key }}">
+        <div class="t">{{ g.title }}</div>
+        {% for it in g['items'] %}
+        <label{% if loop.index > 6 %} class="more" hidden{% endif %}><input type="checkbox" data-group="{{ g.key }}" value="{{ it.value }}"><span>{{ it.label }}</span><span class="c">({{ it.count }})</span></label>
+        {% endfor %}
+        {% if g['items']|length > 6 %}<button class="showmore" type="button">Показать ещё {{ g['items']|length - 6 }}…</button>{% endif %}
+      </div>
+      {% endfor %}
+      <div class="fgroup" data-group="price">
+        <div class="t">Цена, ₽</div>
+        <div style="display:flex;align-items:center;gap:10px"><input type="text" inputmode="numeric" id="pmin" placeholder="От {{ price_min }}" aria-label="Цена от" style="width:100%;min-width:0;border:1px solid var(--line2);border-radius:4px;padding:9px 10px;font-size:14px"><span style="color:#8A8578">—</span><input type="text" inputmode="numeric" id="pmax" placeholder="До {{ price_max }}" aria-label="Цена до" style="width:100%;min-width:0;border:1px solid var(--line2);border-radius:4px;padding:9px 10px;font-size:14px"></div>
+      </div>
+      <div class="drawer-close"><button class="btn" type="button" id="close-filters">Показать препараты</button></div>
+    </aside>
+
+    <div>
+      <div class="grid c3" id="grid">
+        {% for q in items %}
+        <a class="card" href="{{ q.url }}" data-name="{{ q.name }}" data-price="{{ q.price_num }}" data-dv="{{ q.substances|join(' ') }}" data-crop="{{ q.crops|join(' ') }}" data-pest="{{ q.pests|join(' ') }}" data-maker="{{ q.manufacturer }}" data-series="{{ q.series }}" data-action="{{ q.action_character }}">
+          <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480"{% if loop.index > 3 %} loading="lazy"{% endif %}></div>
+          <div class="tags"><span class="tag tag-cat sm">{{ category.name_one }}</span>{% if q.maker_badge %}<span class="tag tag-maker sm">{{ q.maker_badge }}</span>{% endif %}</div>
+          <div class="nm">{{ q.name }}</div>
+          <div class="dv">{{ q.dv_text }}</div>
+          <div class="bot"><div class="pr">{{ q.price_text }}/{{ q.unit }}</div><span class="go">Подробнее →</span></div>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="empty" id="empty" hidden>По выбранным условиям препаратов нет. Сбросьте часть фильтров.</p>
+      <div class="pager" id="pager" data-per="12" hidden>
+        <div class="pages" id="pages"></div>
+        <button class="all" type="button" id="show-all">Показать всё</button>
+      </div>
+    </div>
+  </div>
+
+  {% if seo %}
+  <div class="seo"><h2>{{ seo.title }}</h2>{% for t in seo.paras %}<p>{{ t }}</p>{% endfor %}</div>
+  {% endif %}
+
+  <div class="other">
+    <h2>Другие категории каталога</h2>
+    <div class="cats">
+      {% for c in other_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span></a>{% endfor %}
+    </div>
+  </div>
+</div>
 {% endblock %}
+{% block scripts %}<script src="/static/listing.js" defer></script>{% endblock %}
