@@ -32,7 +32,7 @@ regulation:
 regulation_notes:
   liquid_flow: 50–300 л/га
   reentry: 4 дня
-resistant_weeds_note: подмаренник цепкий, ромашка, осот, бодяк, молочай лозной.
+resistant_weeds_note: подмаренник цепкий, ромашка, осот, бодяк, молочай лозный.
 procedures:
 - key: prep
   title: Приготовление рабочего раствора
