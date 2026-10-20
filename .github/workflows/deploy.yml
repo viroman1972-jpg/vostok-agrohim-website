@@ -1,0 +1,95 @@
+name: Сборка и выкладка
+
+# staging → закрытая тестовая копия (пароль, noindex).
+# main → только сборка и проверки; выкладка на боевой сайт включается на этапе 9 (запуск),
+# до этого vostok-agrohim.ru продолжает работать на Satom.
+on:
+  push:
+    branches: [staging, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Зависимости
+        run: pip install -r requirements.txt
+
+      - name: Самопроверка проверок
+        run: make test
+
+      - name: Сборка и проверки (тестовая копия)
+        if: github.ref_name == 'staging'
+        run: make staging
+
+      - name: Сборка и проверки
+        if: github.ref_name != 'staging'
+        run: make check
+
+      # Резервная копия каждой успешной сборки (план §2.5)
+      - name: Архив сборки
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.ref_name }}-${{ github.sha }}
+          path: dist/
+          retention-days: 90
+
+      # Пока хостинг не выбран (К2), секретов нет — сборка проходит, выкладка пропускается с предупреждением.
+      # Если задана только часть секретов — ошибка.
+      - name: Подключён ли хостинг
+        id: host
+        if: github.ref_name == 'staging'
+        env:
+          A: ${{ secrets.STAGING_SSH_KEY }}
+          B: ${{ secrets.STAGING_SSH_HOST }}
+          C: ${{ secrets.STAGING_SSH_USER }}
+          D: ${{ secrets.STAGING_SSH_PATH }}
+          E: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }}
+          F: ${{ secrets.STAGING_HTPASSWD_PATH }}
+        run: |
+          n=0; for v in A B C D E F; do test -n "${!v}" && n=$((n+1)); done
+          if [ "$n" -eq 0 ]; then echo "::warning::Хостинг ещё не подключён (нет секретов STAGING_*) — выкладка пропущена"; echo "ready=no" >> "$GITHUB_OUTPUT"
+          elif [ "$n" -lt 6 ]; then echo "Заданы не все секреты STAGING_* ($n из 6)"; exit 1
+          else echo "ready=yes" >> "$GITHUB_OUTPUT"; fi
+
+      # Пароль на тестовую копию. Файл с паролями лежит на хостинге вне папки сайта,
+      # путь к нему — в секрете STAGING_HTPASSWD_PATH. В репозитории паролей нет.
+      - name: Пароль на тестовую копию
+        if: steps.host.outputs.ready == 'yes'
+        env:
+          HTPASSWD_PATH: ${{ secrets.STAGING_HTPASSWD_PATH }}
+        run: |
+          cat > dist/.htaccess <<EOF
+          AuthType Basic
+          AuthName "Vostok AgroHim test"
+          AuthUserFile $HTPASSWD_PATH
+          Require valid-user
+          Header set X-Robots-Tag "noindex, nofollow"
+          EOF
+
+      - name: Выкладка на тестовую копию
+        if: steps.host.outputs.ready == 'yes'
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+          SSH_PATH: ${{ secrets.STAGING_SSH_PATH }}
+          SSH_KNOWN_HOSTS: ${{ secrets.STAGING_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          rsync -az --delete -e "ssh -i ~/.ssh/id_deploy" dist/ "$SSH_USER@$SSH_HOST:$SSH_PATH/"

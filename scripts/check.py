@@ -1,5 +1,6 @@
 """Автопроверки собранного сайта. Код возврата 1, если есть нарушения.
-Использование: check.py [папка]   |   check.py --selftest"""
+Использование: check.py [папка] [--staging]   |   check.py --selftest
+--staging: дополнительно проверить, что тестовая копия закрыта от индексации."""
 import json, re, sys
 from pathlib import Path
 
@@ -71,19 +72,25 @@ def check_file(path, text, root=None):
     return errs
 
 
-def check_dir(d):
+def check_dir(d, staging=False):
     errs, n = [], 0
     for f in sorted(Path(d).rglob("*.html")):
         n += 1
-        errs += check_file(f.relative_to(d), f.read_text(encoding="utf-8"), Path(d))
+        text = f.read_text(encoding="utf-8")
+        errs += check_file(f.relative_to(d), text, Path(d))
+        if staging and 'name="robots" content="noindex' not in text:
+            errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
+    if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
+        errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
 
 
 def selftest():
-    bad, _ = check_dir(ROOT / "tests" / "bad")
-    expected = ["Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка"]
+    bad, _ = check_dir(ROOT / "tests" / "bad", staging=True)
+    expected = ["Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка",
+                "нет noindex", "без robots.txt"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if missing:
         print("SELFTEST ПРОВАЛЕН, проверки не поймали:", ", ".join(missing)); return 1
@@ -91,10 +98,12 @@ def selftest():
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")  # консоль Windows (cp1251) не печатает ✗
     if "--selftest" in sys.argv:
         sys.exit(selftest())
-    d = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "dist"
-    errs, n = check_dir(d)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    d = Path(args[0]) if args else ROOT / "dist"
+    errs, n = check_dir(d, staging="--staging" in sys.argv)
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)

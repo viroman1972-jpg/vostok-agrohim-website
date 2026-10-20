@@ -163,10 +163,14 @@ def build(root=ROOT, out=None):
         canonical="/", h=hp, featured=[by_slug[x] for x in hp.get("featured", []) if x in by_slug]))
 
     shutil.copytree(root / "site" / "static", out / "static")
+    # Тестовая копия закрыта от поисковиков; на боевом сайте robots.txt появится на этапе 5
+    if noindex:
+        (out / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
     return out, warnings
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
     o, w = build()
     for x in w:
         print("ВНИМАНИЕ:", x)
