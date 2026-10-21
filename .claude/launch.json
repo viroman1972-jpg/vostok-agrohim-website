@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dist",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000", "--bind", "127.0.0.1", "--directory", "dist"],
+      "port": 8000
+    },
+    {
+      "name": "mockups",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8001", "--bind", "127.0.0.1", "--directory", "design-reference"],
+      "port": 8001
+    }
+  ]
+}

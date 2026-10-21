@@ -21,3 +21,6 @@ venv/
 dist/
 design-reference/
 zayavki-log/
+
+# Личные настройки Claude Code
+.claude/settings.local.json
