@@ -77,7 +77,10 @@ jobs:
           AuthName "Vostok AgroHim test"
           AuthUserFile $HTPASSWD_PATH
           Require valid-user
+          Options -Indexes
+          <IfModule mod_headers.c>
           Header set X-Robots-Tag "noindex, nofollow"
+          </IfModule>
           EOF
 
       - name: Выкладка на тестовую копию
