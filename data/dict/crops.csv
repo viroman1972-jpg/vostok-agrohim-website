@@ -1,7 +1,53 @@
-slug,name
-pshenitsa,Пшеница
-yachmen,Ячмень
-kukuruza,Кукуруза
-proso,Просо
-sorgo,Сорго
-oves,Овёс
+slug,name,parent,group
+pshenitsa,Пшеница,,Зерновые колосовые
+pshenitsa-ozimaya,Пшеница озимая,pshenitsa,Зерновые колосовые
+pshenitsa-yarovaya,Пшеница яровая,pshenitsa,Зерновые колосовые
+yachmen,Ячмень,,Зерновые колосовые
+yachmen-ozimyy,Ячмень озимый,yachmen,Зерновые колосовые
+yachmen-yarovoy,Ячмень яровой,yachmen,Зерновые колосовые
+rozh,Рожь,,Зерновые колосовые
+rozh-ozimaya,Рожь озимая,rozh,Зерновые колосовые
+tritikale,Тритикале,,Зерновые колосовые
+tritikale-ozimaya,Тритикале озимая,tritikale,Зерновые колосовые
+tritikale-yarovaya,Тритикале яровая,tritikale,Зерновые колосовые
+oves,Овёс,,Зерновые колосовые
+kukuruza,Кукуруза,,Зерновые прочие
+ris,Рис,,Зерновые прочие
+grechiha,Гречиха,,Зерновые прочие
+proso,Просо,,Зерновые прочие
+sorgo,Сорго,,Зерновые прочие
+raps,Рапс,,Технические масличные
+raps-ozimyy,Рапс озимый,raps,Технические масличные
+raps-yarovoy,Рапс яровой,raps,Технические масличные
+podsolnechnik,Подсолнечник,,Технические масличные
+len-dolgunets,Лён-долгунец,,Технические масличные
+len-maslichnyy,Лён масличный,,Технические масличные
+gorchitsa,Горчица,,Технические масличные
+soya,Соя,,Технические масличные
+svekla-saharnaya,Свёкла сахарная,,Технические
+svekla-kormovaya,Свёкла кормовая,,Технические
+goroh,Горох,,Зернобобовые
+fasol,Фасоль,,Зернобобовые
+chechevitsa,Чечевица,,Зернобобовые
+nut,Нут,,Зернобобовые
+lyupin,Люпин,,Зернобобовые
+mnogoletnie-travy,Многолетние травы,,Кормовые
+lyutserna,Люцерна,,Кормовые
+odnoletnie-travy,Однолетние травы,,Кормовые
+kartofel,Картофель,,Овощные
+kapusta,Капуста,,Овощные
+morkov,Морковь,,Овощные
+svekla-stolovaya,Свёкла столовая,,Овощные
+luk,Лук,,Овощные
+chesnok,Чеснок,,Овощные
+tomat,Томат,,Овощные
+ogurets,Огурец,,Овощные
+bahchevye,Бахчевые,,Овощные
+yablonya,Яблоня,,Плодовые
+grusha,Груша,,Плодовые
+vinograd,Виноград,,Плодовые
+pastbischa-i-senokosy,Пастбища и сенокосы,,Кормовые угодья
+par,Пар,,Спец. объекты
+zemli-neselhozpolzovaniya,Земли несельхозпользования,,Спец. объекты
+polya-pod-posev,Поля под посев,,Спец. объекты
+skladskie-pomescheniya,Складские помещения,,Спец. объекты

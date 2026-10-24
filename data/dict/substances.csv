@@ -1,4 +1,66 @@
-slug,name
-2-4-d,"2,4-Д"
-florasulam,Флорасулам
-dikvat,Дикват
+slug,name,chem_class,kind
+2-4-d,"2,4-Д",Феноксикарбоновые кислоты,pestitsid
+azoksistrobin,Азоксистробин,Стробилурины,pestitsid
+alfa-tsipermetrin,Альфа-циперметрин,Синтетические пиретроиды,pestitsid
+bentazon,Бентазон,Бензотиадиазиноны,pestitsid
+benomil,Беномил,Бензимидазолы,pestitsid
+galoksifop-p-metil,Галоксифоп-П-метил,Арилоксифеноксипропионаты,pestitsid
+glifosat,Глифосат,Аминокислоты (производные глицина),pestitsid
+dikamba,Дикамба,Бензойные кислоты,pestitsid
+dimetoat,Диметоат,Фосфорорганические,pestitsid
+difenokonazol,Дифеноконазол,Триазолы,pestitsid
+diflubenzuron,Дифлубензурон,Бензоилмочевины,pestitsid
+dikvat-dibromid,Дикват дибромид,Бипиридилы,pestitsid
+imazalil,Имазалил,Имидазолы,pestitsid
+imazamoks,Имазамокс,Имидазолиноны,pestitsid
+imazapir,Имазапир,Имидазолиноны,pestitsid
+imazetapir,Имазетапир,Имидазолиноны,pestitsid
+imidakloprid,Имидаклоприд,Неоникотиноиды,pestitsid
+kvizalofop-p-tefuril,Квизалофоп-П-тефурил,Арилоксифеноксипропионаты,pestitsid
+kletodim,Клетодим,Циклогександионы,pestitsid
+klodinafop-propargil,Клодинафоп-пропаргил,Арилоксифеноксипропионаты,pestitsid
+klopiralid,Клопиралид,Пиридинкарбоновые кислоты (пиколинаты),pestitsid
+klotianidin,Клотианидин,Неоникотиноиды,pestitsid
+lyambda-tsigalotrin,Лямбда-цигалотрин,Синтетические пиретроиды,pestitsid
+malation,Малатион,Фосфорорганические,pestitsid
+mankotseb,Манкоцеб,Дитиокарбаматы,pestitsid
+medi-hlorokis,Меди хлорокись,Неорганические соединения меди,pestitsid
+metalaksil,Металаксил,Фениламиды (ациламиналанины),pestitsid
+metsulfuron-metil,Метсульфурон-метил,Сульфонилмочевины,pestitsid
+metribuzin,Метрибузин,Триазиноны,pestitsid
+mcpa,МЦПА,Феноксикарбоновые кислоты,pestitsid
+nikosulfuron,Никосульфурон,Сульфонилмочевины,pestitsid
+oksifluorfen,Оксифлуорфен,Дифениловые эфиры,pestitsid
+pentsikuron,Пенцикурон,Фенилмочевины,pestitsid
+pikloram,Пиклорам,Пиридинкарбоновые кислоты (пиколинаты),pestitsid
+prometrin,Прометрин,Триазины,pestitsid
+propikonazol,Пропиконазол,Триазолы,pestitsid
+prohloraz,Прохлораз,Имидазолы,pestitsid
+rimsulfuron,Римсульфурон,Сульфонилмочевины,pestitsid
+s-metolahlor,С-Метолахлор,Хлорацетамиды,pestitsid
+tebukonazol,Тебуконазол,Триазолы,pestitsid
+tiabendazol,Тиабендазол,Бензимидазолы,pestitsid
+tiametoksam,Тиаметоксам,Неоникотиноиды,pestitsid
+tiram,Тирам (ТМТД),Дитиокарбаматы,pestitsid
+tifensulfuron-metil,Тифенсульфурон-метил,Сульфонилмочевины,pestitsid
+tribenuron-metil,Трибенурон-метил,Сульфонилмочевины,pestitsid
+fenoksaprop-p-etil,Феноксапроп-П-этил,Арилоксифеноксипропионаты,pestitsid
+florasulam,Флорасулам,Триазолопиримидины,pestitsid
+fludioksonil,Флудиоксонил,Фенилпирролы,pestitsid
+flukarbazon-natriya,Флукарбазон натрия,Сульфонилтриазолиноны,pestitsid
+hizalofop-p-etil,Хизалофоп-П-этил,Арилоксифеноксипропионаты,pestitsid
+hlorpirifos,Хлорпирифос,Фосфорорганические,pestitsid
+tsimoksanil,Цимоксанил,Цианоацетамидоксимы,pestitsid
+tsipermetrin,Циперметрин,Синтетические пиретроиды,pestitsid
+tsiprokonazol,Ципроконазол,Триазолы,pestitsid
+tsiazofamid,Циазофамид,Цианоимидазолы,pestitsid
+epoksikonazol,Эпоксиконазол,Триазолы,pestitsid
+klokvintoset-meksil,Клоквинтосет-мексил,Хинолиновые сафенеры,antidot
+mefenpir-dietil,Мефенпир-диэтил,Пиразольные сафенеры,antidot
+poli-beta-gidroksimaslyanaya-kislota,Поли-бета-гидроксимасляная кислота,Биополимер бактериального происхождения (+ минеральные добавки),bio
+guminovye-i-fulvovye-kisloty-mikroelementy,Гуминовые и фульвовые кислоты + микроэлементы,"Гуминовые вещества (K, S, Cu, B, Fe, Mn, Mo, Zn, Co, Se)",bio
+etoksilat-izodetsilovogo-spirta,Этоксилат изодецилового спирта,Неионогенные ПАВ,pav
+etoksilaty-zhirnyh-aminov,Этоксилаты жирных аминов,Комплексный ПАВ (+ хьюмектант + корректор pH),pav
+ortofosfornaya-kislota,Ортофосфорная кислота,Кислотный кондиционер воды (+ краситель + адъювант),pav
+poliefir-modifitsirovannogo-trisiloksana,Полиэфир модифицированного трисилоксана,Силиконовые супер-смачиватели,pav
+dikvat,Дикват,,pestitsid
