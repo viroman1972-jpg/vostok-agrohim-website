@@ -7,7 +7,7 @@
 phase-4-content/registry-links-agroxxi-2026-10-24.tsv (ПИ10). Разметка по satom (product-*-mapping-v1.md)
 только сравнивается со снимком, расхождения — в отчёт. Препарат → ДВ — по полю dv_text таблицы каталога
 (сверено с agroxxi 23.10.2026); антидоты в связи не попадают (в фильтр ДВ не выносятся).
-Связи опубликованных препаратов не трогаются: сайт после переноса не меняется.
+Опубликованные препараты — по тем же правилам (решение Оли 24.10.2026, ПИ10).
 Запуск: python -I scripts/import_dicts.py <отчёт.md>
 """
 import csv, re, sys
@@ -18,15 +18,10 @@ P4 = ROOT / "phase-4-content"
 DATA = ROOT / "data"
 REGISTRY = P4 / "registry-links-agroxxi-2026-10-24.tsv"
 
-# Значения среза 1 (по макету карточки Балерины), на которые ссылаются опубликованные препараты.
-# Остаются до решения о переводе опубликованных препаратов на слаги словаря — см. отчёт.
-LEGACY_PESTS = [("odnoletnie-dvudolnye", "Однолетние двудольные сорняки", "sornyak"),
-                ("kornevotpryskovye", "Многолетние корнеотпрысковые двудольные", "sornyak")]
-LEGACY_SUBS = [("dikvat", "Дикват", "", "pestitsid")]
-
 PEST_TYPE = {"Сорные растения": "sornyak", "Болезни": "bolezn", "Вредители": "vreditel"}
 SUB_KIND = {"Пестициды": "pestitsid", "S": "antidot", "B": "bio", "A": "pav"}
 NAME_ALIAS = {"тебузилкс": "tebuzil-tks"}  # в разметке старое название формы
+DV_ALIAS = {"дикват": "dikvat-dibromid"}  # в таблице каталога без соли
 # Регистрация истекла, действующей нет (К12): регламент в снимке есть, связи не создаются до решения заказчика
 EXPIRED = {"lemur-ke": "12.03.2025", "shaman-ke": "21.06.2026"}
 
@@ -113,7 +108,7 @@ def load_mapping(fname, slugs, products):
 
 def dv_links(p, subs):
     """Компоненты dv_text → слаги словаря ДВ (антидоты пропускаются)."""
-    by_name = {re.sub(r"\s*\(.*\)", "", n).lower(): s for s, n, _, kind in subs if kind != "antidot"}
+    by_name = {re.sub(r"\s*\(.*\)", "", n).lower(): s for s, n, _, kind in subs if kind != "antidot"} | DV_ALIAS
     found, unknown = [], []
     for part in p["dv_text"].split(" + "):
         part = re.sub(r"\([^)]*\)", "", part).strip()
@@ -128,20 +123,18 @@ def main(report_path):
     slugs = load_slugs()
     crops, pests, subs = build_dicts(slugs)
     write_csv(DATA / "dict" / "crops.csv", ["slug", "name", "parent", "group"], crops)
-    write_csv(DATA / "dict" / "pests.csv", ["slug", "name", "type"], pests + LEGACY_PESTS)
-    write_csv(DATA / "dict" / "substances.csv", ["slug", "name", "chem_class", "kind"], subs + LEGACY_SUBS)
+    write_csv(DATA / "dict" / "pests.csv", ["slug", "name", "type"], pests)
+    write_csv(DATA / "dict" / "substances.csv", ["slug", "name", "chem_class", "kind"], subs)
 
     products = read_csv(DATA / "products.csv")
-    published = {p["slug"] for p in products if p["status"] == "published"}
     order = {s: i for i, s in enumerate([c[0] for c in crops] + [p[0] for p in pests])}
     reg = {r["slug"]: r for r in read_csv_tsv(REGISTRY)}
     known = set(order)
 
     def links(name, field, reg_field):
-        old = [r for r in read_csv(DATA / "links" / name) if r["slug"] in published]
-        rows = [(r["slug"], r[field]) for r in old]
+        rows = []
         for p in products:
-            if p["slug"] in published or p["slug"] not in reg or p["slug"] in EXPIRED:
+            if p["slug"] not in reg or p["slug"] in EXPIRED:
                 continue
             vals = reg[p["slug"]][reg_field].split()
             bad = [v for v in vals if v not in known]
@@ -152,11 +145,9 @@ def main(report_path):
     crop_rows = links("product_crop.csv", "crop", "crops")
     pest_rows = links("product_pest.csv", "pest", "pests")
 
-    sub_rows = [(r["slug"], r["substance"]) for r in read_csv(DATA / "links" / "product_substance.csv") if r["slug"] in published]
+    sub_rows = []
     dv_unknown = {}
     for p in products:
-        if p["slug"] in published:
-            continue
         found, unknown = dv_links(p, subs)
         sub_rows += [(p["slug"], s) for s in found]
         if unknown or not found:
@@ -165,7 +156,7 @@ def main(report_path):
 
     m_crop = load_mapping("product-crop-mapping-v1.md", slugs, products)
     m_pest = load_mapping("product-pest-mapping-v1.md", slugs, products)
-    write_report(report_path, products, published, reg, m_crop, m_pest, crop_rows, pest_rows, sub_rows, dv_unknown,
+    write_report(report_path, products, reg, m_crop, m_pest, crop_rows, pest_rows, sub_rows, dv_unknown,
                  crops, pests, subs)
 
 
@@ -174,7 +165,7 @@ def read_csv_tsv(path):
         return list(csv.DictReader(f, delimiter="\t"))
 
 
-def write_report(path, products, published, reg, m_crop, m_pest, crop_rows, pest_rows, sub_rows, dv_unknown,
+def write_report(path, products, reg, m_crop, m_pest, crop_rows, pest_rows, sub_rows, dv_unknown,
                  crops, pests, subs):
     name = {p["slug"]: p["name"] for p in products}
     cname = {c[0]: c[1] for c in crops}
@@ -205,7 +196,7 @@ def write_report(path, products, published, reg, m_crop, m_pest, crop_rows, pest
     L.append("|---|---|---|---|---|")
     for p in products:
         s = p["slug"]
-        if s not in reg or s in published or s in EXPIRED:
+        if s not in reg or s in EXPIRED:
             continue
         rc, rp = set(reg[s]["crops"].split()), set(reg[s]["pests"].split())
         mc, mp = m_crop.get(s, set()), m_pest.get(s, set())
