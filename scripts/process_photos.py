@@ -37,20 +37,26 @@ def compose(img, alpha):
     return canvas
 
 
-def sheet(pairs, path):
-    W = 320
-    out = Image.new("RGB", (W * 2, (W + 28) * len(pairs)), "white")
-    d = ImageDraw.Draw(out)
+def sheet(pairs, path, per_sheet=20, cols=4):
+    """Листы «до / после»: по per_sheet пар, cols пар в ряд; путь ЛИСТ.png → ЛИСТ-01.png, ЛИСТ-02.png…"""
+    W = 260
     try:
-        font = ImageFont.truetype("arial.ttf", 16)
+        font = ImageFont.truetype("arial.ttf", 15)
     except OSError:
         font = ImageFont.load_default()
-    for i, (name, before, after) in enumerate(pairs):
-        for j, im in enumerate((before, after)):
-            t = im.copy(); t.thumbnail((W - 8, W - 8))
-            out.paste(t, (j * W + (W - t.width) // 2, i * (W + 28) + 4))
-        d.text((6, i * (W + 28) + W + 4), f"{name}: до / после", fill="black", font=font)
-    out.save(path)
+    path = Path(path)
+    for n in range(0, len(pairs), per_sheet):
+        part = pairs[n:n + per_sheet]
+        rows = (len(part) + cols - 1) // cols
+        out = Image.new("RGB", (W * 2 * cols, (W + 26) * rows), "white")
+        d = ImageDraw.Draw(out)
+        for k, (name, before, after) in enumerate(part):
+            x0, y0 = (k % cols) * W * 2, (k // cols) * (W + 26)
+            for j, im in enumerate((before, after)):
+                t = im.copy(); t.thumbnail((W - 8, W - 8))
+                out.paste(t, (x0 + j * W + (W - t.width) // 2, y0 + 4))
+            d.text((x0 + 6, y0 + W + 2), f"{n + k + 1}. {name}", fill="black", font=font)
+        out.save(path.with_name(f"{path.stem}-{n // per_sheet + 1:02d}{path.suffix}"))
 
 
 def main():
