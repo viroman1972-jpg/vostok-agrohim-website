@@ -44,7 +44,7 @@
       <div class="grid c3" id="grid">
         {% for q in items %}
         <a class="card" href="{{ q.url }}" data-name="{{ q.name }}" data-price="{{ q.price_num }}" data-dv="{{ q.substances|join(' ') }}" data-crop="{{ q.crops|join(' ') }}" data-pest="{{ q.pests|join(' ') }}" data-maker="{{ q.manufacturer }}" data-series="{{ q.series }}" data-action="{{ q.action_character }}">
-          <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480"{% if loop.index > 3 %} loading="lazy"{% endif %}></div>
+          <div class="im"><img src="{{ q.img480 }}" alt="{{ q.name }}{% if q.photo %} — упаковка{% else %} — фото упаковки готовится{% endif %}" width="480" height="480"{% if loop.index > 3 %} loading="lazy"{% endif %}></div>
           <div class="tags"><span class="tag tag-cat sm">{{ category.name_one }}</span>{% if q.maker_badge %}<span class="tag tag-maker sm">{{ q.maker_badge }}</span>{% endif %}</div>
           <div class="nm">{{ q.name }}</div>
           <div class="dv">{{ q.dv_text }}</div>

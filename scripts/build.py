@@ -68,6 +68,12 @@ def build(root=ROOT, out=None):
         p["substances"], p["crops"], p["pests"] = l_sub[p["slug"]], l_crop[p["slug"]], l_pest[p["slug"]]
         p["maker_badge"] = mk[p["manufacturer"]]["badge"]
         p["category_one"] = cat_by[p["category"]]["name_one"]
+        # Нет фото — заглушка по виду упаковки (решение Оли 28.10.2026, Ф2)
+        img = "/static/img/products/"
+        if p["photo"]:
+            p["img480"], p["img1000"] = f"{img}{p['photo']}-480.webp", f"{img}{p['photo']}-1000.webp"
+        else:
+            p["img480"] = p["img1000"] = f"{img}placeholder-{'liquid' if p['unit'] == 'л' else 'solid'}.svg"
         miss = [label for key, label in SEVEN if not p.get(key)]
         if miss:
             warnings.append(f"{p['slug']}: не заполнены характеристики: {', '.join(miss)}")
@@ -140,12 +146,13 @@ def build(root=ROOT, out=None):
         for rs in l_cross[p["slug"]]:
             if rs in by_slug:
                 q = by_slug[rs]
-                cross.append(dict(name=q["name"], url=q["url"], photo=q["photo"], category_one=q["category_one"], dv_text=q["dv_text"]))
+                cross.append(dict(name=q["name"], url=q["url"], photo=q["photo"], img480=q["img480"], category_one=q["category_one"], dv_text=q["dv_text"]))
         ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["description"],
               "brand": {"@type": "Brand", "name": mk[p["manufacturer"]]["name"]},
-              "image": f"{s['site_url']}/static/img/products/{p['photo']}-1000.webp",
               "offers": {"@type": "Offer", "price": str(p["price_num"]), "priceCurrency": "RUB",
                          "url": f"{s['site_url']}{p['url']}"}}
+        if p["photo"]:
+            ld["image"] = f"{s['site_url']}{p['img1000']}"
         html = env.get_template("product.html").render(
             **common, title=f"{p['name']} — купить в Челябинске | Восток АгроХим", description=p["description"],
             canonical=p["url"], p=p, category=cat_by[p["category"]], maker=mk[p["manufacturer"]], specs=specs, c=c,

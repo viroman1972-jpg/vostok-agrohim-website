@@ -58,7 +58,7 @@
     <div class="grid c4 hit">
       {% for q in featured %}
       <a class="hcard" href="{{ q.url }}">
-        <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480" loading="lazy"></div>
+        <div class="im"><img src="{{ q.img480 }}" alt="{{ q.name }}{% if q.photo %} — упаковка{% else %} — фото упаковки готовится{% endif %}" width="480" height="480" loading="lazy"></div>
         <div class="bd">
           <div class="tags"><span class="tag tag-cat sm">{{ q.category_one }}</span><span class="tag tag-maker sm">{{ q.maker_badge }}</span></div>
           <div class="nm">{{ q.name }}</div>

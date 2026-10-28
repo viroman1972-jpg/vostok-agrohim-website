@@ -12,13 +12,17 @@
 
   <div class="p-hero">
     <div>
-      <div class="photo" id="photo" data-front="/static/img/products/{{ p.photo }}-1000.webp"{% if p.photo_back %} data-back="/static/img/products/{{ p.photo_back }}-1000.webp"{% endif %} data-alt-front="{{ p.name }} — лицевая сторона упаковки" data-alt-back="{{ p.name }} — тыльная сторона упаковки">
-        <img class="zoom" id="photo-img" src="/static/img/products/{{ p.photo }}-1000.webp" alt="{{ p.name }} — лицевая сторона упаковки" width="1000" height="1000" style="object-fit:contain;transition:transform .12s ease-out">
+      {% if p.photo %}
+      <div class="photo" id="photo" data-front="{{ p.img1000 }}"{% if p.photo_back %} data-back="/static/img/products/{{ p.photo_back }}-1000.webp"{% endif %} data-alt-front="{{ p.name }} — лицевая сторона упаковки" data-alt-back="{{ p.name }} — тыльная сторона упаковки">
+        <img class="zoom" id="photo-img" src="{{ p.img1000 }}" alt="{{ p.name }} — лицевая сторона упаковки" width="1000" height="1000" style="object-fit:contain;transition:transform .12s ease-out">
         <button class="zbtn" type="button" id="photo-zoom" aria-label="Увеличить фото">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="#26543E" stroke-width="1.6"/><path d="M12.8 12.8L17.5 17.5" stroke="#26543E" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 6.2v4.6M6.2 8.5h4.6" stroke="#26543E" stroke-width="1.4" stroke-linecap="round"/></svg>
         </button>
         {% if p.photo_back %}<div class="dots"><button type="button" data-side="front" aria-pressed="true" aria-label="Лицевая сторона упаковки"></button><button type="button" data-side="back" aria-pressed="false" aria-label="Тыльная сторона упаковки"></button></div>{% endif %}
       </div>
+      {% else %}
+      <div class="photo"><img src="{{ p.img1000 }}" alt="{{ p.name }} — фото упаковки готовится" width="480" height="480" style="width:100%;height:100%;object-fit:contain"></div>
+      {% endif %}
     </div>
     <div>
       <div class="p-tags"><span class="tag tag-cat">{{ category.name_one }}</span>{% if maker %}<span class="tag tag-maker">{{ maker.badge }}</span>{% endif %}</div>
@@ -97,7 +101,7 @@
     <div class="grid c4">
       {% for q in cross %}
       <a class="card" href="{{ q.url }}">
-        <div class="im"><img src="/static/img/products/{{ q.photo }}-480.webp" alt="{{ q.name }} — упаковка" width="480" height="480" loading="lazy"></div>
+        <div class="im"><img src="{{ q.img480 }}" alt="{{ q.name }}{% if q.photo %} — упаковка{% else %} — фото упаковки готовится{% endif %}" width="480" height="480" loading="lazy"></div>
         <div class="tags"><span class="tag tag-cat sm">{{ q.category_one }}</span></div>
         <div class="nm">{{ q.name }}</div>
         <div class="dv">{{ q.dv_text }}</div>
@@ -111,6 +115,7 @@
 
 <div class="sticky-cta"><button class="btn" type="button" data-open-lead data-product="{{ p.name }}">Получить консультацию</button></div>
 
+{% if p.photo %}
 <dialog id="lightbox" class="lb" aria-label="Фото упаковки">
   <div class="lbox">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px"><span id="lb-title" style="font-size:15px;font-weight:600;color:var(--green)">{{ p.name }}</span><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div>
@@ -121,4 +126,5 @@
     </div>
   </div>
 </dialog>
+{% endif %}
 {% endblock %}
