@@ -40,7 +40,7 @@ procedures:
 - key: store
   title: Хранение и упаковка
   paras:
-  - 'Упаковка: канистры 5 л и 10 л.'
+  - 'Упаковка: канистры 10 л.'
   - 'Срок хранения: 3 года.'
 procedures_tail:
 - key: rotation
