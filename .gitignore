@@ -24,3 +24,6 @@ zayavki-log/
 
 # Личные настройки Claude Code
 .claude/settings.local.json
+
+# Рабочие партии фото для очистки (исходники и ответы ChatGPT), не в git
+photo-work/
