@@ -1,7 +1,8 @@
 """Автопроверки собранного сайта. Код возврата 1, если есть нарушения.
-Использование: check.py [папка] [--staging]   |   check.py --selftest
---staging: дополнительно проверить, что тестовая копия закрыта от индексации."""
-import json, re, sys
+Использование: check.py [папка] [--staging | --release]   |   check.py --selftest
+--staging: дополнительно проверить, что тестовая копия закрыта от индексации.
+--release: боевой сайт — картинки только с правом использования (журнал ДЗ09, статус «разрешено» или «своё»)."""
+import csv, json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,6 +27,10 @@ PLANNED = ("/catalog/kultura/", "/catalog/vrednyy-obekt/", "/catalog/dv/", "/cat
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/", "/catalog/desikanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
 PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
+IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"']+?)(?:-\d+)?\.(?:webp|svg|jpe?g|png)["']""", re.I)
+JOURNAL = ROOT / "assets" / "image-sources.csv"
+STATUSES = {"разрешено", "своё", "ожидает", "уточнить"}  # первые два допустимы на боевом сайте (ДЗ09)
+RELEASE_OK = {"разрешено", "своё"}
 LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
 
@@ -72,12 +77,32 @@ def check_file(path, text, root=None):
     return errs
 
 
-def check_dir(d, staging=False):
+def read_journal(path):
+    with open(path, encoding="utf-8", newline="") as fh:
+        return {r["file"]: r for r in csv.DictReader(fh)}
+
+
+def check_images(path, text, journal, release):
+    errs = []
+    for key in sorted(set(IMG_REF.findall(text))):
+        r = journal.get(key)
+        if r is None:
+            errs.append(f"{path}: картинка {key} не записана в журнал источников (ДЗ09)")
+        elif r["status"] not in STATUSES:
+            errs.append(f"{path}: у картинки {key} неизвестный статус «{r['status']}» в журнале")
+        elif release and r["status"] not in RELEASE_OK:
+            errs.append(f"{path}: картинка {key} без права использования на боевом сайте (статус «{r['status']}», ДЗ09)")
+    return errs
+
+
+def check_dir(d, staging=False, release=False, journal=JOURNAL):
     errs, n = [], 0
+    jr = read_journal(journal)
     for f in sorted(Path(d).rglob("*.html")):
         n += 1
         text = f.read_text(encoding="utf-8")
         errs += check_file(f.relative_to(d), text, Path(d))
+        errs += check_images(f.relative_to(d), text, jr, release)
         if staging and 'name="robots" content="noindex' not in text:
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
@@ -88,8 +113,9 @@ def check_dir(d, staging=False):
 
 
 def selftest():
-    bad, _ = check_dir(ROOT / "tests" / "bad", staging=True)
-    expected = ["Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка",
+    bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
+    bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
+    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка",
                 "нет noindex", "без robots.txt"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if missing:
@@ -103,7 +129,7 @@ if __name__ == "__main__":
         sys.exit(selftest())
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
-    errs, n = check_dir(d, staging="--staging" in sys.argv)
+    errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)

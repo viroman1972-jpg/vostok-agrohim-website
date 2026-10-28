@@ -35,9 +35,10 @@ jobs:
         if: github.ref_name == 'staging'
         run: make staging
 
+      # Для main — боевая проверка: картинки без разрешения (журнал ДЗ09) не пропускаются
       - name: Сборка и проверки
         if: github.ref_name != 'staging'
-        run: make check
+        run: make release
 
       # Резервная копия каждой успешной сборки (план §2.5)
       - name: Архив сборки
