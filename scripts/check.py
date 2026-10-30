@@ -175,13 +175,42 @@ def check_seo(root=ROOT):
     return errs
 
 
+def check_prom(root=ROOT):
+    """Промышленные гербициды (ДМ31): тег promyshlennoe-primenenie стоит ровно у препаратов со связью «земли несельхозпользования»
+    (госреестр), только у гербицидов; препарат, названный в тексте подраздела, должен быть с тегом."""
+    errs, tag, land = [], "promyshlennoe-primenenie", "zemli-neselhozpolzovaniya"
+    data = Path(root) / "data"
+    products = read_csv(data / "products.csv")
+    linked = {r["slug"] for r in read_csv(data / "links" / "product_crop.csv") if r["crop"] == land}
+    tagged = set()
+    for p in products:
+        if tag in p["tags"].split():
+            tagged.add(p["slug"])
+            if p["category"] != "gerbitsidy":
+                errs.append(f"products.csv: {p['slug']} — тег {tag} не у гербицида (ДМ31)")
+    for s in sorted(tagged - linked):
+        errs.append(f"products.csv: {s} — тег {tag} без связи «{land}» в product_crop.csv")
+    for s in sorted(linked - tagged):
+        errs.append(f"products.csv: {s} — связь «{land}» без тега {tag}")
+    f = Path(root) / "content" / "seo" / "gerbitsidy-promyshlennye.yml"
+    if f.exists():
+        text = f.read_text(encoding="utf-8")
+        by_name = {p["name"].split(",")[0].strip(): p["slug"] for p in products}
+        for n in sorted(by_name, key=len, reverse=True):
+            text, k = re.subn(r"(?<![А-Яа-яЁё])" + name_forms(n) + r"(?![А-Яа-яЁё])", "§", text)
+            if k and by_name[n] not in tagged:
+                errs.append(f"{f.relative_to(root)}: {n} — нет тега {tag} (ДМ31)")
+    return errs
+
+
 def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
-    bad += seo
+    bad += seo + check_prom(ROOT / "tests" / "seo")
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/",
-                "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре"]
+                "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
+                "не у гербицида", "без связи", "без тега", "Миура — нет тега"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
@@ -199,7 +228,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
     errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
-    errs += check_seo()
+    errs += check_seo() + check_prom()
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)
