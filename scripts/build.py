@@ -12,6 +12,9 @@ SEVEN = [("dv_text", "Действующее вещество"), ("form", "Фо�
          ("penetration", "Способ проникновения"), ("hazard_human", "Класс опасности для человека"),
          ("hazard_bee", "Класс опасности для пчёл"), ("phytotox", "Фитотоксичность")]
 RESERVED = {"all", "promyshlennye", "sornyaki", "vrediteli", "bolezni"}  # site-structure-v1.md §1
+# Промышленные гербициды (ДМ31): тег стоит ровно у препаратов со связью «земли несельхозпользования» (проверяет check.py)
+PROM_TAG, PROM_LAND, PROM_URL = "promyshlennoe-primenenie", "zemli-neselhozpolzovaniya", "/catalog/gerbitsidy/promyshlennye/"
+PROM_NAME = "Гербициды промышленного применения"
 
 
 def read_csv(path):
@@ -110,7 +113,10 @@ def build(root=ROOT, out=None):
         f.write_text(html, encoding="utf-8")
         pages.append(rel)
     noindex = os.environ.get("NOINDEX") == "1"  # закрытый тестовый сайт
-    common = dict(s=s, cats=cats, noindex=noindex)
+    prom_items = sorted([p for p in products if p["category"] == "gerbitsidy" and PROM_TAG in p["tags"].split()], key=lambda p: p["name"])
+    prom = PROM_URL if prom_items else None  # ссылки на подраздел — только если он собирается
+    prom_tile = [dict(slug=PROM_URL.strip("/").removeprefix("catalog/"), name=PROM_NAME)] if prom else []
+    common = dict(s=s, cats=cats, noindex=noindex, prom=prom)
 
     action_names = {"izbiratelnyy": {"name": "Избирательный"}, "sploshnoy": {"name": "Сплошного действия"}}
     facets = {"cat": ("Категория", "category", cat_by), "dv": ("Действующее вещество", "substances", subs),
@@ -131,11 +137,11 @@ def build(root=ROOT, out=None):
     def read_seo(f):
         return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
 
-    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats):
-        """Листинг по макету гербицидов: категория или страница входа (культура, объект, ДВ)."""
+    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=()):
+        """Листинг по макету гербицидов: категория, подраздел или страница входа (культура, объект, ДВ)."""
         prices_l = [p["price_num"] for p in items]
         write(rel, env.get_template("listing.html").render(
-            **common, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb,
+            **common, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb, crumbs=list(crumbs),
             items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
             groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
             other_title=other_title, other_cats=other_cats))
@@ -144,12 +150,8 @@ def build(root=ROOT, out=None):
     def in_cat(p, slug):
         return "desikaciya" in p["tags"].split() if slug == "desikanty" else p["category"] == slug
 
-    # Список категории
-    for cat in cats:
-        items = sorted([p for p in products if in_cat(p, cat["slug"])], key=lambda p: p["name"])
-        if not items:
-            continue
-        seo = read_seo(content / "seo" / f"{cat['slug']}.yml")
+    def quick_rows(items, tasks=()):
+        """Быстрые входы над списком: серии, задачи защиты (фильтр и ссылки на подразделы), топ-5 ДВ."""
         ser = defaultdict(int)
         for p in items:
             if p["series"]:
@@ -158,15 +160,40 @@ def build(root=ROOT, out=None):
         for p in items:
             for v in p["substances"]:
                 dvc[v] += 1
-        quick = [dict(label="Серии", group="series", items=[dict(name=n, value=n) for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах
-                 dict(label="Задачи защиты", group="action",
-                      items=[dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []),
-                 dict(label="Действующее вещество", group="dv",
-                      items=[dict(name="ДВ: " + subs[v]["name"], value=v) for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]])]
-        listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"], quick,
+        return [dict(label="Серии", group="series", items=[dict(name=n, value=n) for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах
+                dict(label="Задачи защиты", group="action",
+                     items=([dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []) + list(tasks)),
+                dict(label="Действующее вещество", group="dv",
+                     items=[dict(name="ДВ: " + subs[v]["name"], value=v) for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]])]
+
+    def with_prom(lst):  # плитка подраздела — сразу после «Гербицидов»
+        out_ = []
+        for c in lst:
+            out_.append(c)
+            if c["slug"] == "gerbitsidy":
+                out_ += prom_tile
+        return out_
+
+    # Список категории
+    for cat in cats:
+        items = sorted([p for p in products if in_cat(p, cat["slug"])], key=lambda p: p["name"])
+        if not items:
+            continue
+        seo = read_seo(content / "seo" / f"{cat['slug']}.yml")
+        tasks = [dict(name="Промышленным заказчикам", href=prom)] if cat["slug"] == "gerbitsidy" and prom else []  # ДМ31, блок 3 макета
+        others = [c for c in cats if c["slug"] != cat["slug"]]
+        listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"], quick_rows(items, tasks),
                 title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
-                other_cats=[c for c in cats if c["slug"] != cat["slug"]])
+                other_cats=prom_tile + others if cat["slug"] == "gerbitsidy" else with_prom(others))
+
+    # Подраздел промышленных гербицидов (ДМ31): свой H1, текст T02; в фильтрах нет культуры — у всех одни земли несельхозпользования
+    if prom:
+        seo = read_seo(content / "seo" / "gerbitsidy-promyshlennye.yml")
+        listing(PROM_URL.strip("/") + "/index.html", prom_items, PROM_NAME, PROM_NAME, ["dv", "pest", "maker", "action"], quick_rows(prom_items),
+                title=seo.get("meta", {}).get("title") or f"{PROM_NAME} — купить в Челябинске | Восток АгроХим",
+                description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
+                other_title="Категории каталога", crumbs=[dict(name="Гербициды", url="/catalog/gerbitsidy/")])
 
     # Страницы входов: культура, вредный объект, ДВ (ДМ02). Страница есть, только если на ней есть опубликованный препарат.
     def short(p):
@@ -183,6 +210,8 @@ def build(root=ROOT, out=None):
         for slug, row in dct.items():
             if slug in RESERVED:
                 sys.exit(f"Адрес {slug} ({kind}) совпадает с зарезервированным словом")
+            if kind == "kultura" and slug == PROM_LAND:  # тот же набор, что в подразделе промышленных гербицидов, — второй страницы нет
+                continue
             items = sorted([p for p in products if has(p, slug)], key=lambda p: p["name"])
             if not items:
                 continue
@@ -272,6 +301,8 @@ def build(root=ROOT, out=None):
         n = sum(in_cat(p, c["slug"]) for p in products)
         if f"/catalog/{c['slug']}/" in done:
             root_cats.append(dict(slug=c["slug"], name=c["name"], count=f"{n} {word_preparat(n)}"))
+            if c["slug"] == "gerbitsidy" and prom:
+                root_cats.append(dict(prom_tile[0], count=f"{len(prom_items)} {word_preparat(len(prom_items))}"))
     blocks = [dict(title="По культурам", tiles=top("kultura", [k for k in built["kultura"] if not crops[k]["parent"]], crops),
                    more=dict(name="Все культуры →", url="/catalog/kultura/") if "/catalog/kultura/" in done else None),
               dict(title="По вредителям, сорнякам и болезням", tiles=hub_tiles,
@@ -308,7 +339,7 @@ def build(root=ROOT, out=None):
         html = env.get_template("product.html").render(
             **common, title=f"{p['name']} — купить в Челябинске | Восток АгроХим", description=p["description"],
             canonical=p["url"], p=p, category=cat_by[p["category"]], maker=mk[p["manufacturer"]], specs=specs, c=c,
-            crops=[crops[x] for x in p["crops"]], pests=[pests[x] for x in p["pests"]], cross=cross,
+            crops=[dict(crops[x], url=PROM_URL if x == PROM_LAND else f"/catalog/kultura/{x}/") for x in p["crops"]], pests=[pests[x] for x in p["pests"]], cross=cross,
             jsonld=json.dumps(ld, ensure_ascii=False))
         write(f"catalog/{p['category']}/{p['slug']}/index.html", html)
 

@@ -8,7 +8,7 @@
   var pager = document.getElementById('pager'), pages = document.getElementById('pages');
   var per = +pager.getAttribute('data-per'), page = 1, all = false;
   var boxes = Array.prototype.slice.call(document.querySelectorAll('#side input[type=checkbox]'));
-  var pills = Array.prototype.slice.call(document.querySelectorAll('.qpill'));
+  var pills = Array.prototype.slice.call(document.querySelectorAll('button.qpill'));  // ссылки-входы (a.qpill) ведут на подраздел, не фильтруют
   var pmin = document.getElementById('pmin'), pmax = document.getElementById('pmax');
   var sortEl = document.getElementById('sort');
   var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', series: 'series', action: 'action' };

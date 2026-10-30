@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="wrap-wide">
-  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><span class="cur">{{ crumb }}</span></div>
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><span class="cur">{{ crumb }}</span></div>
   <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
   <p class="l-lead">{{ lead }}</p>
 
   <div class="quick" id="quick">
-    {% for r in quick %}<div class="row"><span class="lbl">{{ r.label }}</span>{% for x in r['items'] %}<button class="qpill" type="button" data-group="{{ r.group }}" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>
+    {% for r in quick %}<div class="row"><span class="lbl">{{ r.label }}</span>{% for x in r['items'] %}{% if x.get('href') %}<a class="qpill" href="{{ x.href }}">{{ x.name }}</a>{% else %}<button class="qpill" type="button" data-group="{{ r.group }}" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endif %}{% endfor %}</div>
     {% endfor %}
   </div>
 

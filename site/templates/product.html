@@ -69,7 +69,7 @@
   <section class="section">
     <h2 class="h2">Область применения</h2>
     {% if crops %}<div class="ctx-label">Работает на культурах</div>
-    <div class="pills">{% for x in crops %}<a class="pill" href="/catalog/kultura/{{ x.slug }}/">{{ x.name }}</a>{% endfor %}</div>{% endif %}
+    <div class="pills">{% for x in crops %}<a class="pill" href="{{ x.url }}">{{ x.name }}</a>{% endfor %}</div>{% endif %}
     {% if pests %}<div class="ctx-label second">Против объектов</div>
     <div class="pills">{% for x in pests %}<a class="pill" href="/catalog/vrednyy-obekt/{{ x.slug }}/">{{ x.name }}</a>{% endfor %}</div>{% endif %}
     {% if c.resistant_weeds_note %}<p class="p-text"><strong>Эффективна против устойчивых к 2,4-Д:</strong> {{ c.resistant_weeds_note }}</p>{% endif %}
