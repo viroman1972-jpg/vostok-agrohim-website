@@ -1,10 +1,11 @@
 """Сборка сайта: data/*.csv + content/*.yml + site/templates -> dist/.
 Цены берутся только из data/prices.csv."""
-import csv, json, os, shutil, sys
+import csv, json, os, re, shutil, sys
 from collections import defaultdict
 from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
+from markupsafe import Markup, escape
 
 ROOT = Path(__file__).resolve().parent.parent
 SEVEN = [("dv_text", "Действующее вещество"), ("form", "Форма препарата"), ("drug_type", "Тип применения"),
@@ -23,6 +24,11 @@ def money(v):
 
 def tel(v):
     return "+" + "".join(ch for ch in v if ch.isdigit())
+
+
+def md(v):
+    """**жирный** из SEO-текстов -> <strong>, остальное экранируется."""
+    return Markup(re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", str(escape(v))))
 
 
 def word_preparat(n):
@@ -81,6 +87,7 @@ def build(root=ROOT, out=None):
 
     env = Environment(loader=FileSystemLoader(tpl), undefined=StrictUndefined, autoescape=True)
     env.filters["tel"] = tel
+    env.filters["md"] = md
     if out.exists():
         shutil.rmtree(out)
     pages = []
@@ -127,8 +134,8 @@ def build(root=ROOT, out=None):
         task_pills = [dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []
         prices_l = [p["price_num"] for p in items]
         html = env.get_template("listing.html").render(
-            **common, title=f"{cat['name']} — купить в Челябинске | Восток АгроХим",
-            description=seo.get("lead", ""), canonical=f"/catalog/{cat['slug']}/", category=cat, items=items,
+            **common, title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
+            description=seo.get("meta", {}).get("description") or seo.get("lead", ""), canonical=f"/catalog/{cat['slug']}/", category=cat, items=items,
             count_word=word_preparat(len(items)), lead=seo.get("lead", ""), seo=seo.get("seo"), groups=groups,
             series_pills=series_pills, dv_pills=dv_pills, task_pills=task_pills,
             price_min=min(prices_l), price_max=max(prices_l), other_cats=[c for c in cats if c["slug"] != cat["slug"]])

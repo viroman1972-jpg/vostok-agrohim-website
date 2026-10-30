@@ -61,7 +61,12 @@
   </div>
 
   {% if seo %}
-  <div class="seo"><h2>{{ seo.title }}</h2>{% for t in seo.paras %}<p>{{ t }}</p>{% endfor %}</div>
+  <div class="seo">
+    {% for sec in seo.sections %}<h2>{{ sec.title }}</h2>
+    {% for t in sec.paras or [] %}{% if t is mapping %}<ul>{% for li in t.list %}<li>{{ li|md }}</li>{% endfor %}</ul>{% else %}<p>{{ t|md }}</p>{% endif %}{% endfor %}
+    {% endfor %}
+    {% if seo.cta %}<p class="cta">{{ seo.cta|md }}</p>{% endif %}
+  </div>
   {% endif %}
 
   <div class="other">

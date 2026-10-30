@@ -229,6 +229,9 @@ h1,h2,h3{margin:0}
 .seo{margin:48px auto 0;max-width:720px}
 .seo h2{font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.3;color:var(--green);margin:0 0 20px}
 .seo p{margin:0 0 16px;font-size:16px;line-height:1.6}
+.seo ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.6}
+.seo p+h2,.seo ul+h2{margin-top:36px}
+.seo .cta{margin-top:28px}
 .other{margin-top:48px}
 .other h2{font-family:var(--serif);font-weight:700;font-size:24px;color:var(--green);margin:0 0 24px}
 .other .cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
