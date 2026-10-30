@@ -1,7 +1,8 @@
 """Автопроверки собранного сайта. Код возврата 1, если есть нарушения.
 Использование: check.py [папка] [--staging | --release]   |   check.py --selftest
 --staging: дополнительно проверить, что тестовая копия закрыта от индексации.
---release: боевой сайт — картинки только с правом использования (журнал ДЗ09, статус «разрешено» или «своё»)."""
+--release: боевой сайт — картинки только с правом использования (журнал ДЗ09, статус «разрешено» или «своё»).
+Кроме собранных страниц проверяются исходные SEO-тексты content/seo (правило 4: названия препаратов — по таблице связей)."""
 import csv, json, re, sys
 from pathlib import Path
 
@@ -32,6 +33,11 @@ JOURNAL = ROOT / "assets" / "image-sources.csv"
 STATUSES = {"разрешено", "своё", "ожидает", "уточнить"}  # первые два допустимы на боевом сайте (ДЗ09)
 RELEASE_OK = {"разрешено", "своё"}
 LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+# Названия, которых не должно быть в SEO-текстах: исключённые из каталога и встречавшиеся в волнах, но не продаваемые
+SEO_OFF = {"Ректор": "исключён (У02)", "Альфацин": "исключён (У03)", "Лазурит Ультра": "исключён (У04)",
+           "Лигногумат": "исключён (У05)", "Тиара": "исключена (У06)", "Лемур": "исключён до новой регистрации (У08)",
+           "Шаман": "исключён до новой регистрации (У08)", "Табу Супер": "нет в каталоге", "Бицепс": "нет в каталоге",
+           "Дублон": "нет в каталоге"}
 
 
 def link_exists(root, href):
@@ -112,12 +118,72 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
     return errs, n
 
 
+def read_csv(path):
+    with open(path, encoding="utf-8", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def name_forms(name):
+    """Шаблон названия с падежными окончаниями первого слова: Балерина → Балерину, Хакер → Хакером, Колосаль → Колосаля."""
+    first, sep, rest = name.partition(" ")
+    if first[-1] in "ая":
+        w = re.escape(first[:-1]) + "(?:а|я|ы|и|е|у|ю|ой|ей)"
+    elif first[-1] == "ь":
+        w = re.escape(first[:-1]) + "(?:ь|я|ю|ем|е)"
+    elif re.match(r"[бвгджзклмнпрстфхцчшщ]", first[-1]):
+        w = re.escape(first) + "(?:а|у|ом|е)?"
+    else:
+        w = re.escape(first)
+    return w + re.escape(sep + rest)
+
+
+def check_seo(root=ROOT):
+    """Правило 4: препарат в тексте страницы культуры, объекта или ДВ — только если он есть в таблице связей этой страницы.
+    Культура учитывает родителя и подвиды (у яровой пшеницы — связи «пшеницы»)."""
+    errs = []
+    data, seo = Path(root) / "data", Path(root) / "content" / "seo"
+    slug_by_name = {p["name"].split(",")[0].strip(): p["slug"] for p in read_csv(data / "products.csv")}
+    names = sorted(set(slug_by_name) | set(SEO_OFF), key=len, reverse=True)  # длинные первыми: «Балерина Форте», не «Балерина»
+    pats = [(n, re.compile(r"(?<![А-Яа-яЁё])" + name_forms(n) + r"(?![А-Яа-яЁё])")) for n in names]
+    crops = {r["slug"]: r for r in read_csv(data / "dict" / "crops.csv")}
+    kinds = {"kultura": ("crops.csv", "product_crop.csv", "crop"), "vrednyy-obekt": ("pests.csv", "product_pest.csv", "pest"),
+             "dv": ("substances.csv", "product_substance.csv", "substance")}
+    for kind, (dict_file, link_file, col) in kinds.items():
+        known = {r["slug"] for r in read_csv(data / "dict" / dict_file)}
+        links = read_csv(data / "links" / link_file)
+        for f in sorted((seo / kind).glob("*.yml")):
+            rel = f.relative_to(root)
+            if f.stem not in known:
+                errs.append(f"{rel}: страницы {f.stem} нет в словаре {dict_file}"); continue
+            keys = {f.stem}
+            if kind == "kultura":
+                keys |= {k for k, v in crops.items() if v["parent"] == f.stem}
+                if crops[f.stem]["parent"]:
+                    keys.add(crops[f.stem]["parent"])
+            linked = {r["slug"] for r in links if r[col] in keys}
+            text, found = f.read_text(encoding="utf-8"), set()
+            for n, p in pats:  # найденное вырезается, чтобы «Балерина Форте» не засчиталась ещё и как «Балерина»
+                text, k = p.subn("§", text)
+                if k:
+                    found.add(n)
+            for n in sorted(found):
+                if n in SEO_OFF:
+                    errs.append(f"{rel}: {n} — {SEO_OFF[n]}")
+                elif slug_by_name[n] not in linked:
+                    errs.append(f"{rel}: {n} — нет связи с этой страницей в {link_file} (правило 4)")
+    return errs
+
+
 def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
+    seo = check_seo(ROOT / "tests" / "seo")
+    bad += seo
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка",
-                "нет noindex", "без robots.txt"]
+                "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре"]
     missing = [e for e in expected if not any(e in x for x in bad)]
+    if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
+        missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
     if missing:
         print("SELFTEST ПРОВАЛЕН, проверки не поймали:", ", ".join(missing)); return 1
     print(f"selftest ок: на плохом примере поймано {len(bad)} нарушений"); return 0
@@ -130,6 +196,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
     errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
+    errs += check_seo()
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)
