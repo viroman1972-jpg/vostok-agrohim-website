@@ -265,7 +265,7 @@ h1,h2,h3{margin:0}
 .site-footer{margin-top:64px;background:var(--green-d);color:var(--cream);padding:48px var(--pad) 0;border-top:1px solid rgba(248,244,233,.14)}
 .site-footer a{color:var(--cream);border-bottom:1px solid transparent;align-self:flex-start}
 .site-footer a:hover{color:var(--cream);border-bottom-color:var(--gold)}
-.site-footer .cols{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:40% 30% 30%;gap:40px}
+.site-footer .cols{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,3fr);gap:40px}
 @media (max-width:959px){.site-footer .cols{grid-template-columns:minmax(0,1fr)}}
 .site-footer .logo2{font-family:var(--serif);font-weight:900;font-size:26px;margin-bottom:24px}
 .site-footer .logo2 span{color:var(--gold)}
