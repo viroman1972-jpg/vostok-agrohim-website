@@ -237,13 +237,15 @@ def build(root=ROOT, out=None):
     hubs = [("sornyaki", "sornyak", "Сорняки", "сорняков", "Выберите сорняк — на его странице собраны препараты каталога против него.", ("сорняк", "сорняка", "сорняков")),
             ("vrediteli", "vreditel", "Вредители", "вредителей", "Выберите вредителя — на его странице собраны препараты каталога против него.", ("вредитель", "вредителя", "вредителей")),
             ("bolezni", "bolezn", "Болезни", "болезней", "Выберите болезнь — на её странице собраны препараты каталога против неё.", ("болезнь", "болезни", "болезней"))]
-    sections = []
+    sections, hub_tiles = [], []
     for hub, typ, title, gen, lead, words in hubs:
         tiles = [tile("vrednyy-obekt", k, r["name"]) for k, r in pests.items() if r["type"] == typ and k in built["vrednyy-obekt"]]
         ok = overview(f"catalog/vrednyy-obekt/{hub}/index.html", f"Препараты против {gen}", lead, [dict(title="", tiles=tiles)], words,
                       [dict(name="Вредные объекты", url="/catalog/vrednyy-obekt/")])
         sections.append(dict(title=title, tiles=tiles, more=dict(name=f"Все {title.lower()} →", url=f"/catalog/vrednyy-obekt/{hub}/") if ok else None))
-    overview("catalog/vrednyy-obekt/index.html", "Препараты против вредителей, сорняков и болезней",
+        if ok:
+            hub_tiles.append(dict(name=title, url=f"/catalog/vrednyy-obekt/{hub}/", count=f"{len(tiles)} {plural(len(tiles), words)}", subs=[]))
+    has_pests = overview("catalog/vrednyy-obekt/index.html", "Препараты против вредителей, сорняков и болезней",
              "Выберите сорняк, вредителя или болезнь — на странице объекта собраны препараты каталога против него.",
              sections, ("вредный объект", "вредных объекта", "вредных объектов"))
 
@@ -252,10 +254,33 @@ def build(root=ROOT, out=None):
     for slug, row in subs.items():
         if slug in built["dv"]:
             dgroups[(row["kind"] != "pestitsid", row["chem_class"] or "Другие вещества")].append(tile("dv", slug, row["name"]))
-    overview("catalog/dv/index.html", "Препараты по действующим веществам",
-             "Вещества сгруппированы по химическим классам. На странице вещества — все препараты каталога на его основе.",
-             [dict(title=k[1], tiles=sorted(v, key=lambda x: x["name"].lower())) for k, v in sorted(dgroups.items())],
-             ("действующее вещество", "действующих вещества", "действующих веществ"))
+    has_dv = overview("catalog/dv/index.html", "Препараты по действующим веществам",
+                      "Вещества сгруппированы по химическим классам. На странице вещества — все препараты каталога на его основе.",
+                      [dict(title=k[1], tiles=sorted(v, key=lambda x: x["name"].lower())) for k, v in sorted(dgroups.items())],
+                      ("действующее вещество", "действующих вещества", "действующих веществ"))
+
+    # Корень каталога (ДМ02): собранные категории и три входа; в блоке входа — до 8 страниц с наибольшим числом препаратов
+    def top(kind, keys, names):
+        return [tile(kind, k, names[k]["name"]) for k in sorted(keys, key=lambda k: (-built[kind][k], names[k]["name"]))[:8]]
+    done = {"/" + r.removesuffix("index.html") for r in pages}
+    root_cats = []
+    for c in cats:
+        n = sum(p["category"] == c["slug"] for p in products)
+        if f"/catalog/{c['slug']}/" in done:
+            root_cats.append(dict(slug=c["slug"], name=c["name"], count=f"{n} {word_preparat(n)}"))
+    blocks = [dict(title="По культурам", tiles=top("kultura", [k for k in built["kultura"] if not crops[k]["parent"]], crops),
+                   more=dict(name="Все культуры →", url="/catalog/kultura/") if "/catalog/kultura/" in done else None),
+              dict(title="По вредителям, сорнякам и болезням", tiles=hub_tiles,
+                   more=dict(name="Все объекты →", url="/catalog/vrednyy-obekt/") if has_pests else None),
+              dict(title="По действующим веществам", tiles=top("dv", built["dv"], subs),
+                   more=dict(name="Все вещества →", url="/catalog/dv/") if has_dv else None)]
+    h1 = "Каталог средств защиты растений"
+    lead = "Препарат можно найти по категории, по культуре, по вредителю, сорняку или болезни и по действующему веществу."
+    write("catalog/index.html", env.get_template("catalog.html").render(
+        **common, title=f"{h1} — купить в Челябинске | Восток АгроХим",
+        description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", canonical="/catalog/",
+        h1=h1, lead=lead, count=f"{len(products)} {word_preparat(len(products))}", root_cats=root_cats,
+        blocks=[b for b in blocks if b["tiles"]]))
 
     # Карточки
     for p in products:

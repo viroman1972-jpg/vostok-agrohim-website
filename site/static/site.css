@@ -254,7 +254,7 @@ h1,h2,h3{margin:0}
 @media (min-width:960px){.ov-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .ov-t{position:relative;gap:6px}
 .ov-t .n::after{content:"";position:absolute;inset:0}
-.ov-t .c{font-size:14px;color:#6B675C}
+.ov-t .c,.cat .c{font-size:14px;color:#6B675C}
 .ov-t .subs{position:relative;z-index:1;font-size:14px;line-height:1.5}
 .ov-t .subs a{color:var(--green);border-bottom:1px solid var(--line2)}
 .ov-t .subs a:hover{border-bottom-color:var(--gold)}

@@ -61,7 +61,7 @@ def check_file(path, text, root=None):
                 errs.append(f"{path}: цена на странице не равна цене в разметке ({shown.group(1).strip() if shown else 'нет'} и {offer})")
     if root is not None:
         for href in sorted(set(HREF.findall(text))):
-            if not link_exists(root, href) and not href.startswith(PLANNED) and href != "/catalog/":
+            if not link_exists(root, href) and not href.startswith(PLANNED):
                 errs.append(f"{path}: битая ссылка {href}")
     low = text.lower()
     for pat, why in STOP_PHRASES:
@@ -185,6 +185,8 @@ def selftest():
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
+    if not any(x.endswith("битая ссылка /catalog/") for x in bad):  # корень каталога без исключения
+        missing.append("битая ссылка /catalog/")
     if missing:
         print("SELFTEST ПРОВАЛЕН, проверки не поймали:", ", ".join(missing)); return 1
     print(f"selftest ок: на плохом примере поймано {len(bad)} нарушений"); return 0

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap-wide">
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><span class="cur">Каталог</span></div>
+  <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ count }}</div></div>
+  <p class="l-lead">{{ lead }}</p>
+
+  <section class="ov">
+    <div class="ov-hd"><h2>Категории</h2></div>
+    <div class="ov-grid">
+      {% for c in root_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span><span class="c">{{ c.count }}</span></a>{% endfor %}
+    </div>
+  </section>
+
+  {% for g in blocks %}
+  <section class="ov">
+    <div class="ov-hd"><h2>{{ g.title }}</h2>{% if g.more %}<a class="ov-more" href="{{ g.more.url }}">{{ g.more.name }}</a>{% endif %}</div>
+    <div class="ov-grid">
+      {% for t in g.tiles %}
+      <div class="cat ov-t">
+        <a class="n" href="{{ t.url }}">{{ t.name }}</a>
+        <span class="c">{{ t.count }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}
