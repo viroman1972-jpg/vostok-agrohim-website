@@ -140,9 +140,13 @@ def build(root=ROOT, out=None):
             groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
             other_title=other_title, other_cats=other_cats))
 
+    # Десиканты — представление по тегу над гербицидами (ПИ08): препарат лежит в своей категории, адрес карточки не меняется
+    def in_cat(p, slug):
+        return "desikaciya" in p["tags"].split() if slug == "desikanty" else p["category"] == slug
+
     # Список категории
     for cat in cats:
-        items = sorted([p for p in products if p["category"] == cat["slug"]], key=lambda p: p["name"])
+        items = sorted([p for p in products if in_cat(p, cat["slug"])], key=lambda p: p["name"])
         if not items:
             continue
         seo = read_seo(content / "seo" / f"{cat['slug']}.yml")
@@ -219,7 +223,7 @@ def build(root=ROOT, out=None):
             **common, title=f"{h1} — купить в Челябинске | Восток АгроХим",
             description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.",
             canonical="/" + rel.removesuffix("index.html"), h1=h1, lead=lead, crumbs=list(crumbs), groups=groups,
-            count=f"{n} {plural(n, words)}", other_cats=[c for c in cats if any(p["category"] == c["slug"] for p in products)]))
+            count=f"{n} {plural(n, words)}", other_cats=[c for c in cats if any(in_cat(p, c["slug"]) for p in products)]))
         return True
 
     # Культуры: по группам словаря, подвиды — под родителем («Пшеница» → озимая, яровая)
@@ -265,7 +269,7 @@ def build(root=ROOT, out=None):
     done = {"/" + r.removesuffix("index.html") for r in pages}
     root_cats = []
     for c in cats:
-        n = sum(p["category"] == c["slug"] for p in products)
+        n = sum(in_cat(p, c["slug"]) for p in products)
         if f"/catalog/{c['slug']}/" in done:
             root_cats.append(dict(slug=c["slug"], name=c["name"], count=f"{n} {word_preparat(n)}"))
     blocks = [dict(title="По культурам", tiles=top("kultura", [k for k in built["kultura"] if not crops[k]["parent"]], crops),

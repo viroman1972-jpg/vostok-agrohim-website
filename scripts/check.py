@@ -26,7 +26,7 @@ CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 # Страницы входов (культуры, объекты, ДВ, их обзорные и узлы) собираются — ссылка на несобранную считается битой.
 PLANNED = ("/catalog/seriya/", "/contacts/", "/about/",
            "/comments/", "/sitemap/", "/privacy-policy/", "/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
-           "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/", "/catalog/desikanty/")
+           "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
 PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
 IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"']+?)(?:-\d+)?\.(?:webp|svg|jpe?g|png)["']""", re.I)
