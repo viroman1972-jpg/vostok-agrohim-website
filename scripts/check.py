@@ -23,7 +23,10 @@ EXTERNAL = re.compile(r"""(?:<(?:script|img|iframe|source)\b[^>]*\bsrc|<link\b[^
 CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 
 # Страницы, которые ещё не собраны (по site-structure-v1.md). Ссылки на них допустимы до своего этапа.
-PLANNED = ("/catalog/kultura/", "/catalog/vrednyy-obekt/", "/catalog/dv/", "/catalog/seriya/", "/contacts/", "/about/",
+# Страницы культур, объектов и ДВ уже собираются — допустимы только ссылки на их ещё не собранные обзорные страницы.
+PLANNED_EXACT = {"/catalog/kultura/", "/catalog/vrednyy-obekt/", "/catalog/dv/", "/catalog/vrednyy-obekt/sornyaki/",
+                 "/catalog/vrednyy-obekt/vrediteli/", "/catalog/vrednyy-obekt/bolezni/"}
+PLANNED = ("/catalog/seriya/", "/contacts/", "/about/",
            "/comments/", "/sitemap/", "/privacy-policy/", "/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/", "/catalog/desikanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
@@ -60,7 +63,7 @@ def check_file(path, text, root=None):
                 errs.append(f"{path}: цена на странице не равна цене в разметке ({shown.group(1).strip() if shown else 'нет'} и {offer})")
     if root is not None:
         for href in sorted(set(HREF.findall(text))):
-            if not link_exists(root, href) and not href.startswith(PLANNED) and href != "/catalog/":
+            if not link_exists(root, href) and not href.startswith(PLANNED) and href not in PLANNED_EXACT | {"/catalog/"}:
                 errs.append(f"{path}: битая ссылка {href}")
     low = text.lower()
     for pat, why in STOP_PHRASES:
@@ -179,7 +182,7 @@ def selftest():
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo
-    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка",
+    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение

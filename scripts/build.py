@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SEVEN = [("dv_text", "Действующее вещество"), ("form", "Форма препарата"), ("drug_type", "Тип применения"),
          ("penetration", "Способ проникновения"), ("hazard_human", "Класс опасности для человека"),
          ("hazard_bee", "Класс опасности для пчёл"), ("phytotox", "Фитотоксичность")]
+RESERVED = {"all", "promyshlennye", "sornyaki", "vrediteli", "bolezni"}  # site-structure-v1.md §1
 
 
 def read_csv(path):
@@ -63,9 +64,15 @@ def build(root=ROOT, out=None):
     for r in sorted(read_csv(data / "links" / "cross_sell.csv"), key=lambda r: int(r["order"])):
         l_cross[r["slug"]].append(r["related"])
 
-    products = [p for p in read_csv(data / "products.csv") if p["status"] == "published"]
+    # DRAFTS=1 — сборка с черновиками, только для просмотра у себя; на тестовый и боевой сайт не выкладывается
+    shown = {"published", "draft"} if os.environ.get("DRAFTS") == "1" else {"published"}
+    products = [p for p in read_csv(data / "products.csv") if p["status"] in shown]
+    if "draft" in shown:
+        warnings.append("сборка с черновиками (DRAFTS=1) — не выкладывать")
     by_slug = {}
     for p in products:
+        if p["slug"] in RESERVED:
+            sys.exit(f"Адрес препарата {p['slug']} совпадает с зарезервированным словом")
         if p["slug"] not in prices:
             sys.exit(f"Нет цены для {p['slug']} в prices.csv")
         p["price_num"] = int(float(prices[p["slug"]]))
@@ -100,46 +107,96 @@ def build(root=ROOT, out=None):
     noindex = os.environ.get("NOINDEX") == "1"  # закрытый тестовый сайт
     common = dict(s=s, cats=cats, noindex=noindex)
 
+    action_names = {"izbiratelnyy": {"name": "Избирательный"}, "sploshnoy": {"name": "Сплошного действия"}}
+    facets = {"cat": ("Категория", "category", cat_by), "dv": ("Действующее вещество", "substances", subs),
+              "crop": ("Культура", "crops", crops), "pest": ("Вредный объект", "pests", pests),
+              "maker": ("Производитель", "manufacturer", {k: {"name": v["name"]} for k, v in mk.items()}),
+              "action": ("Характер действия", "action_character", action_names)}
+
+    def facet(items, key):
+        title, field, names = facets[key]
+        cnt = defaultdict(int)
+        for p in items:
+            for v in (p[field] if isinstance(p[field], list) else [p[field]]):
+                if v:
+                    cnt[v] += 1
+        its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0]))]
+        return dict(key=key, title=title, items=its) if its else None
+
+    def read_seo(f):
+        return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
+
+    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats):
+        """Листинг по макету гербицидов: категория или страница входа (культура, объект, ДВ)."""
+        prices_l = [p["price_num"] for p in items]
+        write(rel, env.get_template("listing.html").render(
+            **common, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb,
+            items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
+            groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
+            other_title=other_title, other_cats=other_cats))
+
     # Список категории
     for cat in cats:
         items = sorted([p for p in products if p["category"] == cat["slug"]], key=lambda p: p["name"])
         if not items:
             continue
-        seo_file = content / "seo" / f"{cat['slug']}.yml"
-        seo = yaml.safe_load(seo_file.read_text(encoding="utf-8")) if seo_file.exists() else {}
-
-        def group(key, title, field, names):
-            cnt = defaultdict(int)
-            for p in items:
-                for v in (p[field] if isinstance(p[field], list) else [p[field]]):
-                    if v:
-                        cnt[v] += 1
-            its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0]))]
-            return dict(key=key, title=title, items=its) if its else None
-        action_names = {"izbiratelnyy": {"name": "Избирательный"}, "sploshnoy": {"name": "Сплошного действия"}}
-        groups = [g for g in [group("dv", "Действующее вещество", "substances", subs), group("crop", "Культура", "crops", crops),
-                              group("pest", "Вредный объект", "pests", pests),
-                              group("maker", "Производитель", "manufacturer", {k: {"name": v["name"]} for k, v in mk.items()}),
-                              group("action", "Характер действия", "action_character", action_names)] if g]
+        seo = read_seo(content / "seo" / f"{cat['slug']}.yml")
         ser = defaultdict(int)
         for p in items:
             if p["series"]:
                 ser[p["series"]] += 1
-        series_pills = [dict(name=n, value=n) for n, c in sorted(ser.items()) if c >= 2]  # ПИ06: серия при ≥2 препаратах
         dvc = defaultdict(int)
         for p in items:
             for v in p["substances"]:
                 dvc[v] += 1
-        dv_pills = [dict(name=subs[v]["name"], value=v) for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]]
-        task_pills = [dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []
-        prices_l = [p["price_num"] for p in items]
-        html = env.get_template("listing.html").render(
-            **common, title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
-            description=seo.get("meta", {}).get("description") or seo.get("lead", ""), canonical=f"/catalog/{cat['slug']}/", category=cat, items=items,
-            count_word=word_preparat(len(items)), lead=seo.get("lead", ""), seo=seo.get("seo"), groups=groups,
-            series_pills=series_pills, dv_pills=dv_pills, task_pills=task_pills,
-            price_min=min(prices_l), price_max=max(prices_l), other_cats=[c for c in cats if c["slug"] != cat["slug"]])
-        write(f"catalog/{cat['slug']}/index.html", html)
+        quick = [dict(label="Серии", group="series", items=[dict(name=n, value=n) for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах
+                 dict(label="Задачи защиты", group="action",
+                      items=[dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []),
+                 dict(label="Действующее вещество", group="dv",
+                      items=[dict(name="ДВ: " + subs[v]["name"], value=v) for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]])]
+        listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"], quick,
+                title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
+                description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
+                other_cats=[c for c in cats if c["slug"] != cat["slug"]])
+
+    # Страницы входов: культура, вредный объект, ДВ (ДМ02). Страница есть, только если на ней есть опубликованный препарат.
+    def short(p):
+        return p["name"].split(",")[0].strip()
+
+    def crop_keys(slug):  # культура вместе с родителем и подвидами, как в проверке SEO-текстов
+        return {slug, crops[slug]["parent"]} - {""} | {k for k, v in crops.items() if v["parent"] == slug}
+
+    entries = [("kultura", crops, lambda p, slug: bool(crop_keys(slug) & set(p["crops"])), "для", "crop"),
+               ("vrednyy-obekt", pests, lambda p, slug: slug in p["pests"], "против", "pest"),
+               ("dv", subs, lambda p, slug: slug in p["substances"], "на основе", "dv")]
+    for kind, dct, has, prep, own in entries:
+        for slug, row in dct.items():
+            if slug in RESERVED:
+                sys.exit(f"Адрес {slug} ({kind}) совпадает с зарезервированным словом")
+            items = sorted([p for p in products if has(p, slug)], key=lambda p: p["name"])
+            if not items:
+                continue
+            gen = row.get("name_gen") or row["name"].lower()
+            if not row.get("name_gen"):
+                warnings.append(f"{kind}/{slug}: нет родительного падежа (name_gen) в словаре")
+            present = [c for c in cats if any(p["category"] == c["slug"] for p in items)]
+            names = [c["name"] if i == 0 else c["name"].lower() for i, c in enumerate(present)]
+            lead = f"{', '.join(names[:-1])} и {names[-1]}" if len(names) > 1 else names[0]
+            lead += f" {prep} {gen}."
+            seo = read_seo(content / "seo" / kind / f"{slug}.yml").get("seo")
+            auto = None
+            if seo and any(sec.get("products") == "auto" for sec in seo["sections"]):
+                if kind == "dv":  # состав каждого препарата — из products.csv
+                    auto = dict(kind="dv", items=[dict(name=short(p), url=p["url"], dv_text=p["dv_text"]) for p in sorted(items, key=short)])
+                else:  # не больше 3 названий на категорию, остальные — «и другие» (полный список в сетке выше)
+                    auto = dict(kind="groups", items=[dict(name=c["name"], more=len(ps) > 3, items=[dict(name=short(p), url=p["url"]) for p in sorted(ps, key=short)[:3]])
+                                                      for c in present for ps in [[p for p in items if p["category"] == c["slug"]]]])
+            h1 = f"Препараты {prep} {gen}"
+            listing(f"catalog/{kind}/{slug}/index.html", items, h1, h1, ["cat"] + [k for k in ("dv", "crop", "pest") if k != own] + ["maker", "action"],
+                    [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
+                    title=f"{h1} — купить в Челябинске | Восток АгроХим",
+                    description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=seo, auto=auto,
+                    other_title="Категории каталога")
 
     # Карточки
     for p in products:

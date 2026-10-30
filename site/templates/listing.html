@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="wrap-wide">
-  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><span class="cur">{{ category.name }}</span></div>
-  <div class="l-title"><h1>{{ category.name }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><span class="cur">{{ crumb }}</span></div>
+  <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
   <p class="l-lead">{{ lead }}</p>
 
   <div class="quick" id="quick">
-    {% if series_pills %}<div class="row"><span class="lbl">Серии</span>{% for x in series_pills %}<button class="qpill" type="button" data-group="series" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>{% endif %}
-    {% if task_pills %}<div class="row"><span class="lbl">Задачи защиты</span>{% for x in task_pills %}<button class="qpill" type="button" data-group="action" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>{% endif %}
-    {% if dv_pills %}<div class="row"><span class="lbl">Действующее вещество</span>{% for x in dv_pills %}<button class="qpill" type="button" data-group="dv" data-value="{{ x.value }}" aria-pressed="false">ДВ: {{ x.name }}</button>{% endfor %}</div>{% endif %}
+    {% for r in quick %}<div class="row"><span class="lbl">{{ r.label }}</span>{% for x in r['items'] %}<button class="qpill" type="button" data-group="{{ r.group }}" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endfor %}</div>
+    {% endfor %}
   </div>
 
   <div class="bar">
@@ -43,9 +42,9 @@
     <div>
       <div class="grid c3" id="grid">
         {% for q in items %}
-        <a class="card" href="{{ q.url }}" data-name="{{ q.name }}" data-price="{{ q.price_num }}" data-dv="{{ q.substances|join(' ') }}" data-crop="{{ q.crops|join(' ') }}" data-pest="{{ q.pests|join(' ') }}" data-maker="{{ q.manufacturer }}" data-series="{{ q.series }}" data-action="{{ q.action_character }}">
+        <a class="card" href="{{ q.url }}" data-name="{{ q.name }}" data-cat="{{ q.category }}" data-price="{{ q.price_num }}" data-dv="{{ q.substances|join(' ') }}" data-crop="{{ q.crops|join(' ') }}" data-pest="{{ q.pests|join(' ') }}" data-maker="{{ q.manufacturer }}" data-series="{{ q.series }}" data-action="{{ q.action_character }}">
           <div class="im"><img src="{{ q.img480 }}" alt="{{ q.name }}{% if q.photo %} — упаковка{% else %} — фото упаковки готовится{% endif %}" width="480" height="480"{% if loop.index > 3 %} loading="lazy"{% endif %}></div>
-          <div class="tags"><span class="tag tag-cat sm">{{ category.name_one }}</span>{% if q.maker_badge %}<span class="tag tag-maker sm">{{ q.maker_badge }}</span>{% endif %}</div>
+          <div class="tags"><span class="tag tag-cat sm">{{ q.category_one }}</span>{% if q.maker_badge %}<span class="tag tag-maker sm">{{ q.maker_badge }}</span>{% endif %}</div>
           <div class="nm">{{ q.name }}</div>
           <div class="dv">{{ q.dv_text }}</div>
           <div class="bot"><div class="pr">{{ q.price_text }}/{{ q.unit }}</div><span class="go">Подробнее →</span></div>
@@ -63,14 +62,17 @@
   {% if seo %}
   <div class="seo">
     {% for sec in seo.sections %}<h2>{{ sec.title }}</h2>
-    {% for t in sec.paras or [] %}{% if t is mapping %}<ul>{% for li in t.list %}<li>{{ li|md }}</li>{% endfor %}</ul>{% else %}<p>{{ t|md }}</p>{% endif %}{% endfor %}
+    {% if sec.get('products') == 'auto' and auto %}{% if auto.kind == 'dv' %}<ul class="auto">{% for x in auto['items'] %}<li><a href="{{ x.url }}">{{ x.name }}</a> — {{ x.dv_text }}</li>{% endfor %}</ul>
+    {% else %}{% for g in auto['items'] %}<p class="auto"><strong>{{ g.name }}.</strong> {% for x in g['items'] %}<a href="{{ x.url }}">{{ x.name }}</a>{% if not loop.last %}{% if loop.revindex == 2 and not g.more %} и {% else %}, {% endif %}{% endif %}{% endfor %}{% if g.more %} и другие{% endif %}.</p>
+    {% endfor %}{% endif %}{% endif %}
+    {% for t in sec.get('paras') or [] %}{% if t is mapping %}<ul>{% for li in t.list %}<li>{{ li|md }}</li>{% endfor %}</ul>{% else %}<p>{{ t|md }}</p>{% endif %}{% endfor %}
     {% endfor %}
     {% if seo.cta %}<p class="cta">{{ seo.cta|md }}</p>{% endif %}
   </div>
   {% endif %}
 
   <div class="other">
-    <h2>Другие категории каталога</h2>
+    <h2>{{ other_title }}</h2>
     <div class="cats">
       {% for c in other_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span></a>{% endfor %}
     </div>

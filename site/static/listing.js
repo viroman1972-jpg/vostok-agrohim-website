@@ -11,7 +11,7 @@
   var pills = Array.prototype.slice.call(document.querySelectorAll('.qpill'));
   var pmin = document.getElementById('pmin'), pmax = document.getElementById('pmax');
   var sortEl = document.getElementById('sort');
-  var attr = { dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', series: 'series', action: 'action' };
+  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', series: 'series', action: 'action' };
 
   function num(el) { var v = parseInt((el.value || '').replace(/\D/g, ''), 10); return isNaN(v) ? null : v; }
   function selected() {
