@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap-wide">
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><span class="cur">{{ h1 }}</span></div>
+  <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ count }}</div></div>
+  <p class="l-lead">{{ lead }}</p>
+
+  {% for g in groups %}
+  <section class="ov">
+    {% if g.title %}<div class="ov-hd"><h2>{{ g.title }}</h2>{% if g.get('more') %}<a class="ov-more" href="{{ g.more.url }}">{{ g.more.name }}</a>{% endif %}</div>{% endif %}
+    <div class="ov-grid">
+      {% for t in g.tiles %}
+      <div class="cat ov-t">
+        <a class="n" href="{{ t.url }}">{{ t.name }}</a>
+        <span class="c">{{ t.count }}</span>
+        {% if t.subs %}<span class="subs">{% for x in t.subs %}<a href="{{ x.url }}">{{ x.name }}</a>{% if not loop.last %}<span class="sep">·</span>{% endif %}{% endfor %}</span>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+
+  <div class="other">
+    <h2>Категории каталога</h2>
+    <div class="cats">
+      {% for c in other_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span></a>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
