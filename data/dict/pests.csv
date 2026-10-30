@@ -1,69 +1,69 @@
-slug,name,type
-odnoletnie-dvudolnye-sornyaki,Однолетние двудольные сорняки,sornyak
-odnoletnie-zlakovye-sornyaki,Однолетние злаковые сорняки,sornyak
-mnogoletnie-dvudolnye-sornyaki,Многолетние двудольные сорняки,sornyak
-mnogoletnie-zlakovye-sornyaki,Многолетние злаковые сорняки,sornyak
-septorioz,Септориоз,bolezn
-pirenoforoz,Пиренофороз,bolezn
-gelmintosporioz,Гельминтоспориоз,bolezn
-alternarioz,Альтернариоз,bolezn
-golovnya,Головня,bolezn
-rzhavchina,Ржавчина,bolezn
-muchnistaya-rosa,Мучнистая роса,bolezn
-oidium,Оидиум,bolezn
-pyatnistost,Пятнистость,bolezn
-tserkosporoz,Церкоспороз,bolezn
-peronosporoz,Пероноспороз,bolezn
-mildyu,Милдью,bolezn
-fitoftoroz,Фитофтороз,bolezn
-antraknoz,Антракноз,bolezn
-askohitoz,Аскохитоз,bolezn
-fuzarioz,Фузариоз,bolezn
-belaya-gnil,Белая гниль,bolezn
-fomoz,Фомоз,bolezn
-fomopsis,Фомопсис,bolezn
-plesen,Плесень,bolezn
-seraya-gnil,Серая гниль,bolezn
-rizoktonioz,Ризоктониоз,bolezn
-kornevye-gnili,Корневые гнили,bolezn
-bakterioz,Бактериоз,bolezn
-parsha-serebristaya,Парша серебристая,bolezn
-pasmo-lna,Пасмо льна,bolezn
-krapchatost-lna,Крапчатость льна,bolezn
-tserkosporellez,Церкоспореллез,bolezn
-ofiobolez,Офиоболёз,bolezn
-pirikulyarioz,Пирикуляриоз,bolezn
-zhuk-koloradskiy,Жук колорадский,vreditel
-dolgonosik,Долгоносик,vreditel
-rapsovyy-tsvetoed,Рапсовый цветоед,vreditel
-pyavitsa,Пьявица,vreditel
-hlebnye-zhuki,Хлебные жуки,vreditel
-hlebnye-bloshki,Хлебные блошки,vreditel
-bloshki,Блошки,vreditel
-krestotsvetnye-bloshki,Крестоцветные блошки,vreditel
-zhuzhelitsa-hlebnaya,Жужелица хлебная,vreditel
-kapustnaya-mol,Капустная моль,vreditel
-belyanki,Белянки,vreditel
-lugovoy-motylek,Луговой мотылёк,vreditel
-hlopkovaya-sovka,Хлопковая совка,vreditel
-lnyanaya-plodozhorka,Льняная плодожорка,vreditel
-klop-vrednaya-cherepashka,Клоп вредная черепашка,vreditel
-tli,Тли,vreditel
-tsikadki,Цикадки,vreditel
-tripsy,Трипсы,vreditel
-saranchovye,Саранчовые,vreditel
-vrediteli-zapasov,Вредители запасов,vreditel
-zlakovye-muhi,Злаковые мухи,vreditel
-vnutristeblevye-muhi,Внутристеблевые мухи,vreditel
-lukovaya-muha,Луковая муха,vreditel
-sveklovichnaya-miniruyuschaya-muha,Свекловичная минирующая муха,vreditel
-yablonnaya-plodozhorka,Яблонная плодожорка,vreditel
-listovertki,Листовертки,vreditel
-gorohovaya-zernovka,Гороховая зерновка,vreditel
-gorohovaya-plodozhorka,Гороховая плодожорка,vreditel
-amerikanskaya-belaya-babochka,Американская белая бабочка,vreditel
-listogryzuschie-gusenitsy,Листогрызущие гусеницы,vreditel
-kleschi,Клещи,vreditel
-provolochniki,Проволочники,vreditel
-lozhnoprovolochniki,Ложнопроволочники,vreditel
-miniruyuschie-mol-i-muha,Минирующие моль и муха,vreditel
+slug,name,type,name_gen
+odnoletnie-dvudolnye-sornyaki,Однолетние двудольные сорняки,sornyak,однолетних двудольных сорняков
+odnoletnie-zlakovye-sornyaki,Однолетние злаковые сорняки,sornyak,однолетних злаковых сорняков
+mnogoletnie-dvudolnye-sornyaki,Многолетние двудольные сорняки,sornyak,многолетних двудольных сорняков
+mnogoletnie-zlakovye-sornyaki,Многолетние злаковые сорняки,sornyak,многолетних злаковых сорняков
+septorioz,Септориоз,bolezn,септориоза
+pirenoforoz,Пиренофороз,bolezn,пиренофороза
+gelmintosporioz,Гельминтоспориоз,bolezn,гельминтоспориоза
+alternarioz,Альтернариоз,bolezn,альтернариоза
+golovnya,Головня,bolezn,головни
+rzhavchina,Ржавчина,bolezn,ржавчины
+muchnistaya-rosa,Мучнистая роса,bolezn,мучнистой росы
+oidium,Оидиум,bolezn,оидиума
+pyatnistost,Пятнистость,bolezn,пятнистости
+tserkosporoz,Церкоспороз,bolezn,церкоспороза
+peronosporoz,Пероноспороз,bolezn,пероноспороза
+mildyu,Милдью,bolezn,милдью
+fitoftoroz,Фитофтороз,bolezn,фитофтороза
+antraknoz,Антракноз,bolezn,антракноза
+askohitoz,Аскохитоз,bolezn,аскохитоза
+fuzarioz,Фузариоз,bolezn,фузариоза
+belaya-gnil,Белая гниль,bolezn,белой гнили
+fomoz,Фомоз,bolezn,фомоза
+fomopsis,Фомопсис,bolezn,фомопсиса
+plesen,Плесень,bolezn,плесени
+seraya-gnil,Серая гниль,bolezn,серой гнили
+rizoktonioz,Ризоктониоз,bolezn,ризоктониоза
+kornevye-gnili,Корневые гнили,bolezn,корневых гнилей
+bakterioz,Бактериоз,bolezn,бактериоза
+parsha-serebristaya,Парша серебристая,bolezn,серебристой парши
+pasmo-lna,Пасмо льна,bolezn,пасмо льна
+krapchatost-lna,Крапчатость льна,bolezn,крапчатости льна
+tserkosporellez,Церкоспореллез,bolezn,церкоспореллеза
+ofiobolez,Офиоболёз,bolezn,офиоболёза
+pirikulyarioz,Пирикуляриоз,bolezn,пирикуляриоза
+zhuk-koloradskiy,Жук колорадский,vreditel,колорадского жука
+dolgonosik,Долгоносик,vreditel,долгоносика
+rapsovyy-tsvetoed,Рапсовый цветоед,vreditel,рапсового цветоеда
+pyavitsa,Пьявица,vreditel,пьявицы
+hlebnye-zhuki,Хлебные жуки,vreditel,хлебных жуков
+hlebnye-bloshki,Хлебные блошки,vreditel,хлебных блошек
+bloshki,Блошки,vreditel,блошек
+krestotsvetnye-bloshki,Крестоцветные блошки,vreditel,крестоцветных блошек
+zhuzhelitsa-hlebnaya,Жужелица хлебная,vreditel,хлебной жужелицы
+kapustnaya-mol,Капустная моль,vreditel,капустной моли
+belyanki,Белянки,vreditel,белянок
+lugovoy-motylek,Луговой мотылёк,vreditel,лугового мотылька
+hlopkovaya-sovka,Хлопковая совка,vreditel,хлопковой совки
+lnyanaya-plodozhorka,Льняная плодожорка,vreditel,льняной плодожорки
+klop-vrednaya-cherepashka,Клоп вредная черепашка,vreditel,клопа вредной черепашки
+tli,Тли,vreditel,тлей
+tsikadki,Цикадки,vreditel,цикадок
+tripsy,Трипсы,vreditel,трипсов
+saranchovye,Саранчовые,vreditel,саранчовых
+vrediteli-zapasov,Вредители запасов,vreditel,вредителей запасов
+zlakovye-muhi,Злаковые мухи,vreditel,злаковых мух
+vnutristeblevye-muhi,Внутристеблевые мухи,vreditel,внутристеблевых мух
+lukovaya-muha,Луковая муха,vreditel,луковой мухи
+sveklovichnaya-miniruyuschaya-muha,Свекловичная минирующая муха,vreditel,свекловичной минирующей мухи
+yablonnaya-plodozhorka,Яблонная плодожорка,vreditel,яблонной плодожорки
+listovertki,Листовертки,vreditel,листовёрток
+gorohovaya-zernovka,Гороховая зерновка,vreditel,гороховой зерновки
+gorohovaya-plodozhorka,Гороховая плодожорка,vreditel,гороховой плодожорки
+amerikanskaya-belaya-babochka,Американская белая бабочка,vreditel,американской белой бабочки
+listogryzuschie-gusenitsy,Листогрызущие гусеницы,vreditel,листогрызущих гусениц
+kleschi,Клещи,vreditel,клещей
+provolochniki,Проволочники,vreditel,проволочников
+lozhnoprovolochniki,Ложнопроволочники,vreditel,ложнопроволочников
+miniruyuschie-mol-i-muha,Минирующие моль и муха,vreditel,минирующих моли и мухи

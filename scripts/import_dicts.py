@@ -122,9 +122,13 @@ def dv_links(p, subs):
 def main(report_path):
     slugs = load_slugs()
     crops, pests, subs = build_dicts(slugs)
-    write_csv(DATA / "dict" / "crops.csv", ["slug", "name", "parent", "group"], crops)
-    write_csv(DATA / "dict" / "pests.csv", ["slug", "name", "type"], pests)
-    write_csv(DATA / "dict" / "substances.csv", ["slug", "name", "chem_class", "kind"], subs)
+    for fname, fields, rows in (("crops.csv", ["slug", "name", "parent", "group"], crops),
+                                ("pests.csv", ["slug", "name", "type"], pests),
+                                ("substances.csv", ["slug", "name", "chem_class", "kind"], subs)):
+        path = DATA / "dict" / fname
+        # name_gen (родительный падеж для заголовков страниц) правится вручную — при повторном переносе сохраняется
+        gen = {r["slug"]: r.get("name_gen", "") for r in read_csv(path)} if path.exists() else {}
+        write_csv(path, fields + ["name_gen"], [list(r) + [gen.get(r[0], "")] for r in rows])
 
     products = read_csv(DATA / "products.csv")
     order = {s: i for i, s in enumerate([c[0] for c in crops] + [p[0] for p in pests])}
