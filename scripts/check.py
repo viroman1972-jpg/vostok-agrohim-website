@@ -84,6 +84,14 @@ def check_file(path, text, root=None):
     # Быстрые входы по ДВ (ДМ32): ссылка на страницу вещества, а не фильтр
     if re.search(r"<button\b[^>]*\bqpill\b[^>]*\bdata-group=[\"']dv[\"']", text, re.I):
         errs.append(f"{path}: быстрый вход по ДВ — фильтр вместо ссылки (ДМ32)")
+    # Кнопка-фильтр (ДМ32) отмечает галочку боковой панели: без неё кнопка ничего не делает
+    for m in re.finditer(r"<button\b[^>]*\bqpill\b[^>]*\bdata-group=\"(\w+)\"[^>]*\bdata-value=\"([^\"]*)\"", text, re.I):
+        for v in m.group(2).split():
+            if f'type="checkbox" data-group="{m.group(1)}" value="{v}"' not in text:
+                errs.append(f"{path}: кнопка-фильтр {m.group(1)}={v} — нет галочки в боковой панели (ДМ32)")
+    # Группа «Категория» — только при двух и более значениях (ДМ32)
+    if len(re.findall(r'type="checkbox" data-group="cat"', text)) == 1:
+        errs.append(f"{path}: фильтр «Категория» с одним значением (ДМ32)")
     # Сценарные входы (ДМ31): кнопка открывает форму, а тип территории уходит в заявку
     for m in re.finditer(r"<button\b[^>]*\bdata-territory\b[^>]*>", text, re.I):
         if "data-open-lead" not in m.group(0):
@@ -229,12 +237,30 @@ def check_prom(root=ROOT):
     return errs
 
 
+def check_term(root=ROOT):
+    """Довсходовые (ДМ32): тег dovskhodovyy стоит ровно у гербицидов, в регламенте которых есть применение до всходов (госреестр, ПИ10)."""
+    errs, tag = [], "dovskhodovyy"
+    for p in read_csv(Path(root) / "data" / "products.csv"):
+        cf = Path(root) / "content" / "products" / f"{p['slug']}.yml"
+        rows = (yaml.safe_load(cf.read_text(encoding="utf-8")) or {}).get("regulation", []) if cf.exists() else []
+        has = any(re.search(r"до (?:появления )?всходов", str(r.get("method", ""))) for r in rows)
+        tagged = tag in p["tags"].split()
+        if tagged and p["category"] != "gerbitsidy":
+            errs.append(f"products.csv: {p['slug']} — тег {tag} не у гербицида (ДМ32)")
+        elif tagged and not has:
+            errs.append(f"products.csv: {p['slug']} — тег {tag}, но в регламенте нет применения до всходов (ДМ32)")
+        elif has and not tagged and p["category"] == "gerbitsidy":
+            errs.append(f"products.csv: {p['slug']} — в регламенте применение до всходов, нет тега {tag} (ДМ32)")
+    return errs
+
+
 def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
-    bad += seo + check_prom(ROOT / "tests" / "seo")
-    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки",
+    bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo")
+    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
+                "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom"]
@@ -255,7 +281,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
     errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
-    errs += check_seo() + check_prom()
+    errs += check_seo() + check_prom() + check_term()
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)

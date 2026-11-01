@@ -11,7 +11,12 @@
   var pills = Array.prototype.slice.call(document.querySelectorAll('button.qpill[data-group]'));  // ссылки-входы (a.qpill) ведут на другие страницы, входы по территориям открывают форму — не фильтруют
   var pmin = document.getElementById('pmin'), pmax = document.getElementById('pmax');
   var sortEl = document.getElementById('sort');
-  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', action: 'action' };
+  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', action: 'action', term: 'term' };
+  function pillBoxes(p) {  // кнопка может отмечать несколько значений группы: «Против злаковых сорняков» — однолетние и многолетние
+    var vals = p.getAttribute('data-value').split(' ');
+    return boxes.filter(function (b) { return b.getAttribute('data-group') === p.getAttribute('data-group') && vals.indexOf(b.value) >= 0; });
+  }
+  function allOn(list) { return list.length > 0 && list.every(function (b) { return b.checked; }); }
 
   function num(el) { var v = parseInt((el.value || '').replace(/\D/g, ''), 10); return isNaN(v) ? null : v; }
   function selected() {
@@ -64,8 +69,7 @@
     if (resetPage) { page = 1; all = false; }
     var sel = selected(), lo = num(pmin), hi = num(pmax);
     pills.forEach(function (p) {
-      var on = boxes.some(function (b) { return b.checked && b.getAttribute('data-group') === p.getAttribute('data-group') && b.value === p.getAttribute('data-value'); });
-      p.setAttribute('aria-pressed', on ? 'true' : 'false');
+      p.setAttribute('aria-pressed', allOn(pillBoxes(p)) ? 'true' : 'false');
     });
     renderChips(sel, lo, hi);
     var hit = cards.filter(function (c) { return matches(c, sel, lo, hi); });
@@ -94,8 +98,9 @@
   boxes.forEach(function (b) { b.addEventListener('change', function () { update(true); }); });
   pills.forEach(function (p) {
     p.addEventListener('click', function () {
-      var b = boxes.filter(function (x) { return x.getAttribute('data-group') === p.getAttribute('data-group') && x.value === p.getAttribute('data-value'); })[0];
-      if (b) { b.checked = !b.checked; update(true); }
+      var list = pillBoxes(p), on = !allOn(list);
+      list.forEach(function (b) { b.checked = on; });
+      update(true);
     });
   });
   [pmin, pmax].forEach(function (i) { i.addEventListener('change', function () { update(true); }); });
