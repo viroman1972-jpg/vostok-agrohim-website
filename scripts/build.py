@@ -163,11 +163,13 @@ def build(root=ROOT, out=None):
         for p in items:
             for v in p["substances"]:
                 dvc[v] += 1
-        return [dict(label="Серии", items=[dict(name=n, href=f"/catalog/seriya/{series_slug[n]}/") for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах, кнопка ведёт на её страницу
+        def split(n):  # препараты серии в разных категориях (Контадор): в каждой по одному, иначе на страницу не вела бы ни одна кнопка
+            return len({p["category"] for p in products if p["series"] == n}) >= 2
+        return [dict(label="Серии", items=[dict(name=n, href=f"/catalog/seriya/{series_slug[n]}/") for n, c in sorted(ser.items()) if c >= 2 or split(n)]),  # ПИ06: кнопка ведёт на страницу серии
                 dict(label="Задачи защиты", group="action",
                      items=([dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []) + list(tasks)),
-                dict(label="Действующее вещество", group="dv",
-                     items=[dict(name="ДВ: " + subs[v]["name"], value=v) for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]])]
+                dict(label="Действующее вещество",  # ДМ32: ссылка на страницу вещества, фильтр — в боковой панели
+                     items=[dict(name="ДВ: " + subs[v]["name"], href=f"/catalog/dv/{v}/") for v, c in sorted(dvc.items(), key=lambda kv: -kv[1])[:5]])]
 
     def with_prom(lst):  # плитка подраздела — сразу после «Гербицидов»
         out_ = []
@@ -253,7 +255,7 @@ def build(root=ROOT, out=None):
         lead = f"{', '.join(names[:-1])} и {names[-1]}" if len(names) > 1 else names[0]
         lead += f" серии {name}: {', '.join(shorts[:-1])} и {shorts[-1]}."
         h1 = f"Препараты серии {name}"
-        listing(f"catalog/seriya/{slug}/index.html", items, h1, h1, ["cat", "dv", "crop", "pest", "action"],
+        listing(f"catalog/seriya/{slug}/index.html", items, h1, h1, (["cat"] if len(present) > 1 else []) + ["dv", "crop", "pest", "action"],
                 [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
                 title=f"{h1} — купить в Челябинске | Восток АгроХим",
                 description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=None,
