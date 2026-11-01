@@ -217,8 +217,12 @@ h1,h2,h3{margin:0}
 .fgroup .c{font-size:13px;color:#666}
 .fgroup .more[hidden]{display:none}
 .fgroup .showmore{background:none;border:none;padding:0;font-size:13px;font-weight:600;color:var(--gold-d);cursor:pointer}
+.morebtn{background:none;border:1px solid var(--green);color:var(--green);border-radius:4px;padding:12px 16px;font-size:14px;font-weight:600;cursor:pointer}
+.morebtn:hover,.morebtn:focus-visible{background:var(--green);color:var(--cream)}
 .drawer-close{display:none}
+@media (min-width:960px){.side{max-height:calc(100vh - var(--header-h) - 94px);overflow-y:auto;scrollbar-width:thin}}  /* ДМ23: панель выше экрана прокручивается сама, иначе низ виден только в конце списка */
 @media (max-width:959px){
+  .morebtn{font-size:15px}
   .side{display:none;position:fixed;inset:0;z-index:70;background:#fff;overflow:auto;padding:20px var(--pad) 90px;top:0}
   .side.open{display:flex}
   .drawer-close{display:block;position:fixed;left:0;right:0;bottom:0;z-index:71;background:#fff;border-top:1px solid var(--line2);padding:12px 16px}

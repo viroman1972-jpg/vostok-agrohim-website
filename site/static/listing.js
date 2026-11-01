@@ -17,6 +17,14 @@
     return boxes.filter(function (b) { return b.getAttribute('data-group') === p.getAttribute('data-group') && vals.indexOf(b.value) >= 0; });
   }
   function allOn(list) { return list.length > 0 && list.every(function (b) { return b.checked; }); }
+  var moreBtn = document.getElementById('more-filters'), moreLabel = moreBtn.textContent;
+  var extras = Array.prototype.slice.call(side.querySelectorAll('.fgroup.extra'));
+  function setMore(open) {  // ДМ23: группы под кнопкой «Ещё фильтры»
+    extras.forEach(function (g) { g.hidden = !open; });
+    moreBtn.textContent = open ? 'Свернуть фильтры' : moreLabel;
+    moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  moreBtn.addEventListener('click', function () { setMore(moreBtn.getAttribute('aria-expanded') !== 'true'); });
 
   function num(el) { var v = parseInt((el.value || '').replace(/\D/g, ''), 10); return isNaN(v) ? null : v; }
   function selected() {
@@ -100,7 +108,10 @@
     p.addEventListener('click', function () {
       var list = pillBoxes(p), on = !allOn(list);
       list.forEach(function (b) { b.checked = on; });
+      var extra = on && list[0] && list[0].closest('.fgroup.extra');
+      if (extra) setMore(true);
       update(true);
+      if (extra) extra.scrollIntoView({ block: 'center' });  // галочка в свёрнутой группе должна быть видна; в закрытом мобильном окне ничего не делает
     });
   });
   [pmin, pmax].forEach(function (i) { i.addEventListener('change', function () { update(true); }); });

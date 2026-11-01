@@ -24,7 +24,7 @@
         <div class="chips" id="chips"></div><span class="none" id="none">Фильтры не выбраны</span>
       </div>
       {% for g in groups %}
-      <div class="fgroup" data-group="{{ g.key }}">
+      <div class="fgroup{% if g.extra %} extra{% endif %}" data-group="{{ g.key }}"{% if g.extra %} hidden{% endif %}>
         <div class="t">{{ g.title }}</div>
         {% for it in g['items'] %}
         <label{% if loop.index > 6 %} class="more" hidden{% endif %}><input type="checkbox" data-group="{{ g.key }}" value="{{ it.value }}"><span>{{ it.label }}</span><span class="c">({{ it.count }})</span></label>
@@ -32,10 +32,11 @@
         {% if g['items']|length > 6 %}<button class="showmore" type="button">Показать ещё {{ g['items']|length - 6 }}…</button>{% endif %}
       </div>
       {% endfor %}
-      <div class="fgroup" data-group="price">
+      <div class="fgroup extra" data-group="price" hidden>
         <div class="t">Цена, ₽</div>
         <div style="display:flex;align-items:center;gap:10px"><input type="text" inputmode="numeric" id="pmin" placeholder="От {{ price_min }}" aria-label="Цена от" style="width:100%;min-width:0;border:1px solid var(--line2);border-radius:4px;padding:9px 10px;font-size:14px"><span style="color:#8A8578">—</span><input type="text" inputmode="numeric" id="pmax" placeholder="До {{ price_max }}" aria-label="Цена до" style="width:100%;min-width:0;border:1px solid var(--line2);border-radius:4px;padding:9px 10px;font-size:14px"></div>
       </div>
+      <button class="morebtn" type="button" id="more-filters" aria-expanded="false">Ещё фильтры ({{ groups|selectattr('extra')|list|length + 1 }})</button>
       <div class="drawer-close"><button class="btn" type="button" id="close-filters">Показать препараты</button></div>
     </aside>
 

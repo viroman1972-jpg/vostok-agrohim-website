@@ -157,7 +157,7 @@ def build(root=ROOT, out=None):
         its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0]))]
         if key == "pack" and len(its) < 2:  # ДМ32: одно значение ничего не отбирает
             return None
-        return dict(key=key, title=title, items=its) if its else None
+        return dict(key=key, title=title, items=its, extra=key in ("action", "term", "pack")) if its else None  # extra — под кнопкой «Ещё фильтры» (ДМ23), цена там же, в шаблоне
 
     def read_seo(f):
         return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}

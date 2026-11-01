@@ -93,6 +93,16 @@ def check_file(path, text, root=None):
     for group, title in (("cat", "Категория"), ("pack", "Упаковка")):
         if len(re.findall(rf'type="checkbox" data-group="{group}"', text)) == 1:
             errs.append(f"{path}: фильтр «{title}» с одним значением (ДМ32)")
+    # Панель фильтров (ДМ23): под кнопкой «Ещё фильтры (N)» ровно эти группы, N — их число на странице
+    extra = 0
+    for m in re.finditer(r'<div class="fgroup( extra)?" data-group="(\w+)"( hidden)?>', text):
+        want = m.group(2) in ("action", "term", "pack", "price")
+        extra += bool(m.group(1) and m.group(3))
+        if want != bool(m.group(1) and m.group(3)):
+            errs.append(f"{path}: группа {m.group(2)} " + ("развёрнута, а должна быть под кнопкой «Ещё фильтры» (ДМ23)" if want else "под кнопкой «Ещё фильтры», а должна быть развёрнута (ДМ23)"))
+    more = re.search(r'id="more-filters"[^>]*>Ещё фильтры \((\d+)\)', text)
+    if extra and (not more or int(more.group(1)) != extra):
+        errs.append(f"{path}: на кнопке «Ещё фильтры» не то число групп (ДМ23)")
     # Сценарные входы (ДМ31): кнопка открывает форму, а тип территории уходит в заявку
     for m in re.finditer(r"<button\b[^>]*\bdata-territory\b[^>]*>", text, re.I):
         if "data-open-lead" not in m.group(0):
@@ -263,7 +273,7 @@ def selftest():
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo")
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
-                "«Упаковка» с одним значением", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
+                "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
