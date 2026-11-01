@@ -6,6 +6,12 @@
 {% macro acc(title, paras, open=false) %}
 <details class="acc"{% if open %} open{% endif %}><summary>{{ title }}</summary><div class="body">{% for t in paras %}<p>{{ t }}</p>{% endfor %}</div></details>
 {% endmacro %}
+{% macro reg_table(rows) %}
+<div class="table-wrap"><table class="reg">
+  <thead><tr><th style="white-space:nowrap">{{ c.get('rate_header') or 'Норма, ' ~ p.unit ~ '/га' }}</th><th>Культура</th><th>{{ c.get('object_header') or 'Вредный объект' }}</th><th>Способ и время обработки</th><th style="white-space:nowrap">Срок ожидания, дней (кратность)</th></tr></thead>
+  <tbody>{% for r in rows %}<tr><td class="n">{{ r.rate }}</td><td>{{ r.crop }}</td><td class="m">{{ r.object }}</td><td class="m">{{ r.method }}</td><td class="w">{{ r.wait }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endmacro %}
 {% block main %}
 <div class="wrap">
   <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a><span class="sep">·</span><a href="/catalog/{{ p.category }}/">{{ category.name }}</a><span class="sep">·</span><span class="cur">{{ p.name }}</span></div>
@@ -54,10 +60,18 @@
   {% if c.regulation %}
   <section class="section">
     <h2 class="h2">Регламент применения</h2>
-    <div class="table-wrap"><table class="reg">
-      <thead><tr><th style="white-space:nowrap">{{ c.get('rate_header') or 'Норма, ' ~ p.unit ~ '/га' }}</th><th>Культура</th><th>{{ c.get('object_header') or 'Вредный объект' }}</th><th>Способ и время обработки</th><th style="white-space:nowrap">Срок ожидания, дней (кратность)</th></tr></thead>
-      <tbody>{% for r in c.regulation %}<tr><td class="n">{{ r.rate }}</td><td>{{ r.crop }}</td><td class="m">{{ r.object }}</td><td class="m">{{ r.method }}</td><td class="w">{{ r.wait }}</td></tr>{% endfor %}</tbody>
-    </table></div>
+    {% if reg_agro and reg_prom %}
+    <div class="reg-tabs" id="reg-tabs">
+      <div class="reg-tablist" role="tablist" aria-label="Сценарий применения" hidden>
+        <button class="reg-tab" type="button" role="tab" id="reg-tab-agro" aria-controls="reg-panel-agro" aria-selected="true">Сельское хозяйство</button>
+        <button class="reg-tab" type="button" role="tab" id="reg-tab-prom" aria-controls="reg-panel-prom" aria-selected="false" tabindex="-1">Промышленное применение</button>
+      </div>
+      <div class="reg-panel" id="reg-panel-agro" role="tabpanel" aria-labelledby="reg-tab-agro"><h3 class="reg-cap">Сельское хозяйство</h3>{{ reg_table(reg_agro) }}</div>
+      <div class="reg-panel" id="reg-panel-prom" role="tabpanel" aria-labelledby="reg-tab-prom"><h3 class="reg-cap">Промышленное применение</h3>{{ reg_table(reg_prom) }}</div>
+    </div>
+    {% else %}
+    {{ reg_table(c.regulation) }}
+    {% endif %}
     <div class="reg-notes">
       {% if c.regulation_notes.get('liquid_flow') %}<div><span>Расход рабочей жидкости:</span> <strong>{{ c.regulation_notes.liquid_flow }}</strong></div>{% endif %}
       {% if c.regulation_notes.get('reentry') %}<div><span>Срок выхода для механизированных работ:</span> <strong>{{ c.regulation_notes.reentry }}</strong></div>{% endif %}

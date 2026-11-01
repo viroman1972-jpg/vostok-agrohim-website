@@ -152,6 +152,12 @@ h1,h2,h3{margin:0}
 .reg td.w{white-space:nowrap}
 .reg-notes{margin-top:16px;display:flex;flex-wrap:wrap;gap:28px;font-size:15px}
 .reg-notes span{color:var(--gray)}
+.reg-tablist{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.reg-tablist[hidden]{display:none}
+.reg-tab{border-radius:4px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid var(--green);background:transparent;color:var(--green)}
+.reg-tab[aria-selected=true]{background:var(--green);color:var(--cream)}
+.reg-cap{font-size:17px;font-weight:700;color:var(--green);margin:24px 0 12px}
+.reg-tabs.on .reg-cap{display:none}
 .ctx-label{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin:0 0 12px}
 .ctx-label.second{margin-top:28px}
 .p-text{margin:20px 0 0;font-size:16px;line-height:1.65;text-wrap:pretty}

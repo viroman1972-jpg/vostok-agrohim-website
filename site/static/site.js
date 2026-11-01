@@ -63,6 +63,31 @@
     big.addEventListener('click', function () { big.classList.toggle('z'); });
     set('front');
   }
+  // Вкладки регламента (ДМ31). Без скрипта обе таблицы видны одна под другой.
+  var regTabs = document.getElementById('reg-tabs');
+  if (regTabs) {
+    var tabs = regTabs.querySelectorAll('[role=tab]');
+    function pick(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        if (on) t.removeAttribute('tabindex'); else t.setAttribute('tabindex', '-1');
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { pick(t); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        e.preventDefault();
+        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        pick(next); next.focus();
+      });
+    });
+    regTabs.classList.add('on');
+    regTabs.querySelector('[role=tablist]').hidden = false;
+    pick(tabs[0]);
+  }
   // Окно про cookie. Статистика (Метрика) подключается только после «Принять»; сейчас подключения нет.
   var ck = document.getElementById('cookie');
   if (ck) {

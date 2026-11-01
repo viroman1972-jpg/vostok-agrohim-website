@@ -324,6 +324,8 @@ def build(root=ROOT, out=None):
         for k, dflt in (("regulation", []), ("regulation_notes", {}), ("resistant_weeds_note", ""), ("procedures", []),
                         ("procedures_tail", []), ("first_aid", []), ("mechanism", [])):
             c.setdefault(k, dflt)
+        reg_prom = [r for r in c["regulation"] if r.get("scope") == "prom"]  # вкладки регламента (ДМ31)
+        reg_agro = [r for r in c["regulation"] if r.get("scope") != "prom"]
         specs = [(label, p[key]) for key, label in SEVEN if p.get(key)]
         cross = []
         for rs in l_cross[p["slug"]]:
@@ -338,7 +340,7 @@ def build(root=ROOT, out=None):
             ld["image"] = f"{s['site_url']}{p['img1000']}"
         html = env.get_template("product.html").render(
             **common, title=f"{p['name']} — купить в Челябинске | Восток АгроХим", description=p["description"],
-            canonical=p["url"], p=p, category=cat_by[p["category"]], maker=mk[p["manufacturer"]], specs=specs, c=c,
+            canonical=p["url"], p=p, category=cat_by[p["category"]], maker=mk[p["manufacturer"]], specs=specs, c=c, reg_agro=reg_agro, reg_prom=reg_prom,
             crops=[dict(crops[x], url=PROM_URL if x == PROM_LAND else f"/catalog/kultura/{x}/") for x in p["crops"]], pests=[pests[x] for x in p["pests"]], cross=cross,
             jsonld=json.dumps(ld, ensure_ascii=False))
         write(f"catalog/{p['category']}/{p['slug']}/index.html", html)

@@ -6,6 +6,8 @@
 import csv, json, re, sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parent.parent
 
 STOP_PHRASES = [  # (шаблон, причина)
@@ -200,6 +202,21 @@ def check_prom(root=ROOT):
             text, k = re.subn(r"(?<![А-Яа-яЁё])" + name_forms(n) + r"(?![А-Яа-яЁё])", "§", text)
             if k and by_name[n] not in tagged:
                 errs.append(f"{f.relative_to(root)}: {n} — нет тега {tag} (ДМ31)")
+    # Вкладки регламента: строка scope: prom — только у препарата с тегом; у препарата с тегом такая строка есть;
+    # строка про земли несельхозназначения всегда с пометкой
+    for p in products:
+        cf = Path(root) / "content" / "products" / f"{p['slug']}.yml"
+        rows = (yaml.safe_load(cf.read_text(encoding="utf-8")) or {}).get("regulation", []) if cf.exists() else []
+        name = f"content/products/{p['slug']}.yml"
+        for r in rows:
+            if r.get("scope") not in (None, "prom"):
+                errs.append(f"{name}: неизвестный scope «{r['scope']}» в регламенте (ДМ31)")
+            if r.get("scope") == "prom" and p["slug"] not in tagged:
+                errs.append(f"{name}: строка регламента scope: prom у препарата без тега {tag} (ДМ31)")
+            if r["crop"].startswith("Земли несельскохозяйственного") and r.get("scope") != "prom":
+                errs.append(f"{name}: земли несельхозназначения в регламенте без пометки scope: prom (ДМ31)")
+        if rows and p["slug"] in tagged and not any(r.get("scope") == "prom" for r in rows):
+            errs.append(f"{name}: тег {tag}, но в регламенте нет строк scope: prom (ДМ31)")
     return errs
 
 
@@ -210,7 +227,8 @@ def selftest():
     bad += seo + check_prom(ROOT / "tests" / "seo")
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
-                "не у гербицида", "без связи", "без тега", "Миура — нет тега"]
+                "не у гербицида", "без связи", "без тега", "Миура — нет тега",
+                "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
