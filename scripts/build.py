@@ -190,7 +190,8 @@ def build(root=ROOT, out=None):
     # Подраздел промышленных гербицидов (ДМ31): свой H1, текст T02; в фильтрах нет культуры — у всех одни земли несельхозпользования
     if prom:
         seo = read_seo(content / "seo" / "gerbitsidy-promyshlennye.yml")
-        listing(PROM_URL.strip("/") + "/index.html", prom_items, PROM_NAME, PROM_NAME, ["dv", "pest", "maker", "action"], quick_rows(prom_items),
+        territories = dict(label="Подобрать препарат для", items=[dict(name=t["label"], territory=t["name"]) for t in seo.get("territories", [])])  # входы открывают форму заявки
+        listing(PROM_URL.strip("/") + "/index.html", prom_items, PROM_NAME, PROM_NAME, ["dv", "pest", "maker", "action"], [territories] + quick_rows(prom_items),
                 title=seo.get("meta", {}).get("title") or f"{PROM_NAME} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
                 other_title="Категории каталога", crumbs=[dict(name="Гербициды", url="/catalog/gerbitsidy/")])

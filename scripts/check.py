@@ -81,6 +81,12 @@ def check_file(path, text, root=None):
     for m in re.finditer(r"<img\b[^>]*>", text, re.I):
         if not re.search(r"\balt\s*=\s*[\"'][^\"']+[\"']", m.group(0), re.I):
             errs.append(f"{path}: картинка без alt (ДЗ09)")
+    # Сценарные входы (ДМ31): кнопка открывает форму, а тип территории уходит в заявку
+    for m in re.finditer(r"<button\b[^>]*\bdata-territory\b[^>]*>", text, re.I):
+        if "data-open-lead" not in m.group(0):
+            errs.append(f"{path}: вход по территории не открывает форму заявки (ДМ31)")
+        if 'name="territory"' not in text:
+            errs.append(f"{path}: вход по территории, но в форме нет поля territory (ДМ31)")
     if "<form" in low and "обработк" not in low:
         errs.append(f"{path}: у формы нет указания цели обработки данных (ДЗ07)")
     return errs
@@ -225,7 +231,7 @@ def selftest():
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo")
-    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/",
+    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "не открывает форму заявки", "нет поля territory",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom"]

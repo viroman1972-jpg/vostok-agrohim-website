@@ -3,17 +3,23 @@
   var lead = document.getElementById('lead');
   var form = document.getElementById('lead-form');
   var done = document.getElementById('lead-done');
-  function openLead(product) {
+  var msg = document.getElementById('lead-msg');
+  var msgHint = msg ? msg.placeholder : '';
+  function openLead(product, territory) {
     if (!lead || !lead.showModal) { location.href = '/contacts/'; return; }
     form.hidden = false; done.hidden = true;
     var ref = document.getElementById('lead-ref');
     document.getElementById('lead-product').value = product || '';
+    document.getElementById('lead-territory').value = territory || '';
     form.elements.page.value = location.pathname;
-    if (product) { ref.hidden = false; ref.querySelector('strong').textContent = product; } else { ref.hidden = true; }
+    ref.hidden = !(product || territory);
+    ref.querySelector('span').textContent = territory ? 'Тип территории:' : 'По препарату:';
+    ref.querySelector('strong').textContent = territory || product || '';
+    msg.placeholder = territory ? 'Площадь, основные виды растительности, объём препарата' : msgHint;
     lead.showModal();
   }
   document.querySelectorAll('[data-open-lead]').forEach(function (b) {
-    b.addEventListener('click', function () { openLead(b.getAttribute('data-product')); });
+    b.addEventListener('click', function () { openLead(b.getAttribute('data-product'), b.getAttribute('data-territory')); });
   });
   document.querySelectorAll('dialog').forEach(function (d) {
     d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
