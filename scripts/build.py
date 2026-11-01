@@ -198,7 +198,7 @@ def build(root=ROOT, out=None):
 
     # Страницы входов: культура, вредный объект, ДВ (ДМ02). Страница есть, только если на ней есть опубликованный препарат.
     def short(p):
-        return p["name"].split(",")[0].strip()
+        return p["name"].split(", ")[0].strip()  # с пробелом: у «Дракон Супер 7,5, КЭ» запятая есть и в числе
 
     def crop_keys(slug):  # культура вместе с родителем и подвидами, как в проверке SEO-текстов
         return {slug, crops[slug]["parent"]} - {""} | {k for k, v in crops.items() if v["parent"] == slug}
