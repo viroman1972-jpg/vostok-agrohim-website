@@ -26,7 +26,7 @@ CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 
 # Страницы, которые ещё не собраны (по site-structure-v1.md). Ссылки на них допустимы до своего этапа.
 # Страницы входов (культуры, объекты, ДВ, их обзорные и узлы) собираются — ссылка на несобранную считается битой.
-PLANNED = ("/catalog/seriya/", "/contacts/", "/about/",
+PLANNED = ("/contacts/", "/about/",
            "/comments/", "/sitemap/", "/privacy-policy/", "/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
@@ -231,7 +231,7 @@ def selftest():
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo")
-    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "не открывает форму заявки", "нет поля territory",
+    expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom"]

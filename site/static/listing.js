@@ -11,7 +11,7 @@
   var pills = Array.prototype.slice.call(document.querySelectorAll('button.qpill[data-group]'));  // ссылки-входы (a.qpill) ведут на подраздел, входы по территориям открывают форму — не фильтруют
   var pmin = document.getElementById('pmin'), pmax = document.getElementById('pmax');
   var sortEl = document.getElementById('sort');
-  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', series: 'series', action: 'action' };
+  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', action: 'action' };
 
   function num(el) { var v = parseInt((el.value || '').replace(/\D/g, ''), 10); return isNaN(v) ? null : v; }
   function selected() {

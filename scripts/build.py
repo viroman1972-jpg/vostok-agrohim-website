@@ -61,6 +61,7 @@ def build(root=ROOT, out=None):
     crops = {r["slug"]: r for r in read_csv(data / "dict" / "crops.csv")}
     pests = {r["slug"]: r for r in read_csv(data / "dict" / "pests.csv")}
     subs = {r["slug"]: r for r in read_csv(data / "dict" / "substances.csv")}
+    series_slug = {r["name"]: r["slug"] for r in read_csv(data / "dict" / "series.csv")}
 
     def links(name, key):
         d = defaultdict(list)
@@ -83,6 +84,8 @@ def build(root=ROOT, out=None):
             sys.exit(f"Адрес препарата {p['slug']} совпадает с зарезервированным словом")
         if p["slug"] not in prices:
             sys.exit(f"Нет цены для {p['slug']} в prices.csv")
+        if p["series"] and p["series"] not in series_slug:
+            sys.exit(f"Серии {p['series']} ({p['slug']}) нет в словаре series.csv")
         p["price_num"] = int(float(prices[p["slug"]]))
         p["price_text"] = money(p["price_num"])
         p["url"] = f"/catalog/{p['category']}/{p['slug']}/"
@@ -160,7 +163,7 @@ def build(root=ROOT, out=None):
         for p in items:
             for v in p["substances"]:
                 dvc[v] += 1
-        return [dict(label="Серии", group="series", items=[dict(name=n, value=n) for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах
+        return [dict(label="Серии", items=[dict(name=n, href=f"/catalog/seriya/{series_slug[n]}/") for n, c in sorted(ser.items()) if c >= 2]),  # ПИ06: серия при ≥2 препаратах, кнопка ведёт на её страницу
                 dict(label="Задачи защиты", group="action",
                      items=([dict(name="Сплошного действия", value="sploshnoy")] if any(p["action_character"] == "sploshnoy" for p in items) else []) + list(tasks)),
                 dict(label="Действующее вещество", group="dv",
@@ -238,6 +241,23 @@ def build(root=ROOT, out=None):
                     title=f"{h1} — купить в Челябинске | Восток АгроХим",
                     description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=seo, auto=auto,
                     other_title="Категории каталога")
+
+    # Страницы серий (ПИ06): только при 2 и более опубликованных препаратах; макета нет — общий шаблон листинга
+    for name, slug in series_slug.items():
+        items = sorted([p for p in products if p["series"] == name], key=lambda p: p["name"])
+        if len(items) < 2:
+            continue
+        present = [c for c in cats if any(p["category"] == c["slug"] for p in items)]
+        names = [c["name"] if i == 0 else c["name"].lower() for i, c in enumerate(present)]
+        shorts = sorted(short(p) for p in items)
+        lead = f"{', '.join(names[:-1])} и {names[-1]}" if len(names) > 1 else names[0]
+        lead += f" серии {name}: {', '.join(shorts[:-1])} и {shorts[-1]}."
+        h1 = f"Препараты серии {name}"
+        listing(f"catalog/seriya/{slug}/index.html", items, h1, h1, ["cat", "dv", "crop", "pest", "action"],
+                [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
+                title=f"{h1} — купить в Челябинске | Восток АгроХим",
+                description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=None,
+                other_title="Категории каталога")
 
     # Обзорные страницы входов и узлы вредных объектов (ДМ02, ДМ26): плитки только собранных страниц
     def tile(kind, slug, name, subs_=()):
