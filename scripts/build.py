@@ -19,6 +19,20 @@ TERM_TAG = "dovskhodovyy"  # ДМ32: у гербицидов с применен
 ZLAK = ("odnoletnie-zlakovye-sornyaki", "mnogoletnie-zlakovye-sornyaki")
 
 
+def pack_labels(sizes):
+    """Значения фильтра «Упаковка» (ДМ32): «300 г» и «0,3 кг» — одно значение, мелкие единицы приводятся к кг и л."""
+    out = []
+    for x in filter(None, (v.strip() for v in sizes.split(";"))):
+        m = re.fullmatch(r"(\d+(?:,\d+)?) (мл|л|г|кг)", x)
+        if not m:
+            sys.exit(f"Упаковка «{x}» не разобрана: нужно число и единица (мл, л, г, кг)")
+        n, unit = float(m.group(1).replace(",", ".")), m.group(2)
+        if unit in ("г", "мл"):
+            n, unit = n / 1000, {"г": "кг", "мл": "л"}[unit]
+        out.append(f"{n:g} {unit}".replace(".", ","))
+    return out
+
+
 def read_csv(path):
     with open(path, encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
@@ -93,6 +107,7 @@ def build(root=ROOT, out=None):
         p["url"] = f"/catalog/{p['category']}/{p['slug']}/"
         p["substances"], p["crops"], p["pests"] = l_sub[p["slug"]], l_crop[p["slug"]], l_pest[p["slug"]]
         p["term"] = [TERM_TAG] if TERM_TAG in p["tags"].split() else []
+        p["packs"] = [v.replace(" ", "") for v in pack_labels(p["package_sizes"])]  # значение фильтра без пробела: «5л», подпись «5 л»
         p["maker_badge"] = mk[p["manufacturer"]]["badge"]
         p["category_one"] = cat_by[p["category"]]["name_one"]
         # Нет фото — заглушка по виду упаковки (решение Оли 28.10.2026, Ф2)
@@ -129,7 +144,8 @@ def build(root=ROOT, out=None):
               "crop": ("Культура", "crops", crops), "pest": ("Вредный объект", "pests", pests),
               "maker": ("Производитель", "manufacturer", {k: {"name": v["name"]} for k, v in mk.items()}),
               "action": ("Характер действия", "action_character", action_names),
-              "term": ("Срок применения", "term", {TERM_TAG: {"name": "Довсходовые"}})}
+              "term": ("Срок применения", "term", {TERM_TAG: {"name": "Довсходовые"}}),
+              "pack": ("Упаковка", "packs", {v.replace(" ", ""): {"name": v} for p in products for v in pack_labels(p["package_sizes"])})}
 
     def facet(items, key):
         title, field, names = facets[key]
@@ -139,6 +155,8 @@ def build(root=ROOT, out=None):
                 if v:
                     cnt[v] += 1
         its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0]))]
+        if key == "pack" and len(its) < 2:  # ДМ32: одно значение ничего не отбирает
+            return None
         return dict(key=key, title=title, items=its) if its else None
 
     def read_seo(f):
@@ -197,7 +215,7 @@ def build(root=ROOT, out=None):
         herb = cat["slug"] == "gerbitsidy"
         tasks = ([dict(name="Промышленным заказчикам", href=prom)] if herb and prom else []) + (herbicide_tasks(items) if herb else [])  # ДМ31, ДМ32, блок 3 макета
         others = [c for c in cats if c["slug"] != cat["slug"]]
-        listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"] + (["term"] if herb else []), quick_rows(items, tasks),
+        listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"] + (["term"] if herb else []) + ["pack"], quick_rows(items, tasks),
                 title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
                 other_cats=prom_tile + others if cat["slug"] == "gerbitsidy" else with_prom(others))
@@ -206,7 +224,7 @@ def build(root=ROOT, out=None):
     if prom:
         seo = read_seo(content / "seo" / "gerbitsidy-promyshlennye.yml")
         territories = dict(label="Подобрать препарат для", items=[dict(name=t["label"], territory=t["name"]) for t in seo.get("territories", [])])  # входы открывают форму заявки
-        listing(PROM_URL.strip("/") + "/index.html", prom_items, PROM_NAME, PROM_NAME, ["dv", "pest", "maker", "action"], [territories] + quick_rows(prom_items),
+        listing(PROM_URL.strip("/") + "/index.html", prom_items, PROM_NAME, PROM_NAME, ["dv", "pest", "maker", "action", "pack"], [territories] + quick_rows(prom_items),
                 title=seo.get("meta", {}).get("title") or f"{PROM_NAME} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
                 other_title="Категории каталога", crumbs=[dict(name="Гербициды", url="/catalog/gerbitsidy/")])
@@ -248,7 +266,7 @@ def build(root=ROOT, out=None):
                                                       for c in present for ps in [[p for p in items if p["category"] == c["slug"]]]])
             built[kind][slug] = len(items)
             h1 = f"Препараты {prep} {gen}"
-            listing(f"catalog/{kind}/{slug}/index.html", items, h1, h1, (["cat"] if len(present) > 1 else []) + [k for k in ("dv", "crop", "pest") if k != own] + ["maker", "action"],
+            listing(f"catalog/{kind}/{slug}/index.html", items, h1, h1, (["cat"] if len(present) > 1 else []) + [k for k in ("dv", "crop", "pest") if k != own] + ["maker", "action", "pack"],
                     [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
                     title=f"{h1} — купить в Челябинске | Восток АгроХим",
                     description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=seo, auto=auto,
@@ -265,7 +283,7 @@ def build(root=ROOT, out=None):
         lead = f"{', '.join(names[:-1])} и {names[-1]}" if len(names) > 1 else names[0]
         lead += f" серии {name}: {', '.join(shorts[:-1])} и {shorts[-1]}."
         h1 = f"Препараты серии {name}"
-        listing(f"catalog/seriya/{slug}/index.html", items, h1, h1, (["cat"] if len(present) > 1 else []) + ["dv", "crop", "pest", "action"],
+        listing(f"catalog/seriya/{slug}/index.html", items, h1, h1, (["cat"] if len(present) > 1 else []) + ["dv", "crop", "pest", "action", "pack"],
                 [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
                 title=f"{h1} — купить в Челябинске | Восток АгроХим",
                 description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", lead=lead, seo=None,

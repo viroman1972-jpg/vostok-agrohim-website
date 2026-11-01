@@ -11,7 +11,7 @@
   var pills = Array.prototype.slice.call(document.querySelectorAll('button.qpill[data-group]'));  // ссылки-входы (a.qpill) ведут на другие страницы, входы по территориям открывают форму — не фильтруют
   var pmin = document.getElementById('pmin'), pmax = document.getElementById('pmax');
   var sortEl = document.getElementById('sort');
-  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', action: 'action', term: 'term' };
+  var attr = { cat: 'cat', dv: 'dv', crop: 'crop', pest: 'pest', maker: 'maker', action: 'action', term: 'term', pack: 'pack' };
   function pillBoxes(p) {  // кнопка может отмечать несколько значений группы: «Против злаковых сорняков» — однолетние и многолетние
     var vals = p.getAttribute('data-value').split(' ');
     return boxes.filter(function (b) { return b.getAttribute('data-group') === p.getAttribute('data-group') && vals.indexOf(b.value) >= 0; });

@@ -1,4 +1,4 @@
-slug,name,category,tags
-balerina-se,"Балерина, СЭ",gerbitsidy,promyshlennoe-primenenie dovskhodovyy
-miura-ke,"Миура, КЭ",gerbitsidy,
-albit-tps,"Альбит, ТПС",stimulyatory-rosta,promyshlennoe-primenenie dovskhodovyy
+slug,name,category,tags,drug_type
+balerina-se,"Балерина, СЭ",gerbitsidy,promyshlennoe-primenenie dovskhodovyy,"Послевсходовый, избирательного действия"
+miura-ke,"Миура, КЭ",gerbitsidy,,"Довсходовый, избирательного действия"
+albit-tps,"Альбит, ТПС",stimulyatory-rosta,promyshlennoe-primenenie dovskhodovyy,

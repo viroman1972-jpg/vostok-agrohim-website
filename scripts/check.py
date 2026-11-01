@@ -89,9 +89,10 @@ def check_file(path, text, root=None):
         for v in m.group(2).split():
             if f'type="checkbox" data-group="{m.group(1)}" value="{v}"' not in text:
                 errs.append(f"{path}: кнопка-фильтр {m.group(1)}={v} — нет галочки в боковой панели (ДМ32)")
-    # Группа «Категория» — только при двух и более значениях (ДМ32)
-    if len(re.findall(r'type="checkbox" data-group="cat"', text)) == 1:
-        errs.append(f"{path}: фильтр «Категория» с одним значением (ДМ32)")
+    # Группы «Категория» и «Упаковка» — только при двух и более значениях (ДМ32)
+    for group, title in (("cat", "Категория"), ("pack", "Упаковка")):
+        if len(re.findall(rf'type="checkbox" data-group="{group}"', text)) == 1:
+            errs.append(f"{path}: фильтр «{title}» с одним значением (ДМ32)")
     # Сценарные входы (ДМ31): кнопка открывает форму, а тип территории уходит в заявку
     for m in re.finditer(r"<button\b[^>]*\bdata-territory\b[^>]*>", text, re.I):
         if "data-open-lead" not in m.group(0):
@@ -251,6 +252,8 @@ def check_term(root=ROOT):
             errs.append(f"products.csv: {p['slug']} — тег {tag}, но в регламенте нет применения до всходов (ДМ32)")
         elif has and not tagged and p["category"] == "gerbitsidy":
             errs.append(f"products.csv: {p['slug']} — в регламенте применение до всходов, нет тега {tag} (ДМ32)")
+        if p["category"] == "gerbitsidy" and tagged != ("довсходов" in p["drug_type"].lower()):
+            errs.append(f"products.csv: {p['slug']} — тип применения расходится с тегом {tag} (ДМ32)")
     return errs
 
 
@@ -260,6 +263,7 @@ def selftest():
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo")
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
+                "«Упаковка» с одним значением", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
