@@ -17,6 +17,8 @@ STOP_PHRASES = [  # (шаблон, причина)
     (r"щ[её]лково", "Щёлково Агрохим не упоминается (НР05)"),
     (r"/opt\b|/oferta/|/dacha", "отменённые страницы /opt, /oferta/, /dacha (НР01, НР13, НР14)"),
     (r"telegram[-\s]?бот", "Telegram-бот отменён (НР12)"),
+    (r"/return-policy|/price/|/legal/", "отменённые страницы /return-policy/, /price/, /legal/ (НР20, П07, НР19)"),
+    (r"лигногумат|деразал", "препарата нет в каталоге (У05, отзывы)"),
     (r"в\s+наличии|под\s+заказ", "индикатор наличия запрещён (ПИ11)"),
     (r"google-analytics|googletagmanager|gtag\(", "GA4 не используется (О8)"),
     (r"docs\.google\.com/forms|script\.google\.com", "Google Sheet/Forms для заявок запрещены (НР17)"),
@@ -26,8 +28,7 @@ CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 
 # Страницы, которые ещё не собраны (по site-structure-v1.md). Ссылки на них допустимы до своего этапа.
 # Страницы входов (культуры, объекты, ДВ, их обзорные и узлы) собираются — ссылка на несобранную считается битой.
-PLANNED = ("/contacts/", "/about/",
-           "/comments/", "/sitemap/", "/privacy-policy/", "/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
+PLANNED = ("/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
 PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
@@ -35,6 +36,12 @@ IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"
 JOURNAL = ROOT / "assets" / "image-sources.csv"
 STATUSES = {"разрешено", "своё", "ожидает", "уточнить"}  # первые два допустимы на боевом сайте (ДЗ09)
 RELEASE_OK = {"разрешено", "своё"}
+REQUIRED = ("about/index.html", "contacts/index.html", "comments/index.html", "privacy-policy/index.html", "sitemap/index.html", "404.html")  # план §2.4
+PRICE_FILE = "files/prays-list.pdf"  # П07
+# Политика (чек-лист D, ДЗ08): без этих разделов страница не проходит
+POLICY_MUST = ("Оператор персональных данных", "Цели обработки", "Правовые основания", "хранятся", "Ваши права", "Отозвать согласие", "cookie", "Яндекс.Метрика", "Редакция от")
+# Отзывы (ДЗ04, ДЗ06, B.9): стоп-слова, непроверяемые обещания, упоминание физлиц. Имён авторов здесь нет намеренно — это персональные данные
+COMMENTS_OFF = r"безопасн|безвредн|экологичн|100\s*%|гарантированн|физлиц|физическ\w+ лиц|частн\w+ лиц"
 LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 # Названия, которых не должно быть в SEO-текстах: исключённые из каталога и встречавшиеся в волнах, но не продаваемые
 SEO_OFF = {"Ректор": "исключён (У02)", "Альфацин": "исключён (У03)", "Лазурит Ультра": "исключён (У04)",
@@ -115,6 +122,42 @@ def check_file(path, text, root=None):
     return errs
 
 
+def check_service(d, release):
+    """Служебные страницы (план §2.4): все на месте, политика полная, отзывы по ДЗ06, карта сайта ведёт на все страницы, 404 настроена, прайс есть к запуску."""
+    d, errs = Path(d), []
+    for rel in REQUIRED:
+        if not (d / rel).is_file():
+            errs.append(f"{d}: нет обязательной страницы {rel}")
+    f = d / "privacy-policy" / "index.html"
+    if f.is_file():
+        text = f.read_text(encoding="utf-8")
+        for must in POLICY_MUST:
+            if must.lower() not in text.lower():
+                errs.append(f"privacy-policy: в политике нет раздела «{must}» (чек-лист D)")
+    f = d / "comments" / "index.html"
+    if f.is_file():
+        body = re.search(r"<main.*?</main>", f.read_text(encoding="utf-8"), re.S)
+        for m in re.finditer(COMMENTS_OFF, body.group(0).lower() if body else "", re.I):
+            errs.append(f"comments: недопустимое в отзыве «{m.group(0)}» (ДЗ04, ДЗ06, B.9)")
+    f = d / "sitemap" / "index.html"
+    if f.is_file():
+        linked = set(HREF.findall(re.search(r"<main.*?</main>", f.read_text(encoding="utf-8"), re.S).group(0)))
+        for page in sorted(d.rglob("*.html")):
+            rel = page.relative_to(d).as_posix()
+            url = "/" + rel.removesuffix("index.html")
+            if rel not in ("404.html", "sitemap/index.html") and url not in linked:
+                errs.append(f"sitemap: нет ссылки на страницу {url} (ДМ19)")
+    ht = d / ".htaccess"
+    if not ht.is_file() or "ErrorDocument 404 /404.html" not in ht.read_text(encoding="utf-8"):
+        errs.append(f"{d}: страница 404 не настроена в .htaccess")
+    nf = d / "404.html"
+    if nf.is_file() and 'name="robots" content="noindex' not in nf.read_text(encoding="utf-8"):
+        errs.append("404.html: страница не закрыта от индексации")
+    if release and not (d / PRICE_FILE).is_file():
+        errs.append(f"{d}: нет файла прайса {PRICE_FILE} (П07)")
+    return errs
+
+
 def check_related(path, text):
     """«Похожие подборки» (ДМ32): только на листинге категории, между SEO-текстом и «Другими категориями», ссылки не из быстрых входов; состав — по культурам карточек этой страницы."""
     errs = []
@@ -175,6 +218,7 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
+    errs += check_service(d, release)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -308,7 +352,8 @@ def selftest():
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
-                "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom"]
+                "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom",
+                "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")

@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+{% block body %}
+<div class="seo page-text">
+  {% for r in page['items'] %}
+  <article class="review">
+    <div class="d">{{ r.date }}</div>
+    <p>{{ r.text }}</p>
+    {% if r.get('reply') %}<div class="reply"><div class="d">Ответ компании</div><p>{{ r.reply }}</p></div>{% endif %}
+  </article>
+  {% endfor %}
+  <p class="review-note">{{ page.removal }} <a href="mailto:{{ s.email }}">{{ s.email }}</a>.</p>
+</div>
+{% endblock %}

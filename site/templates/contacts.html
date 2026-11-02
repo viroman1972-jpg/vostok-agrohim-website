@@ -1,0 +1,17 @@
+{% extends "page.html" %}
+{% block body %}
+<div class="seo page-text">
+  <h2>Телефоны и почта</h2>
+  <dl class="reqs">
+    <div><dt>Офис</dt><dd><a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a></dd></div>
+    <div><dt>Директор</dt><dd><a href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a></dd></div>
+    <div><dt>Почта</dt><dd><a href="mailto:{{ s.email }}">{{ s.email }}</a></dd></div>
+  </dl>
+  <h2>Адрес</h2>
+  <p>{{ s.address }}</p>
+  <p><a class="map-link" href="https://yandex.ru/maps/?text={{ s.address|urlencode }}" target="_blank" rel="noopener">Открыть в Яндекс.Картах</a></p>
+  <h2>График работы</h2>
+  <ul class="plain">{% for h in s.hours %}<li>{{ h }}</li>{% endfor %}</ul>
+  <div class="page-act"><button class="btn" type="button" data-open-lead>Получить консультацию</button></div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "page.html" %}
+{% block body %}
+<div class="seo page-text">
+  {% for sec in page.sections %}<h2>{{ sec.title }}</h2>
+  {% for t in sec.paras %}{% if t is mapping %}<ul>{% for li in t.list %}<li>{{ li|md }}</li>{% endfor %}</ul>{% else %}<p>{{ t|md }}</p>{% endif %}{% endfor %}
+  {% endfor %}
+  <h2>Реквизиты</h2>
+  <dl class="reqs">
+    <div><dt>Наименование</dt><dd>{{ s.company }}</dd></div>
+    <div><dt>ИНН</dt><dd>{{ s.legal.inn }}</dd></div>
+    <div><dt>КПП</dt><dd>{{ s.legal.kpp }}</dd></div>
+    <div><dt>ОГРН</dt><dd>{{ s.legal.ogrn }}</dd></div>
+    <div><dt>Адрес</dt><dd>{{ s.address }}</dd></div>
+  </dl>
+  <div class="page-act"><button class="btn" type="button" data-open-lead>Получить консультацию</button><a class="btn-line" href="/contacts/">Контакты</a></div>
+</div>
+{% endblock %}

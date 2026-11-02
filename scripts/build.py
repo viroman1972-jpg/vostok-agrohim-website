@@ -15,6 +15,7 @@ RESERVED = {"all", "promyshlennye", "sornyaki", "vrediteli", "bolezni"}  # site-
 # Промышленные гербициды (ДМ31): тег стоит ровно у препаратов со связью «земли несельхозпользования» (проверяет check.py)
 PROM_TAG, PROM_LAND, PROM_URL = "promyshlennoe-primenenie", "zemli-neselhozpolzovaniya", "/catalog/gerbitsidy/promyshlennye/"
 PROM_NAME = "Гербициды промышленного применения"
+PRICE_FILE = "files/prays-list.pdf"  # П07: пока файла нет в content/, ссылки в подвале нет
 TERM_TAG = "dovskhodovyy"  # ДМ32: у гербицидов с применением до всходов по регламенту; следит check.py
 ZLAK = ("odnoletnie-zlakovye-sornyaki", "mnogoletnie-zlakovye-sornyaki")
 
@@ -137,7 +138,8 @@ def build(root=ROOT, out=None):
     prom_items = sorted([p for p in products if p["category"] == "gerbitsidy" and PROM_TAG in p["tags"].split()], key=lambda p: p["name"])
     prom = PROM_URL if prom_items else None  # ссылки на подраздел — только если он собирается
     prom_tile = [dict(slug=PROM_URL.strip("/").removeprefix("catalog/"), name=PROM_NAME)] if prom else []
-    common = dict(s=s, cats=cats, noindex=noindex, prom=prom)
+    has_price = (content / PRICE_FILE).is_file()
+    common = dict(s=s, cats=cats, noindex=noindex, prom=prom, price_file="/" + PRICE_FILE if has_price else None)
 
     action_names = {"izbiratelnyy": {"name": "Избирательный"}, "sploshnoy": {"name": "Сплошного действия"}}
     facets = {"cat": ("Категория", "category", cat_by), "dv": ("Действующее вещество", "substances", subs),
@@ -419,7 +421,43 @@ def build(root=ROOT, out=None):
         **common, title="Восток АгроХим — средства защиты растений в Челябинске", description=hp.get("description", ""),
         canonical="/", h=hp, featured=[by_slug[x] for x in hp.get("featured", []) if x in by_slug]))
 
+    # Служебные страницы (план §2.4); макетов нет — из элементов листинга
+    for slug, h1 in (("about", "О компании"), ("contacts", "Контакты"), ("comments", "Отзывы"), ("privacy-policy", "Политика обработки персональных данных")):
+        page = yaml.safe_load((content / "pages" / f"{slug}.yml").read_text(encoding="utf-8"))
+        write(f"{slug}/index.html", env.get_template({"privacy-policy": "privacy.html"}.get(slug, f"{slug}.html")).render(
+            **common, title=page["title"], description=page["description"], canonical=f"/{slug}/", h1=h1, lead=page.get("lead", ""), page=page))
+
+    # Карта сайта (ДМ19): все собранные страницы, кроме неё самой и 404
+    done = {"/" + r.removesuffix("index.html") for r in pages}
+    def names_of(prefix, dct):
+        return [dict(name=r["name"], url=f"{prefix}{k}/") for k, r in dct.items() if f"{prefix}{k}/" in done]
+    cat_blocks = []
+    for c in cats:
+        url = f"/catalog/{c['slug']}/"
+        if url in done:
+            links_ = ([dict(name=PROM_NAME, url=PROM_URL)] if c["slug"] == "gerbitsidy" and prom else []) + [
+                dict(name=p["name"], url=p["url"]) for p in sorted(products, key=lambda p: p["name"]) if in_cat(p, c["slug"])]
+            cat_blocks.append(dict(title=c["name"], url=url, links=links_))
+    series_links = [dict(name=n, url=f"/catalog/seriya/{k}/") for n, k in series_slug.items() if f"/catalog/seriya/{k}/" in done]
+    hub_links = [dict(name=x, url=f"/catalog/vrednyy-obekt/{k}/") for k, x in (("sornyaki", "Сорняки"), ("vrediteli", "Вредители"), ("bolezni", "Болезни")) if f"/catalog/vrednyy-obekt/{k}/" in done]
+    sm_groups = [dict(title="Сайт", blocks=[dict(title="", url="", links=[dict(name=n, url=u) for n, u in (("Главная", "/"), ("Каталог", "/catalog/"), ("О компании", "/about/"), ("Контакты", "/contacts/"), ("Отзывы", "/comments/"), ("Политика обработки персональных данных", "/privacy-policy/"))])]),
+                 dict(title="Препараты по категориям", blocks=cat_blocks),
+                 dict(title="Препараты по культурам", blocks=[dict(title="Все культуры", url="/catalog/kultura/", links=names_of("/catalog/kultura/", crops))]),
+                 dict(title="Препараты против вредителей, сорняков и болезней", blocks=[dict(title="Все вредные объекты", url="/catalog/vrednyy-obekt/", links=hub_links + names_of("/catalog/vrednyy-obekt/", pests))]),
+                 dict(title="Препараты по действующим веществам", blocks=[dict(title="Все вещества", url="/catalog/dv/", links=names_of("/catalog/dv/", subs))])]
+    if series_links:
+        sm_groups.append(dict(title="Серии препаратов", blocks=[dict(title="", url="", links=series_links)]))
+    write("sitemap/index.html", env.get_template("sitemap.html").render(
+        **common, title="Карта сайта — Восток АгроХим", description="Все разделы и страницы сайта ООО «Восток АгроХим».", canonical="/sitemap/", h1="Карта сайта", lead="", groups=sm_groups))
+
+    # 404 отдаётся на любом адресе и в индекс не попадает; ErrorDocument — в .htaccess ниже
+    write("404.html", env.get_template("404.html").render(**dict(common, noindex=True), title="Страница не найдена — Восток АгроХим"))
+
     shutil.copytree(root / "site" / "static", out / "static")
+    if has_price:
+        (out / PRICE_FILE).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(content / PRICE_FILE, out / PRICE_FILE)
+    (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n", encoding="utf-8")
     # Тестовая копия закрыта от поисковиков; на боевом сайте robots.txt появится на этапе 5
     if noindex:
         (out / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")

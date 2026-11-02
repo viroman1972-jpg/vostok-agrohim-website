@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap page nf">
+  <div class="l-title"><h1>Страница не найдена</h1></div>
+  <p class="l-lead">Возможно, адрес изменился: сайт обновлён. Начните с каталога или позвоните — подскажем.</p>
+  <div class="page-act"><a class="btn" href="/catalog/">Перейти в каталог</a><a class="btn-line" href="/">На главную</a></div>
+  <p class="review-note">Телефон офиса: <a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a></p>
+</div>
+{% endblock %}

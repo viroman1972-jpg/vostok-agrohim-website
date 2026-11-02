@@ -420,3 +420,27 @@ dialog.lb::backdrop{background:rgba(26,29,31,.82)}
 .cookie .ok{background:var(--gold);color:var(--ink)}
 .cookie .no{background:transparent;color:var(--cream)}
 @media (max-width:640px){.cookie{flex-direction:column;align-items:stretch}.cookie .acts button{flex:1}}
+/* Служебные страницы: о компании, контакты, отзывы, политика, карта сайта, 404. Макетов нет — элементы листинга */
+.page-text{margin:32px 0 0;max-width:760px}
+.page-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.reqs{margin:0 0 16px}
+.reqs>div{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.reqs dt{font-size:14px;color:var(--gray)}
+.reqs dd{margin:0;font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+.reqs a,.review-note a,.seo .map-link{color:var(--green);border-bottom:1px solid var(--line2)}
+.reqs a:hover,.review-note a:hover,.seo .map-link:hover{border-bottom-color:var(--gold)}
+.seo ul.plain{list-style:none;padding:0}
+.review{background:var(--cream);border:1px solid var(--line);border-radius:4px;padding:22px 24px;margin-bottom:16px}
+.review p{margin:0}
+.review .d{font-size:14px;font-weight:600;color:var(--gray);margin-bottom:8px}
+.review .reply{margin-top:16px;padding-left:16px;border-left:3px solid var(--gold)}
+.review-note{font-size:14px;color:var(--gray)}
+.sm-sec h3{font-size:17px;margin:24px 0 10px}
+.sm-sec h3 a,.sm-list a{color:var(--green)}
+.sm-sec h3 a:hover,.sm-list a:hover{border-bottom:1px solid var(--gold)}
+.sm-list{list-style:none;margin:0;padding:0;column-gap:32px;columns:3;font-size:15px;line-height:1.5}
+.sm-list li{break-inside:avoid;padding:4px 0}
+.nf{padding-bottom:48px}
+@media (max-width:959px){.sm-list{columns:2}}
+@media (max-width:639px){.reqs>div{grid-template-columns:minmax(0,1fr);gap:2px}.sm-list{columns:1}.review{padding:18px}.page-act>*{flex:1 1 100%}}
+.nf{padding-top:32px}

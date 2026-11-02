@@ -1,0 +1,12 @@
+{% extends "page.html" %}
+{% block body %}
+{% for g in groups %}
+<section class="ov sm-sec">
+  <div class="ov-hd"><h2>{{ g.title }}</h2></div>
+  {% for b in g.blocks %}
+  {% if b.title %}<h3><a href="{{ b.url }}">{{ b.title }}</a></h3>{% endif %}
+  <ul class="sm-list">{% for x in b.links %}<li><a href="{{ x.url }}">{{ x.name }}</a></li>{% endfor %}</ul>
+  {% endfor %}
+</section>
+{% endfor %}
+{% endblock %}

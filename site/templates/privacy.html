@@ -1,0 +1,17 @@
+{% extends "page.html" %}
+{% block body %}
+<div class="seo page-text">
+  <p class="review-note">Редакция от {{ page.updated }}</p>
+  <h2>Оператор персональных данных</h2>
+  <dl class="reqs">
+    <div><dt>Оператор</dt><dd>{{ s.company }}</dd></div>
+    <div><dt>ИНН / ОГРН</dt><dd>{{ s.legal.inn }} / {{ s.legal.ogrn }}</dd></div>
+    <div><dt>Адрес</dt><dd>{{ s.address }}</dd></div>
+    <div><dt>Почта</dt><dd><a href="mailto:{{ s.email }}">{{ s.email }}</a></dd></div>
+    <div><dt>Реестр операторов</dt><dd>№ {{ s.legal.pd_operator }} от {{ page.pd_operator_date }}</dd></div>
+  </dl>
+  {% for sec in page.sections %}<h2>{{ sec.title }}</h2>
+  {% for t in sec.paras %}{% if t is mapping %}<ul>{% for li in t.list %}<li>{{ li|md }}</li>{% endfor %}</ul>{% else %}<p>{{ t.replace('{email}', s.email)|md }}</p>{% endif %}{% endfor %}
+  {% endfor %}
+</div>
+{% endblock %}
