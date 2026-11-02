@@ -28,9 +28,9 @@
 | `/privacy-policy/` | Политика обработки персональных данных, с разделами о cookie и Метрике | ДЗ01, ДЗ08, НР19 |
 | `/sitemap/` | Карта сайта для людей | ДМ19 |
 | `/404.html` | Страница «не найдено» | — |
-| файл прайса (PDF/Excel) | Ссылка «Скачать прайс-лист» в футере | П07 |
+| `/files/prays-list.pdf` | Файл прайса, ссылка «Скачать прайс-лист» в футере; пока файла нет, ссылки нет | П07 |
 
-Не создаются: `/opt`, `/oferta/` (НР13, НР14), `/dacha` (НР01), отдельные «Согласие», «Пользовательское соглашение», «Cookies» (НР19), `/delivery`, `/warranty`, `/documents`, `/faq`, `/legal/*` (устарели, были в `sitemap-and-navigation.md`).
+Не создаются: `/opt`, `/oferta/` (НР13, НР14), `/dacha` (НР01), отдельные «Согласие», «Пользовательское соглашение», «Cookies» (НР19), `/price/` (П07), `/return-policy/` (НР20), `/delivery`, `/warranty`, `/documents`, `/faq`, `/legal/*` (устарели, были в `sitemap-and-navigation.md`).
 
 Зарезервированные слова, которые нельзя использовать как адрес объекта или препарата: `all`, `promyshlennye`, `sornyaki`, `vrediteli`, `bolezni`. Генератор должен падать при совпадении.
 
@@ -45,7 +45,8 @@ data/dict/*.csv      categories, manufacturers, forms, countries, tags, crops (5
 data/links/*.csv     product_crop, product_pest, product_substance, cross_sell (ДМ29)
 content/products/<slug>/*.md   регламент, первая помощь, вкладки
 content/seo/*.md     тексты категорий, культур, объектов, ДВ
-content/pages/*.md   about, contacts, comments, privacy-policy
+content/pages/*.yml  about, contacts, comments, privacy-policy
+content/files/       файл прайса (П07)
 ```
 
 ### products.csv: поля (по catalog-ia §4)
