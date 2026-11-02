@@ -162,14 +162,14 @@ def build(root=ROOT, out=None):
     def read_seo(f):
         return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
 
-    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=()):
+    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=(), related=()):
         """Листинг по макету гербицидов: категория, подраздел или страница входа (культура, объект, ДВ)."""
         prices_l = [p["price_num"] for p in items]
         write(rel, env.get_template("listing.html").render(
             **common, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb, crumbs=list(crumbs),
             items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
             groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
-            other_title=other_title, other_cats=other_cats))
+            other_title=other_title, other_cats=other_cats, related=related))
 
     # Десиканты — представление по тегу над гербицидами (ПИ08): препарат лежит в своей категории, адрес карточки не меняется
     def in_cat(p, slug):
@@ -206,6 +206,16 @@ def build(root=ROOT, out=None):
                 out_ += prom_tile
         return out_
 
+    def crop_keys(slug):  # культура вместе с родителем и подвидами, как в проверке SEO-текстов
+        return {slug, crops[slug]["parent"]} - {""} | {k for k, v in crops.items() if v["parent"] == slug}
+
+    def related_crops(items):  # ДМ32: «Похожие подборки» — до 8 культур с наибольшим числом препаратов листинга; меньше 5 — блока нет
+        cnt = {k: n for k, v in crops.items() if not v["parent"] and v["group"] != "Спец. объекты"
+               for n in [sum(1 for p in items if crop_keys(k) & set(p["crops"]))] if n}
+        if len(cnt) < 5:
+            return []
+        return [dict(name=f"Для {crops[k]['name_gen']}", href=f"/catalog/kultura/{k}/") for k in sorted(cnt, key=lambda k: -cnt[k])[:8]]
+
     # Список категории
     for cat in cats:
         items = sorted([p for p in products if in_cat(p, cat["slug"])], key=lambda p: p["name"])
@@ -218,7 +228,7 @@ def build(root=ROOT, out=None):
         listing(f"catalog/{cat['slug']}/index.html", items, cat["name"], cat["name"], ["dv", "crop", "pest", "maker", "action"] + (["term"] if herb else []) + ["pack"], quick_rows(items, tasks),
                 title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
-                other_cats=prom_tile + others if cat["slug"] == "gerbitsidy" else with_prom(others))
+                other_cats=prom_tile + others if cat["slug"] == "gerbitsidy" else with_prom(others), related=related_crops(items))
 
     # Подраздел промышленных гербицидов (ДМ31): свой H1, текст T02; в фильтрах нет культуры — у всех одни земли несельхозпользования
     if prom:
@@ -232,9 +242,6 @@ def build(root=ROOT, out=None):
     # Страницы входов: культура, вредный объект, ДВ (ДМ02). Страница есть, только если на ней есть опубликованный препарат.
     def short(p):
         return p["name"].split(", ")[0].strip()  # с пробелом: у «Дракон Супер 7,5, КЭ» запятая есть и в числе
-
-    def crop_keys(slug):  # культура вместе с родителем и подвидами, как в проверке SEO-текстов
-        return {slug, crops[slug]["parent"]} - {""} | {k for k, v in crops.items() if v["parent"] == slug}
 
     entries = [("kultura", crops, lambda p, slug: bool(crop_keys(slug) & set(p["crops"])), "для", "crop"),
                ("vrednyy-obekt", pests, lambda p, slug: slug in p["pests"], "против", "pest"),

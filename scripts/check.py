@@ -111,6 +111,37 @@ def check_file(path, text, root=None):
             errs.append(f"{path}: вход по территории, но в форме нет поля territory (ДМ31)")
     if "<form" in low and "обработк" not in low:
         errs.append(f"{path}: у формы нет указания цели обработки данных (ДЗ07)")
+    errs += check_related(path, text)
+    return errs
+
+
+def check_related(path, text):
+    """«Похожие подборки» (ДМ32): только на листинге категории, между SEO-текстом и «Другими категориями», ссылки не из быстрых входов; состав — по культурам карточек этой страницы."""
+    errs = []
+    parts = Path(path).parts
+    is_cat = len(parts) == 3 and parts[0] == "catalog" and parts[2] == "index.html" and parts[1] not in ("kultura", "vrednyy-obekt", "dv", "seriya")
+    m = re.search(r'<div class="related">.*?</div>', text, re.S)
+    links = re.findall(r'href="([^"]*)"', m.group(0)) if m else []
+    if m:
+        if not is_cat:
+            errs.append(f"{path}: блок «Похожие подборки» только на листинге категории (ДМ32)")
+        other, seo = text.find('<div class="other">'), text.find('<div class="seo">')
+        if not m.start() < other or m.start() < seo:
+            errs.append(f"{path}: блок «Похожие подборки» не на месте — нужен между SEO-текстом и «Другими категориями» (ДМ32)")
+        quick = re.search(r'id="quick">(.*?)<div class="bar"', text, re.S)
+        for href in set(links) & set(re.findall(r'href="([^"]*)"', quick.group(1)) if quick else []):
+            errs.append(f"{path}: блок «Похожие подборки» повторяет быстрый вход {href} (ДМ32)")
+    if is_cat:
+        crops = {r["slug"]: r for r in read_csv(ROOT / "data" / "dict" / "crops.csv")}
+        cnt = {}
+        for card in re.findall(r'\bdata-crop="([^"]*)"', text):  # препарат считается один раз, подвид — в родителе
+            for k in {crops[v]["parent"] or v for v in card.split()}:
+                if crops[k]["group"] != "Спец. объекты":
+                    cnt[k] = cnt.get(k, 0) + 1
+        order = list(crops)
+        want = sorted(cnt, key=lambda k: (-cnt[k], order.index(k)))[:8] if len(cnt) >= 5 else []
+        if links != [f"/catalog/kultura/{k}/" for k in want]:
+            errs.append(f"{path}: состав блока «Похожие подборки» не совпадает с отбором по культурам (ДМ32)")
     return errs
 
 
@@ -273,7 +304,7 @@ def selftest():
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo")
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
-                "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
+                "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "только на листинге категории", "не на месте", "повторяет быстрый вход", "не совпадает с отбором", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",

@@ -72,6 +72,13 @@
   </div>
   {% endif %}
 
+  {% if related %}
+  <div class="related">
+    <h3>Препараты по культурам</h3>
+    <div class="links">{% for x in related %}<a href="{{ x.href }}">{{ x.name }}</a>{% endfor %}</div>
+  </div>
+  {% endif %}
+
   <div class="other">
     <h2>{{ other_title }}</h2>
     <div class="cats">

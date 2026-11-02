@@ -244,6 +244,11 @@ h1,h2,h3{margin:0}
 .seo .cta{margin-top:28px}
 .seo .auto a{color:var(--green);border-bottom:1px solid var(--line2)}
 .seo .auto a:hover{border-bottom-color:var(--gold)}
+.related{margin:48px auto 0;max-width:1200px}
+.related h3{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--green);margin:0 0 16px;letter-spacing:-.01em}
+.related .links{display:flex;flex-wrap:wrap;gap:8px}
+.related a{background:var(--cream);color:var(--green);font-size:14px;font-weight:500;padding:7px 14px;border-radius:20px;border:1px solid transparent}
+.related a:hover{border-color:var(--gold)}
 .other{margin-top:48px}
 .other h2{font-family:var(--serif);font-weight:700;font-size:24px;color:var(--green);margin:0 0 24px}
 .other .cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
