@@ -70,8 +70,28 @@ h1,h2,h3{margin:0}
 .burger .panel a{display:block;padding:12px 20px;font-size:15px;color:#3A3D3E}
 .burger .panel .h{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8A8578;padding:10px 20px 4px}
 .burger .panel .sm a{padding:9px 20px 9px 34px;font-size:14px}
-@media (max-width:1099px){.nav{display:none}.burger{display:block}.head-phones{margin-left:auto}}
-@media (max-width:640px){.site-header .in{gap:10px}.logo{font-size:17px}.head-phones .p1{font-size:14px}.head-phones .p2{display:none}}
+.head-right{display:flex;align-items:center;gap:12px;min-width:0}
+.head-search{flex:none;width:34px;height:34px;border:1px solid rgba(248,244,233,.3);border-radius:50%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F8F4E9' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/16px no-repeat}
+.head-search:hover,.head-search[aria-expanded=true]{background-color:rgba(248,244,233,.12)}
+.search-bar{position:absolute;left:0;right:0;top:100%;background:var(--green-d);padding:0 var(--pad) 16px}
+.search-bar .sfield{max-width:calc(1400px - 2 * var(--pad));margin:0 auto}
+/* Поле поиска (ДМ38): в шапке, в меню телефона, на /catalog/ и /catalog/all/ */
+.sfield{position:relative;display:block}
+.sfield input{width:100%;min-width:0;border:1px solid var(--line2);border-radius:4px;padding:11px 14px;font-size:16px;color:var(--ink);background:#fff}
+.sres{position:absolute;left:0;right:0;top:100%;z-index:45;margin-top:4px;background:var(--cream);border-radius:4px;box-shadow:0 16px 40px rgba(0,0,0,.25);padding:6px 0;max-height:min(70vh,520px);overflow:auto}
+.sres a,.burger .panel .sres a{display:block;padding:9px 14px;color:#3A3D3E}
+.sres a:hover,.sres a:focus{background:rgba(27,67,50,.06)}
+.sres .n{display:block;font-size:15px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.sres .m{display:block;margin-top:2px;font-size:13px;color:var(--gray);overflow-wrap:anywhere}
+.sres a.all,.burger .panel .sres a.all{font-size:14px;font-weight:700;color:var(--green);border-top:1px solid var(--line2);margin-top:6px;padding-top:12px}
+.sres-none{margin:0;padding:10px 14px;font-size:14px;line-height:1.5;color:#3A3D3E}
+.sres-none a{display:inline!important;padding:0!important;font-weight:700;color:var(--green)!important}
+button.link{border:0;padding:0;background:none;font-size:inherit;font-weight:700;color:var(--green);text-decoration:underline;cursor:pointer}
+.sfield-page{margin-top:20px;max-width:640px}
+.burger .sfield{display:none;padding:8px 12px}
+.burger .sres{position:static;margin-top:6px;box-shadow:none;background:#fff;max-height:none}
+@media (max-width:1099px){.nav{display:none}.burger{display:block}.head-right{margin-left:auto}}
+@media (max-width:640px){.head-search{display:none}.search-bar{display:none}.burger .sfield{display:block}.site-header .in{gap:10px}.logo{font-size:17px}.head-phones .p1{font-size:14px}.head-phones .p2{display:none}}
 @media (max-width:400px){.logo{font-size:16px}.head-phones .p1{font-size:13px}}
 /* Логотип, номер и меню занимают 352 px: уже — номер становится кнопкой-значком */
 @media (max-width:359px){.head-phones .p1{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid rgba(248,244,233,.3);border-radius:4px;font-size:0}.head-phones .p1::before{content:"";width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F8F4E9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z'/%3E%3C/svg%3E") center/contain no-repeat}}

@@ -36,7 +36,7 @@ IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"
 JOURNAL = ROOT / "assets" / "image-sources.csv"
 STATUSES = {"разрешено", "своё", "ожидает", "уточнить"}  # первые два допустимы на боевом сайте (ДЗ09)
 RELEASE_OK = {"разрешено", "своё"}
-REQUIRED = ("about/index.html", "contacts/index.html", "comments/index.html", "privacy-policy/index.html", "sitemap/index.html", "404.html")  # план §2.4
+REQUIRED = ("catalog/all/index.html", "about/index.html", "contacts/index.html", "comments/index.html", "privacy-policy/index.html", "sitemap/index.html", "404.html")  # план §2.4
 PRICE_FILE = "files/prays-list.pdf"  # П07
 # Политика (чек-лист D, ДЗ08): без этих разделов страница не проходит
 POLICY_MUST = ("Оператор персональных данных", "Цели обработки", "Правовые основания", "хранятся", "Ваши права", "Отозвать согласие", "cookie", "Яндекс.Метрика", "Редакция от")
@@ -165,11 +165,44 @@ def check_service(d, release):
     return errs
 
 
+def check_search(d):
+    """Поиск (ДМ38): значок, поле в меню и номер в шапке на всех страницах; в индексе только собранные страницы и нет цен; индекс совпадает со списком /catalog/all/, закрытым от индексации."""
+    d, errs = Path(d), []
+    for f in sorted(d.rglob("*.html")):
+        text = f.read_text(encoding="utf-8")
+        rel = f.relative_to(d)
+        header = re.search(r"<header.*?</header>", text, re.S)
+        header = header.group(0) if header else ""
+        if 'id="search-open"' not in header or "data-search" not in header:
+            errs.append(f"{rel}: в шапке нет значка или поля поиска (ДМ38)")
+        if 'class="p1"' not in header:
+            errs.append(f"{rel}: в шапке нет номера телефона (ДМ37, ДМ38)")
+    f = d / "static" / "search-index.json"
+    if not f.is_file():
+        return errs + [f"{d}: нет индекса поиска static/search-index.json (ДМ38)"]
+    raw = f.read_text(encoding="utf-8")
+    if "₽" in raw or re.search(r'"price', raw):
+        errs.append("search-index.json: в индексе поиска цена — цена попадает на страницу только при сборке (ДМ38)")
+    index = json.loads(raw)
+    for x in index["products"] + index["sections"]:
+        if not link_exists(d, x["url"]):
+            errs.append(f"search-index.json: индекс ведёт на несобранную страницу {x['url']} (ДМ38)")
+    f = d / "catalog" / "all" / "index.html"
+    if f.is_file():
+        text = f.read_text(encoding="utf-8")
+        if 'name="robots" content="noindex' not in text:
+            errs.append("catalog/all: страница не закрыта от индексации (ДМ38)")
+        cards = set(re.findall(r'<a class="card" href="([^"]+)"', text))
+        if cards != {p["url"] for p in index["products"]}:
+            errs.append("catalog/all: список карточек не совпадает с индексом поиска (ДМ38)")
+    return errs
+
+
 def check_related(path, text):
     """«Похожие подборки» (ДМ32): только на листинге категории, между SEO-текстом и «Другими категориями», ссылки не из быстрых входов; состав — по культурам карточек этой страницы."""
     errs = []
     parts = Path(path).parts
-    is_cat = len(parts) == 3 and parts[0] == "catalog" and parts[2] == "index.html" and parts[1] not in ("kultura", "vrednyy-obekt", "dv", "seriya")
+    is_cat = len(parts) == 3 and parts[0] == "catalog" and parts[2] == "index.html" and parts[1] not in ("kultura", "vrednyy-obekt", "dv", "seriya", "all")
     m = re.search(r'<div class="related">.*?</div>', text, re.S)
     links = re.findall(r'href="([^"]*)"', m.group(0)) if m else []
     if m:
@@ -240,7 +273,7 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
-    errs += check_service(d, release) + check_css(d)
+    errs += check_service(d, release) + check_css(d) + check_search(d)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -376,7 +409,8 @@ def selftest():
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom",
                 "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса",
-                "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся", "нижняя кнопка на главной", "нет телефонов в первом экране"]
+                "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся", "нижняя кнопка на главной", "нет телефонов в первом экране",
+                "нет обязательной страницы catalog/all", "нет значка или поля поиска", "в шапке нет номера телефона", "в индексе поиска цена", "индекс ведёт на несобранную страницу"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")

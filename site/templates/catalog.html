@@ -4,9 +4,10 @@
   <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><wbr><span class="cur">Каталог</span></div>
   <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ count }}</div></div>
   <p class="l-lead">{{ lead }}</p>
+  <form class="sfield sfield-page" action="/catalog/all/" role="search" data-search><input type="search" name="q" placeholder="Поиск по каталогу" aria-label="Поиск по каталогу" autocomplete="off"><div class="sres" hidden></div></form>
 
   <section class="ov">
-    <div class="ov-hd"><h2>Категории</h2></div>
+    <div class="ov-hd"><h2>Категории</h2><a class="ov-more" href="/catalog/all/">Все препараты →</a></div>
     <div class="ov-grid">
       {% for c in root_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span><span class="c">{{ c.count }}</span></a>{% endfor %}
     </div>

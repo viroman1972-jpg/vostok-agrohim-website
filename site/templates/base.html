@@ -34,13 +34,17 @@
       <a href="/#manufacturers">Производители</a>
       <a href="/contacts/">Контакты</a>
     </nav>
-    <div class="head-phones">
-      <a class="p1" href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a>
-      <div class="p2"><a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a><span>офис</span></div>
+    <div class="head-right">
+      <a class="head-search" id="search-open" href="/catalog/all/" role="button" aria-label="Поиск по каталогу" aria-expanded="false" aria-controls="search-bar"></a>
+      <div class="head-phones">
+        <a class="p1" href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a>
+        <div class="p2"><a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a><span>офис</span></div>
+      </div>
     </div>
     <details class="burger">
       <summary aria-label="Меню">☰</summary>
       <div class="panel">
+        <form class="sfield" action="/catalog/all/" role="search" data-search><input type="search" name="q" placeholder="Поиск по каталогу" aria-label="Поиск по каталогу" autocomplete="off"><div class="sres" hidden></div></form>
         <a href="/catalog/">Каталог</a>
         <div class="sm">{% for c in cats %}<a href="/catalog/{{ c.slug }}/">{{ c.name }}</a>{% endfor %}</div>
         <a href="/#tasks">Задачи защиты</a>
@@ -49,6 +53,9 @@
         <a href="/contacts/">Контакты</a>
       </div>
     </details>
+  </div>
+  <div class="search-bar" id="search-bar" hidden>
+    <form class="sfield" action="/catalog/all/" role="search" data-search><input type="search" name="q" placeholder="Название, действующее вещество, культура, сорняк, болезнь, вредитель" aria-label="Поиск по каталогу" autocomplete="off"><div class="sres" hidden></div></form>
   </div>
 </header>
 <main id="main">
@@ -128,7 +135,9 @@
   <div>Сайт использует cookie для корректной работы. Подробнее — в <a href="/privacy-policy/">Политике обработки персональных данных</a>.</div>
   <div class="acts"><button class="ok" type="button" data-cookie="yes">Принять</button></div>
 </div>
+<template id="search-none"><p class="sres-none">Ничего не нашлось. Проверьте написание или спросите нас: <a href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a> или <button class="link" type="button" data-open-lead>оставьте заявку</button>.</p></template>
 <script src="/static/site.js" defer></script>
+<script src="/static/search.js" defer></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

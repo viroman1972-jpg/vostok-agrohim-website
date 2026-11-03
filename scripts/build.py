@@ -39,6 +39,24 @@ def read_csv(path):
         return list(csv.DictReader(f))
 
 
+def search_norm(text):
+    """Как norm() в search.js: без регистра, ё = е, только буквы и цифры."""
+    return re.sub(r"[^0-9a-zа-я]+", " ", text.lower().replace("ё", "е")).strip()
+
+
+def search_words(*texts):
+    return " ".join(sorted({w for t in texts for w in search_norm(t).split()}))
+
+
+def regulation_words(rows, drop):
+    """Объекты из строк регламента (ДМ38): «осот», «пырей» есть только здесь. Без чисел, оговорок «устойчивые к …» и названий веществ (drop)."""
+    words = set()
+    for r in rows:
+        text = re.sub(r"устойчив\w*\s+к\s+[^,;+]*", " ", str(r.get("object", "")), flags=re.I)
+        words |= {w for w in search_norm(text).split() if len(w) >= 3 and not w.isdigit() and w not in drop}
+    return words
+
+
 def money(v):
     return f"{int(float(v)):,}".replace(",", " ") + " ₽"
 
@@ -103,6 +121,12 @@ def build(root=ROOT, out=None):
     pests = {r["slug"]: r for r in read_csv(data / "dict" / "pests.csv")}
     subs = {r["slug"]: r for r in read_csv(data / "dict" / "substances.csv")}
     series_slug = {r["name"]: r["slug"] for r in read_csv(data / "dict" / "series.csv")}
+    synonyms = defaultdict(list)  # ДМ38: только для значений словарей
+    syn_dicts = {"dv": subs, "pest": pests, "crop": crops}
+    for r in read_csv(data / "dict" / "synonyms.csv"):
+        if r["slug"] not in syn_dicts[r["kind"]]:
+            sys.exit(f"Синоним «{r['synonym']}»: значения {r['slug']} нет в словаре ({r['kind']})")
+        synonyms[r["kind"], r["slug"]].append(r["synonym"])
 
     def links(name, key):
         d = defaultdict(list)
@@ -189,11 +213,11 @@ def build(root=ROOT, out=None):
     def read_seo(f):
         return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
 
-    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=(), related=()):
-        """Листинг по макету гербицидов: категория, подраздел или страница входа (культура, объект, ДВ)."""
+    def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=(), related=(), search_page=False):
+        """Листинг по макету гербицидов: категория, подраздел, страница входа (культура, объект, ДВ) или все препараты с поиском."""
         prices_l = [p["price_num"] for p in items]
         write(rel, env.get_template("listing.html").render(
-            **common, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb, crumbs=list(crumbs),
+            **dict(common, noindex=noindex or search_page), search_page=search_page, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb, crumbs=list(crumbs),
             items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
             groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
             other_title=other_title, other_cats=other_cats, related=related))
@@ -256,6 +280,15 @@ def build(root=ROOT, out=None):
                 title=seo.get("meta", {}).get("title") or f"{cat['name']} — купить в Челябинске | Восток АгроХим",
                 description=seo.get("meta", {}).get("description") or seo.get("lead", ""), lead=seo.get("lead", ""), seo=seo.get("seo"),
                 other_cats=prom_tile + others if cat["slug"] == "gerbitsidy" else with_prom(others), related=related_crops(items))
+
+    # Все препараты и результаты поиска (ДМ38): закрыта от индексации, дублирует категории
+    present = [c for c in cats if any(p["category"] == c["slug"] for p in products)]
+    listing("catalog/all/index.html", sorted(products, key=lambda p: p["name"]), "Все препараты", "Все препараты",
+            (["cat"] if len(present) > 1 else []) + ["dv", "crop", "pest", "maker", "action", "term", "pack"],
+            [dict(label="Категория", group="cat", items=[dict(name=c["name"], value=c["slug"]) for c in present] if len(present) > 1 else [])],
+            title="Все препараты — Восток АгроХим", description="Все препараты каталога: поиск и фильтры.",
+            lead="Поиск по названию, действующему веществу, культуре, вредному объекту и производителю.", seo=None,
+            other_title="Категории каталога", search_page=True)
 
     # Подраздел промышленных гербицидов (ДМ31): свой H1, текст T02; в фильтрах нет культуры — у всех одни земли несельхозпользования
     if prom:
@@ -465,7 +498,7 @@ def build(root=ROOT, out=None):
             cat_blocks.append(dict(title=c["name"], url=url, links=links_))
     series_links = [dict(name=n, url=f"/catalog/seriya/{k}/") for n, k in series_slug.items() if f"/catalog/seriya/{k}/" in done]
     hub_links = [dict(name=x, url=f"/catalog/vrednyy-obekt/{k}/") for k, x in (("sornyaki", "Сорняки"), ("vrediteli", "Вредители"), ("bolezni", "Болезни")) if f"/catalog/vrednyy-obekt/{k}/" in done]
-    sm_groups = [dict(title="Сайт", blocks=[dict(title="", url="", links=[dict(name=n, url=u) for n, u in (("Главная", "/"), ("Каталог", "/catalog/"), ("О компании", "/about/"), ("Контакты", "/contacts/"), ("Отзывы", "/comments/"), ("Политика обработки персональных данных", "/privacy-policy/"))])]),
+    sm_groups = [dict(title="Сайт", blocks=[dict(title="", url="", links=[dict(name=n, url=u) for n, u in (("Главная", "/"), ("Каталог", "/catalog/"), ("Все препараты", "/catalog/all/"), ("О компании", "/about/"), ("Контакты", "/contacts/"), ("Отзывы", "/comments/"), ("Политика обработки персональных данных", "/privacy-policy/"))])]),
                  dict(title="Препараты по категориям", blocks=cat_blocks),
                  dict(title="Препараты по культурам", blocks=[dict(title="Все культуры", url="/catalog/kultura/", links=names_of("/catalog/kultura/", crops))]),
                  dict(title="Препараты против вредителей, сорняков и болезней", blocks=[dict(title="Все вредные объекты", url="/catalog/vrednyy-obekt/", links=hub_links + names_of("/catalog/vrednyy-obekt/", pests))]),
@@ -479,6 +512,41 @@ def build(root=ROOT, out=None):
     write("404.html", env.get_template("404.html").render(**dict(common, noindex=True), title="Страница не найдена — Восток АгроХим"))
 
     shutil.copytree(root / "site" / "static", out / "static")
+
+    # Индекс поиска (ДМ38): только собранные препараты и страницы; цен здесь нет — цена попадает на страницу только при сборке
+    def syn(kind, slug):
+        return " ".join(synonyms[kind, slug])
+    done = {"/" + r.removesuffix("index.html") for r in pages}
+    drop = {w for r in subs.values() for w in search_norm(r["name"]).split()} | {w for k in subs for t in synonyms["dv", k] for w in search_norm(t).split()}
+    index = dict(products=[], sections=[])
+    for p in sorted(products, key=lambda p: p["name"]):
+        cf = content / "products" / f"{p['slug']}.yml"
+        rows = (yaml.safe_load(cf.read_text(encoding="utf-8")) or {}).get("regulation", []) if cf.exists() else []
+        tags = p["tags"].split()
+        kinds = [cat_by[p["category"]]["name"], p["category_one"]] + (["Десиканты"] if "desikaciya" in tags else []) + ([PROM_NAME] if PROM_TAG in tags else [])
+        names = [subs[x]["name"] for x in p["substances"]]
+        index["products"].append(dict(
+            name=p["name"], url=p["url"], about=" · ".join([p["category_one"]] + ([" + ".join(names)] if names else [])),
+            a=search_words(p["name"]), b=search_words(*names, *[syn("dv", x) for x in p["substances"]], *kinds),
+            c=" ".join(sorted(set(search_words(mk[p["manufacturer"]]["name"], *[crops[x]["name"] for x in p["crops"]], *[syn("crop", x) for x in p["crops"]],
+                                               *[pests[x]["name"] for x in p["pests"]], *[syn("pest", x) for x in p["pests"]]).split()) | regulation_words(rows, drop)))))
+
+    def section(label, name, url, *more):
+        if url in done:
+            index["sections"].append(dict(name=name, label=label, url=url, a=search_words(name, *more)))
+    for c in cats:
+        section("Категория", c["name"], f"/catalog/{c['slug']}/", c["name_one"])
+    section("Подраздел", PROM_NAME, PROM_URL)
+    for k, r in crops.items():
+        section("Культура", r["name"], f"/catalog/kultura/{k}/", syn("crop", k))
+    for k, r in pests.items():
+        section("Вредный объект", r["name"], f"/catalog/vrednyy-obekt/{k}/", syn("pest", k))
+    for k, r in subs.items():
+        section("Действующее вещество", r["name"], f"/catalog/dv/{k}/", syn("dv", k))
+    for n, k in series_slug.items():
+        section("Серия", n, f"/catalog/seriya/{k}/")
+    (out / "static" / "search-index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
     if has_price:
         (out / PRICE_FILE).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(content / PRICE_FILE, out / PRICE_FILE)

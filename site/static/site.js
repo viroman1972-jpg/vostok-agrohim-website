@@ -18,8 +18,9 @@
     msg.placeholder = territory ? 'Площадь, основные виды растительности, объём препарата' : msgHint;
     lead.showModal();
   }
-  document.querySelectorAll('[data-open-lead]').forEach(function (b) {
-    b.addEventListener('click', function () { openLead(b.getAttribute('data-product'), b.getAttribute('data-territory')); });
+  document.addEventListener('click', function (e) {  // на весь документ: кнопка в ответе поиска появляется после загрузки
+    var b = e.target.closest('[data-open-lead]');
+    if (b) openLead(b.getAttribute('data-product'), b.getAttribute('data-territory'));
   });
   document.querySelectorAll('dialog').forEach(function (d) {
     d.addEventListener('click', function (e) { if (e.target === d) d.close(); });

@@ -32,7 +32,23 @@
     boxes.forEach(function (b) { if (b.checked) (m[b.getAttribute('data-group')] = m[b.getAttribute('data-group')] || []).push(b); });
     return m;
   }
+  // Поиск на /catalog/all/ (ДМ38): запрос отбирает карточки вместе с фильтрами. qHits — адреса найденных, null — запроса нет.
+  var qEl = document.getElementById('all-q'), emptyQ = document.getElementById('empty-q'), qHits = null, qText = '', qTimer;
+  function applyQuery(q, keepUrl) {
+    window.catalogSearch.load().then(function () {
+      var res = window.catalogSearch.find(q);
+      qText = res.empty ? '' : q.trim();
+      qHits = null;
+      if (!res.empty) {
+        qHits = {};
+        res.products.forEach(function (p) { qHits[p.url] = true; });
+      }
+      if (!keepUrl) history.replaceState(null, '', location.pathname + (qText ? '?q=' + encodeURIComponent(qText) : ''));
+      update(true);
+    }).catch(function () {});  // индекс не загрузился: виден весь список
+  }
   function matches(card, sel, lo, hi) {
+    if (qHits && !qHits[card.getAttribute('href')]) return false;
     for (var g in sel) {
       var have = (card.getAttribute('data-' + attr[g]) || '').split(' ');
       var ok = sel[g].some(function (b) { return have.indexOf(b.value) >= 0; });
@@ -71,6 +87,13 @@
       c2.addEventListener('click', function () { pmin.value = ''; pmax.value = ''; update(true); });
       chipsEl.appendChild(c2);
     }
+    if (qText) {
+      n++;
+      var c3 = document.createElement('button'); c3.type = 'button'; c3.className = 'chip';
+      c3.textContent = 'Поиск: ' + qText;
+      c3.addEventListener('click', function () { qEl.value = ''; applyQuery(''); });
+      chipsEl.appendChild(c3);
+    }
     none.hidden = n > 0;
   }
   function update(resetPage) {
@@ -87,7 +110,12 @@
     cards.forEach(function (c) { c.hidden = true; });
     hit.forEach(function (c, i) { c.hidden = !(i >= from && i < to); });
     shown.textContent = 'Показано ' + Math.min(hit.length, to - from) + ' из ' + cards.length;
-    empty.hidden = hit.length > 0;
+    var noQ = !!qHits && !Object.keys(qHits).length;  // сам запрос ничего не нашёл: фильтры сбрасывать незачем
+    empty.hidden = hit.length > 0 || noQ;
+    if (emptyQ) {
+      emptyQ.hidden = !noQ;
+      if (noQ && !emptyQ.firstChild) emptyQ.appendChild(window.catalogSearch.none());
+    }
     pager.hidden = hit.length <= per;
     pages.innerHTML = '';
     if (!all) {
@@ -117,8 +145,15 @@
   [pmin, pmax].forEach(function (i) { i.addEventListener('change', function () { update(true); }); });
   sortEl.addEventListener('change', function () { sortCards(); update(true); });
   document.getElementById('reset').addEventListener('click', function () {
-    boxes.forEach(function (b) { b.checked = false; }); pmin.value = ''; pmax.value = ''; update(true);
+    boxes.forEach(function (b) { b.checked = false; }); pmin.value = ''; pmax.value = '';
+    if (qEl && qText) { qEl.value = ''; applyQuery(''); } else update(true);
   });
+  if (qEl) {
+    document.getElementById('all-search').addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(qTimer); applyQuery(qEl.value); });
+    qEl.addEventListener('input', function () { clearTimeout(qTimer); qTimer = setTimeout(function () { applyQuery(qEl.value); }, 150); });
+    qEl.value = new URLSearchParams(location.search).get('q') || '';
+    if (qEl.value) applyQuery(qEl.value, true);
+  }
   document.getElementById('show-all').addEventListener('click', function () { all = true; update(); });
   document.querySelectorAll('.showmore').forEach(function (btn) {
     btn.addEventListener('click', function () {

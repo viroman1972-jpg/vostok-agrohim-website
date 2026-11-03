@@ -4,6 +4,7 @@
   <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><wbr><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><wbr><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><wbr><span class="cur">{{ crumb }}</span></div>
   <div class="l-title"><h1>{{ h1|shy }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
   <p class="l-lead">{{ lead }}</p>
+  {% if search_page %}<form class="sfield sfield-page" id="all-search" action="/catalog/all/" role="search"><input type="search" id="all-q" name="q" placeholder="Поиск по каталогу" aria-label="Поиск по каталогу" autocomplete="off"></form>{% endif %}
 
   <div class="quick" id="quick">
     {% for r in quick %}<div class="row"><span class="lbl">{{ r.label }}</span>{% for x in r['items'] %}{% if x.get('href') %}<a class="qpill" href="{{ x.href }}">{{ x.name }}</a>{% elif x.get('territory') %}<button class="qpill" type="button" data-open-lead data-territory="{{ x.territory }}" aria-haspopup="dialog">{{ x.name }}</button>{% else %}<button class="qpill" type="button" data-group="{{ x.get('group') or r.group }}" data-value="{{ x.value }}" aria-pressed="false">{{ x.name }}</button>{% endif %}{% endfor %}</div>
@@ -53,6 +54,7 @@
         {% endfor %}
       </div>
       <p class="empty" id="empty" hidden>По выбранным условиям препаратов нет. Сбросьте часть фильтров.</p>
+      {% if search_page %}<div id="empty-q" hidden></div>{% endif %}
       <div class="pager" id="pager" data-per="12" hidden>
         <div class="pages" id="pages"></div>
         <button class="all" type="button" id="show-all">Показать всё</button>
