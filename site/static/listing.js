@@ -128,5 +128,28 @@
   var openF = document.getElementById('open-filters'), closeF = document.getElementById('close-filters');
   if (openF) openF.addEventListener('click', function () { side.classList.add('open'); });
   if (closeF) closeF.addEventListener('click', function () { side.classList.remove('open'); });
+  // SEO-текст (ДМ37): заголовок и два абзаца видны всегда, остальное сворачивается; на телефоне свёрнуто сразу. Без скрипта текст виден целиком.
+  var seo = document.querySelector('main .seo');
+  if (seo) {
+    var kids = [].slice.call(seo.children), cut = 1;
+    while (cut < 3 && kids[cut] && kids[cut].tagName !== 'H2') cut++;
+    if (kids[cut]) {
+      var rest = document.createElement('div'), more = document.createElement('button');
+      rest.className = 'seo-rest'; rest.id = 'seo-rest';
+      kids.slice(cut).forEach(function (k) { rest.appendChild(k); });
+      more.className = 'seo-toggle'; more.type = 'button'; more.setAttribute('aria-controls', 'seo-rest');
+      function setSeo(open) {
+        rest.hidden = !open;
+        more.setAttribute('aria-expanded', open ? 'true' : 'false');
+        more.textContent = open ? 'Свернуть' : 'Читать дальше';
+      }
+      more.addEventListener('click', function () {
+        setSeo(rest.hidden);
+        if (rest.hidden) more.scrollIntoView({ block: 'center' });  // текст исчез, кнопка не должна оказаться выше экрана
+      });
+      seo.appendChild(rest); seo.appendChild(more);
+      setSeo(!window.matchMedia('(max-width:639px)').matches);
+    }
+  }
   sortCards(); update(true);
 })();
