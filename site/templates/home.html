@@ -17,6 +17,7 @@
         <a class="btn-line btn-sq" href="/catalog/">Посмотреть каталог</a>
       </div>
       <div class="hero-proof"><span>{{ h.dealer_line }}</span><span class="dot">·</span><span>{{ h.since_line }}</span></div>
+      <div class="hero-phones"><a class="p1" href="tel:{{ s.phone_mobile|tel }}">{{ s.phone_mobile }}</a><div class="p2"><a href="tel:{{ s.phone_office|tel }}">{{ s.phone_office }}</a><span>офис</span></div></div>
     </div>
     <div class="hero-photo" id="hero-photo">
       {% for sl in h.hero_slides %}
@@ -94,6 +95,5 @@
     <div class="center two"><button class="btn btn-sq big" type="button" data-open-lead>Получить консультацию</button><a class="btn-line btn-sq big" href="tel:{{ s.phone_office|tel }}">Позвонить нам</a></div>
   </div>
 </section>
-<div class="sticky-cta"><button class="btn" type="button" data-open-lead>Получить консультацию</button></div>
 {% endblock %}
 {% block scripts %}<script src="/static/home.js" defer></script>{% endblock %}

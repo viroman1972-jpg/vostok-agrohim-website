@@ -155,6 +155,13 @@ def check_service(d, release):
         errs.append("404.html: страница не закрыта от индексации")
     if release and not (d / PRICE_FILE).is_file():
         errs.append(f"{d}: нет файла прайса {PRICE_FILE} (П07)")
+    f = d / "index.html"
+    if f.is_file():
+        text = f.read_text(encoding="utf-8")
+        if 'class="sticky-cta"' in text:
+            errs.append("index.html: нижняя кнопка на главной (ДМ37)")
+        if 'class="hero-phones"' not in text:
+            errs.append("index.html: нет телефонов в первом экране (ДМ37)")
     return errs
 
 
@@ -369,7 +376,7 @@ def selftest():
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom",
                 "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса",
-                "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся"]
+                "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся", "нижняя кнопка на главной", "нет телефонов в первом экране"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
