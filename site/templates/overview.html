@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="wrap-wide">
-  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><span class="cur">{{ h1 }}</span></div>
-  <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ count }}</div></div>
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><wbr><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><wbr><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><wbr><span class="cur">{{ h1 }}</span></div>
+  <div class="l-title"><h1>{{ h1|shy }}</h1><div class="cnt">{{ count }}</div></div>
   <p class="l-lead">{{ lead }}</p>
 
   {% for g in groups %}
   <section class="ov">
-    {% if g.title %}<div class="ov-hd"><h2>{{ g.title }}</h2>{% if g.get('more') %}<a class="ov-more" href="{{ g.more.url }}">{{ g.more.name }}</a>{% endif %}</div>{% endif %}
+    {% if g.title %}<div class="ov-hd"><h2>{{ g.title|shy }}</h2>{% if g.get('more') %}<a class="ov-more" href="{{ g.more.url }}">{{ g.more.name }}</a>{% endif %}</div>{% endif %}
     <div class="ov-grid">
       {% for t in g.tiles %}
       <div class="cat ov-t">
         <a class="n" href="{{ t.url }}">{{ t.name }}</a>
         <span class="c">{{ t.count }}</span>
-        {% if t.subs %}<span class="subs">{% for x in t.subs %}<a href="{{ x.url }}">{{ x.name }}</a>{% if not loop.last %}<span class="sep">·</span>{% endif %}{% endfor %}</span>{% endif %}
+        {% if t.subs %}<span class="subs">{% for x in t.subs %}<a href="{{ x.url }}">{{ x.name }}</a>{% if not loop.last %}<span class="sep">·</span><wbr>{% endif %}{% endfor %}</span>{% endif %}
       </div>
       {% endfor %}
     </div>

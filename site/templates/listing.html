@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="wrap-wide">
-  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><span class="cur">{{ crumb }}</span></div>
-  <div class="l-title"><h1>{{ h1 }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
+  <div class="crumbs"><a href="/">Главная</a><span class="sep">·</span><wbr><a href="/catalog/">Каталог</a>{% for c in crumbs %}<span class="sep">·</span><wbr><a href="{{ c.url }}">{{ c.name }}</a>{% endfor %}<span class="sep">·</span><wbr><span class="cur">{{ crumb }}</span></div>
+  <div class="l-title"><h1>{{ h1|shy }}</h1><div class="cnt">{{ items|length }} {{ count_word }}</div></div>
   <p class="l-lead">{{ lead }}</p>
 
   <div class="quick" id="quick">

@@ -47,6 +47,30 @@ def tel(v):
     return "+" + "".join(ch for ch in v if ch.isdigit())
 
 
+VOWELS = "аеёиоуыэюя"
+
+
+def _shy_word(m):
+    w, low, parts, start = m.group(), m.group().lower(), [], 0
+    for i in range(2, len(w) - 3):  # не меньше трёх букв с каждой стороны
+        a, b, c = low[i:i + 3]
+        cut = None
+        if a in VOWELS and b not in VOWELS and c in VOWELS:  # по-ле
+            cut = i + 1
+        elif a in VOWELS and b not in VOWELS and c in "рл" and low[i + 3] in VOWELS:  # по-про
+            cut = i + 1
+        elif low[i - 1] in VOWELS and a not in VOWELS and b not in VOWELS and b not in "ьъ" and c in VOWELS and b not in "рл":  # лож-но
+            cut = i + 1
+        if cut and cut - start >= 2:
+            parts.append(w[start:cut]); start = cut
+    return chr(0xAD).join(parts + [w[start:]])  # мягкий перенос
+
+
+def shy(text):
+    """Мягкие переносы в словах от 14 букв («ложнопроволочников»): браузеры переносят по-русски не везде, а по буквам некрасиво."""
+    return re.sub(r"[А-Яа-яЁё]{14,}", _shy_word, text)
+
+
 def md(v):
     """**жирный** из SEO-текстов -> <strong>, остальное экранируется."""
     return Markup(re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", str(escape(v))))
@@ -125,6 +149,7 @@ def build(root=ROOT, out=None):
     env = Environment(loader=FileSystemLoader(tpl), undefined=StrictUndefined, autoescape=True)
     env.filters["tel"] = tel
     env.filters["md"] = md
+    env.filters["shy"] = shy
     if out.exists():
         shutil.rmtree(out)
     pages = []

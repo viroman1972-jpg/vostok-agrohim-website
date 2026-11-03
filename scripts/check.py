@@ -206,6 +206,19 @@ def check_images(path, text, journal, release):
     return errs
 
 
+def check_css(d):
+    """Адаптив: длинное слово или ряд кнопок не должны расширять страницу (проверка без браузера — только правила стилей)."""
+    f = Path(d) / "static" / "site.css"
+    if not f.is_file():
+        return []
+    css, errs = f.read_text(encoding="utf-8"), []
+    if re.search(r"\.shell\{[^}]*grid-template-columns:(?:\d+px\s+)?1fr", css):
+        errs.append("site.css: колонка .shell растягивается содержимым — нужен minmax(0,1fr)")
+    if not re.search(r"(?:^|\n)h1,h2\{[^}]*overflow-wrap:anywhere", css):
+        errs.append("site.css: длинное слово в заголовке не переносится — нет overflow-wrap:anywhere")
+    return errs
+
+
 def check_dir(d, staging=False, release=False, journal=JOURNAL):
     errs, n = [], 0
     jr = read_journal(journal)
@@ -214,11 +227,13 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
         text = f.read_text(encoding="utf-8")
         errs += check_file(f.relative_to(d), text, Path(d))
         errs += check_images(f.relative_to(d), text, jr, release)
+        if re.search(r'class="sep">·</span>(?!<wbr>)', text):
+            errs.append(f"{f.relative_to(d)}: крошки не переносятся — после разделителя нужен <wbr>")
         if staging and 'name="robots" content="noindex' not in text:
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
-    errs += check_service(d, release)
+    errs += check_service(d, release) + check_css(d)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -353,7 +368,8 @@ def selftest():
                 "нет noindex", "без robots.txt", "Миура — нет связи", "Тиара — исключена","Бицепс — нет в каталоге", "нет в словаре",
                 "не у гербицида", "без связи", "без тега", "Миура — нет тега",
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom",
-                "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса"]
+                "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса",
+                "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
