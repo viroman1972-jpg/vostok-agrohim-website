@@ -84,7 +84,7 @@
   <div class="other">
     <h2>{{ other_title }}</h2>
     <div class="cats">
-      {% for c in other_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name }}</span></a>{% endfor %}
+      {% for c in other_cats %}<a class="cat" href="/catalog/{{ c.slug }}/"><span class="l">{{ c.name[0] }}</span><span class="n">{{ c.name|shy }}</span></a>{% endfor %}
     </div>
   </div>
 </div>
