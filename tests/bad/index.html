@@ -6,6 +6,9 @@
 <img src="/a.jpg">
 <img src="/static/img/products/net-v-zhurnale-480.webp" alt="x"><img src="/static/img/products/strannyy-480.webp" alt="x"><img src="/static/img/products/zhdet-1000.webp" alt="x">
 <form><input type="checkbox" name="consent" checked></form>
+<!-- форма заявки: не в send.php, нет скрытых полей, ловушки, телефона при сбое и после успеха; send.php в папке нет -->
+<form class="modal" action="/lead" id="lead-form"><input type="hidden" name="product" value=""><p>для обработки заявки</p></form>
+<div class="modal" id="lead-done" hidden><p>Заявка принята.</p></div>
 <a href="/catalog/gerbitsidy/net-takogo/">нет такой</a>
 <a href="/catalog/kultura/net-takoy/">нет такой культуры</a>
 <a href="/catalog/vrednyy-obekt/vrediteli/">узел без объектов</a>

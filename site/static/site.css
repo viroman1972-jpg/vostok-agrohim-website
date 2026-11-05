@@ -345,6 +345,10 @@ dialog.lb::backdrop{background:rgba(26,29,31,.82)}
 .consent input{margin-top:3px}
 .ref{background:var(--cream);border-radius:4px;padding:14px 16px;font-size:15px;margin-top:16px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.lead-err{margin-top:18px;padding:14px 16px;border-radius:4px;background:#FBEDEA;border-left:3px solid #B3402A;font-size:15px;line-height:1.55}
+.lead-err p{margin:0}
+.lead-err p+p{margin-top:6px}
+.lead-err a{font-weight:700;white-space:nowrap}
 .modal .act{margin-top:22px}
 .modal .act .btn{width:100%}
 .modal .act .btn:disabled{background:rgba(228,168,83,.4);color:rgba(38,84,62,.5);cursor:not-allowed}

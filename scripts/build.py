@@ -107,6 +107,16 @@ def word_preparat(n):
     return plural(n, ("препарат", "препарата", "препаратов"))
 
 
+def render_send(root, s):
+    """send.php с телефонами, адресом и названием из settings.yml (строки PHP в одинарных кавычках)."""
+    def php(v):
+        return str(v).replace("\\", "\\\\").replace("'", "\\'")
+    text = (Path(root) / "site" / "php" / "send.php").read_text(encoding="utf-8")
+    for key, val in (("PHONE_MOBILE", s["phone_mobile"]), ("PHONE_OFFICE", s["phone_office"]), ("EMAIL", s["email"]), ("COMPANY", s["company"])):
+        text = text.replace(f"%%{key}%%", php(val))
+    return text
+
+
 def build(root=ROOT, out=None):
     root = Path(root)
     data, tpl, content = root / "data", root / "site" / "templates", root / "content"
@@ -550,6 +560,8 @@ def build(root=ROOT, out=None):
     if has_price:
         (out / PRICE_FILE).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(content / PRICE_FILE, out / PRICE_FILE)
+    # Приём заявок (этап 4, ДМ35): телефоны и адрес — из settings.yml; пароль почты — только на хостинге
+    (out / "send.php").write_text(render_send(root, s), encoding="utf-8", newline="\n")
     (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n", encoding="utf-8")
     # Тестовая копия закрыта от поисковиков; на боевом сайте robots.txt появится на этапе 5
     if noindex:

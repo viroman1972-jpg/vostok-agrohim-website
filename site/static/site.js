@@ -7,7 +7,7 @@
   var msgHint = msg ? msg.placeholder : '';
   function openLead(product, territory) {
     if (!lead || !lead.showModal) { location.href = '/contacts/'; return; }
-    form.hidden = false; done.hidden = true;
+    form.hidden = false; done.hidden = true; document.getElementById('lead-err').hidden = true;
     var ref = document.getElementById('lead-ref');
     document.getElementById('lead-product').value = product || '';
     document.getElementById('lead-territory').value = territory || '';
@@ -26,16 +26,37 @@
     d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
     d.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { d.close(); }); });
   });
-  if (form) form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var fd = new FormData(form);
-    fetch(form.action, { method: 'POST', body: fd }).then(function (r) {
-      if (!r.ok) throw new Error('bad');
-      form.hidden = true; done.hidden = false; form.reset();
-    }).catch(function () {
-      alert('Не удалось отправить заявку. Позвоните нам по телефону в шапке сайта.');
+  // Заявка (ДМ35, ДЗ07): кнопка неактивна до галочки согласия; при сбое — телефон, а не «успех».
+  // Без скрипта форма уходит обычной отправкой, send.php отвечает страницей с телефонами.
+  if (form) {
+    var send = form.querySelector('button[type=submit]');
+    var consent = form.elements.consent;
+    var err = document.getElementById('lead-err');
+    var errText = {
+      consent: 'Без согласия на обработку персональных данных мы не можем принять заявку. Поставьте галочку.',
+      fields: 'Проверьте имя и телефон.',
+      rate: 'Слишком много заявок подряд.'
+    };
+    var sync = function () { send.disabled = !consent.checked; };
+    consent.addEventListener('change', sync);
+    form.addEventListener('reset', function () { setTimeout(sync); });
+    sync();
+    var fail = function (status) {
+      err.querySelector('[data-msg]').textContent = errText[status] || 'Не удалось отправить заявку. Примем её по телефону.';
+      err.hidden = false;
+    };
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!consent.checked) { fail('consent'); return; }
+      err.hidden = true; send.disabled = true;
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } }).then(function (r) {
+        return r.json().catch(function () { return { ok: false }; });
+      }).then(function (j) {
+        if (!j.ok) { fail(j.status); return; }
+        form.reset(); form.hidden = true; done.hidden = false;
+      }).catch(function () { fail(); }).then(sync);
     });
-  });
+  }
 
   var top = document.getElementById('totop');
   if (top) {

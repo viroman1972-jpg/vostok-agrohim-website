@@ -28,7 +28,7 @@ CSS_URL = re.compile(r"url\(\s*['\"]?(https?:)?//", re.I)
 
 # Страницы, которые ещё не собраны (по site-structure-v1.md). Ссылки на них допустимы до своего этапа.
 # Страницы входов (культуры, объекты, ДВ, их обзорные и узлы) собираются — ссылка на несобранную считается битой.
-PLANNED = ("/send.php", "/catalog/insektitsidy/", "/catalog/fungitsidy/",
+PLANNED = ("/catalog/insektitsidy/", "/catalog/fungitsidy/",
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
 PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
@@ -118,7 +118,49 @@ def check_file(path, text, root=None):
             errs.append(f"{path}: вход по территории, но в форме нет поля territory (ДМ31)")
     if "<form" in low and "обработк" not in low:
         errs.append(f"{path}: у формы нет указания цели обработки данных (ДЗ07)")
+    errs += check_lead(path, text)
     errs += check_related(path, text)
+    return errs
+
+
+def check_lead(path, text):
+    """Форма заявки (ДМ35, ДЗ07, план §2.6): уходит в send.php, скрытые поля для письма, ловушка, телефон на случай сбоя и после успеха."""
+    m = re.search(r'<form\b[^>]*\bid="lead-form"[^>]*>(.*?)</form>', text, re.S)
+    if not m:
+        return []
+    errs, tag, body = [], m.group(0)[:m.group(0).index(">") + 1], m.group(1)
+    if 'action="/send.php"' not in tag or 'method="post"' not in tag:
+        errs.append(f"{path}: форма заявки не отправляется в /send.php методом POST")
+    for f in ("product", "territory", "page"):
+        if not re.search(rf'<input type="hidden" name="{f}"', body):
+            errs.append(f"{path}: в форме заявки нет скрытого поля {f} (план §2.6)")
+    if not re.search(r'class="hp"[^>]*>.*?name="website"', body, re.S):
+        errs.append(f"{path}: в форме заявки нет поля-ловушки (ДМ35 п. 6)")
+    if not re.search(r'id="lead-err"[^>]*>.*?href="tel:', body, re.S):
+        errs.append(f"{path}: при сбое отправки форма не показывает телефон (план §2.6)")
+    if not re.search(r'id="lead-done"[^>]*>.*?Если не ответим в течение рабочего дня, позвоните.*?href="tel:', text, re.S):
+        errs.append(f"{path}: после заявки нет «Если не ответим в течение рабочего дня, позвоните» с телефоном (ДМ35 п. 5)")
+    return errs
+
+
+def check_send(d, has_form):
+    """send.php (этап 4): есть, если на сайте форма; согласие проверяется на сервере; нет пароля и неподставленных значений."""
+    f = Path(d) / "send.php"
+    if not f.is_file():
+        return [f"{d}: на сайте форма заявки, а send.php нет"] if has_form else []
+    t, errs = f.read_text(encoding="utf-8"), []
+    if "%%" in t:
+        errs.append("send.php: не подставлены телефоны или адрес из settings.yml")
+    if not re.search(r"if \(!\$consent\) \{\s*journal\([^;]*\);\s*answer\(422, 'consent'\)", t):
+        errs.append("send.php: заявка без галочки согласия не отклоняется на сервере (ДЗ07)")
+    for must, why in (("field('website')", "нет проверки поля-ловушки (ДМ35 п. 6)"), ("rate_ok(", "нет ограничения частоты (ДМ35 п. 6)"),
+                      ("vostok-private/send-config.php", "настройки не вне папки сайта (план §2.5)"), ("answer(502, 'send')", "сбой отправки не сообщается посетителю (план §2.6)")):
+        if must not in t:
+            errs.append(f"send.php: {why}")
+    if re.search(r"""['"]smtp_pass['"]\s*=>\s*['"][^'"]""", t) or re.search(r"(?i)password\s*=", t):
+        errs.append("send.php: пароль почты в файле сайта — только в настройках на хостинге")
+    if re.search(r"google|sheets|telegram|api\.", t, re.I):
+        errs.append("send.php: заявка уходит в зарубежный сервис или Telegram (НР17)")
     return errs
 
 
@@ -260,11 +302,12 @@ def check_css(d):
 
 
 def check_dir(d, staging=False, release=False, journal=JOURNAL):
-    errs, n = [], 0
+    errs, n, has_form = [], 0, False
     jr = read_journal(journal)
     for f in sorted(Path(d).rglob("*.html")):
         n += 1
         text = f.read_text(encoding="utf-8")
+        has_form = has_form or 'id="lead-form"' in text
         errs += check_file(f.relative_to(d), text, Path(d))
         errs += check_images(f.relative_to(d), text, jr, release)
         if re.search(r'class="sep">·</span>(?!<wbr>)', text):
@@ -273,7 +316,7 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
-    errs += check_service(d, release) + check_css(d) + check_search(d)
+    errs += check_service(d, release) + check_css(d) + check_search(d) + check_send(d, has_form)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -401,7 +444,7 @@ def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
-    bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo")
+    bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo") + check_send(ROOT / "tests" / "send-bad", True)
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
                 "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "только на листинге категории", "не на месте", "повторяет быстрый вход", "не совпадает с отбором", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
@@ -410,7 +453,9 @@ def selftest():
                 "неизвестный scope", "scope: prom у препарата без тега", "без пометки scope: prom", "нет строк scope: prom",
                 "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса",
                 "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся", "нижняя кнопка на главной", "нет телефонов в первом экране",
-                "нет обязательной страницы catalog/all", "нет значка или поля поиска", "в шапке нет номера телефона", "в индексе поиска цена", "индекс ведёт на несобранную страницу"]
+                "нет обязательной страницы catalog/all", "нет значка или поля поиска", "в шапке нет номера телефона", "в индексе поиска цена", "индекс ведёт на несобранную страницу",
+                "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
+                "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
