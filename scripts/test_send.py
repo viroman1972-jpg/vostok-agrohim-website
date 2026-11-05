@@ -110,7 +110,8 @@ def main():
         eml = outbox()
         ok(len(eml) == 1, "письмо создано")
         if eml:
-            raw = eml[0].read_text(encoding="utf-8")
+            raw = eml[0].read_bytes().decode()  # read_text заменил бы 
+
             head, _, b64 = raw.partition("\r\n\r\n")
             body = base64.b64decode(b64).decode()
             subj = str(email.header.make_header(email.header.decode_header(next(x for x in head.split("\r\n") if x.startswith("Subject:"))[9:])))
@@ -124,7 +125,7 @@ def main():
         ok(all("Иван" not in x and "900" not in x for x in journal()), "в журнале нет имени и телефона (только дата, IP, согласие)")
         ok(not any(pub.rglob("*.csv")) and not (pub / "journal").exists(), "журнал не в папке сайта")
         code, r = post(dict(good, product="", territory="Промышленные объекты", page="/catalog/gerbitsidy/promyshlennye/"))
-        ok(r.get("ok") and "Тип территории (territory): Промышленные объекты" in base64.b64decode(outbox()[-1].read_text(encoding="utf-8").partition("\r\n\r\n")[2]).decode(), "territory доходит до письма")
+        ok(r.get("ok") and "Тип территории (territory): Промышленные объекты" in base64.b64decode(outbox()[-1].read_bytes().decode().partition("\r\n\r\n")[2]).decode(), "territory доходит до письма")
 
         print("Частота (ДМ35 п. 6)")
         config()
