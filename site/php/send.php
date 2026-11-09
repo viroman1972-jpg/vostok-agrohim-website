@@ -133,9 +133,11 @@ function load_config(): ?array
     if (function_exists('opcache_invalidate')) {
         @opcache_invalidate($file, true);
     }
-    $cfg = include $file;
+    $cfg = @include $file;
     if (!is_array($cfg)) {
-        $why = 'config-not-array-' . gettype($cfg);
+        // Причина без путей: например, «Failed to open stream: Permission denied»
+        $err = preg_replace('/\([^)]*\)/', '', (string)(error_get_last()['message'] ?? ''));
+        $why = 'config-not-array-' . gettype($cfg) . (is_readable($file) ? '' : '-unreadable') . ($err !== '' ? ': ' . substr(trim($err), 0, 120) : '');
         return null;
     }
     $dir = realpath(dirname($file));
