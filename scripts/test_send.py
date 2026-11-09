@@ -79,7 +79,7 @@ def main():
         print("Заявка без настроек на хостинге")
         cfg_file.rename(priv / "off.php")
         code, r = post(good)
-        ok(code == 503 and r["status"] == "unavailable", "без файла настроек — отказ 503, посетитель видит телефон")
+        ok(code == 503 and r["status"] == "unavailable" and r.get("why") == "no-config", "без файла настроек — отказ 503 с причиной no-config, посетитель видит телефон")
         (priv / "off.php").rename(cfg_file)
 
         print("Метод и чужой сайт")

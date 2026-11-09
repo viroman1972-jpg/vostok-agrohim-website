@@ -118,20 +118,31 @@ function host_only(string $h): string
 
 /* ---------- Настройки и закрытая папка ---------- */
 
+/** Почему заявка не принята, если настройки недоступны: код шага без путей и паролей — для разбора по ответу сервера. */
+$why = '';
+
 function load_config(): ?array
 {
+    global $why;
     $file = getenv('VOSTOK_SEND_CONFIG') ?: dirname(__DIR__) . '/vostok-private/send-config.php';
     if (!is_file($file)) {
+        $why = ini_get('open_basedir') ? 'no-config-basedir' : 'no-config';
         return null;
     }
     $cfg = include $file;
     if (!is_array($cfg)) {
+        $why = 'config-not-array';
         return null;
     }
     $dir = realpath(dirname($file));
     $root = realpath($_SERVER['DOCUMENT_ROOT'] ?? __DIR__) ?: realpath(__DIR__);
     // Журнал не должен лежать в папке сайта: Timeweb отдаёт файлы оттуда, минуя .htaccess
-    if ($dir === false || strpos($dir . DIRECTORY_SEPARATOR, $root . DIRECTORY_SEPARATOR) === 0 || !is_writable($dir)) {
+    if ($dir === false || strpos($dir . DIRECTORY_SEPARATOR, $root . DIRECTORY_SEPARATOR) === 0) {
+        $why = 'config-in-site';
+        return null;
+    }
+    if (!is_writable($dir)) {
+        $why = 'dir-not-writable';
         return null;
     }
     $cfg['dir'] = $dir;
@@ -370,11 +381,11 @@ if ($bad) {
 
 // Без настроек или журнала заявку не принимаем: согласие должно быть записано
 if (!$cfg || !$j || empty($cfg['from'])) {
-    answer(503, 'unavailable');
+    answer(503, 'unavailable', ['why' => $why ?: (!$j ? 'journal' : 'no-from')]);
 }
 $rate = rate_ok($cfg, $ip);
 if ($rate === null) {
-    answer(503, 'unavailable');
+    answer(503, 'unavailable', ['why' => 'rate-file']);
 }
 if (!$rate) {
     journal($j, $ip, true, 'отклонена: частота', '', $page);
