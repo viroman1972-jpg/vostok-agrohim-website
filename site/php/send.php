@@ -129,9 +129,13 @@ function load_config(): ?array
         $why = ini_get('open_basedir') ? 'no-config-basedir' : 'no-config';
         return null;
     }
+    // Файл правят в файловом менеджере хостинга: сервер не должен брать из памяти старую (или недописанную) копию
+    if (function_exists('opcache_invalidate')) {
+        @opcache_invalidate($file, true);
+    }
     $cfg = include $file;
     if (!is_array($cfg)) {
-        $why = 'config-not-array';
+        $why = 'config-not-array-' . gettype($cfg);
         return null;
     }
     $dir = realpath(dirname($file));
