@@ -3,7 +3,7 @@
  * Приём заявки с сайта: проверка полей, согласие (ДЗ07), ловушка и частота (ДМ35 п. 6),
  * журнал согласий на хостинге вне папки сайта, письмо на почту компании (ДМ35, НР17).
  *
- * Настройки (почтовый ящик отправителя и его пароль) — только на хостинге, в файле
+ * Настройки (почтовый ящик отправителя и его пароль) — только на хостинге, в файле (читается как текст)
  * ../vostok-private/send-config.php (на уровень выше папки сайта, из интернета недоступен).
  * Образец — site/php/send-config.example.php в репозитории. Без файла настроек заявка
  * не принимается и посетитель видит телефон.
@@ -121,6 +121,29 @@ function host_only(string $h): string
 /** Почему заявка не принята, если настройки недоступны: код шага без путей и паролей — для разбора по ответу сервера. */
 $why = '';
 
+/**
+ * Настройки из файла вида  'ключ' => 'значение',  (как в образце send-config.example.php).
+ * Строки в одинарных или двойных кавычках, числа, true/false; строки-комментарии (//) пропускаются.
+ */
+function parse_config(string $text): array
+{
+    $cfg = [];
+    $text = preg_replace('~^\s*(//|#).*$~m', '', $text);
+    preg_match_all('~([\'"])(\w+)\1\s*=>\s*(\'(?:[^\'\\\\]|\\\\.)*\'|"(?:[^"\\\\]|\\\\.)*"|-?\d+|true|false)~', $text, $m, PREG_SET_ORDER);
+    foreach ($m as $x) {
+        $v = $x[3];
+        if ($v[0] === "'" || $v[0] === '"') {
+            $v = preg_replace('/\\\\([\\\\\'"])/', '$1', substr($v, 1, -1));
+        } elseif ($v === 'true' || $v === 'false') {
+            $v = $v === 'true';
+        } else {
+            $v = (int)$v;
+        }
+        $cfg[$x[2]] = $v;
+    }
+    return $cfg;
+}
+
 function load_config(): ?array
 {
     global $why;
@@ -129,15 +152,15 @@ function load_config(): ?array
         $why = ini_get('open_basedir') ? 'no-config-basedir' : 'no-config';
         return null;
     }
-    // Файл правят в файловом менеджере хостинга: сервер не должен брать из памяти старую (или недописанную) копию
-    if (function_exists('opcache_invalidate')) {
-        @opcache_invalidate($file, true);
+    // Файл читается как текст, а не подключается как код: Timeweb не даёт подключать код из файлов вне папки сайта
+    $text = @file_get_contents($file);
+    if ($text === false) {
+        $why = 'config-unreadable';
+        return null;
     }
-    $cfg = @include $file;
-    if (!is_array($cfg)) {
-        // Причина без путей: например, «Failed to open stream: Permission denied»
-        $err = preg_replace('/\([^)]*\)/', '', (string)(error_get_last()['message'] ?? ''));
-        $why = 'config-not-array-' . gettype($cfg) . (is_readable($file) ? '' : '-unreadable') . ($err !== '' ? ': ' . substr(trim($err), 0, 120) : '');
+    $cfg = parse_config($text);
+    if (!$cfg) {
+        $why = 'config-empty';
         return null;
     }
     $dir = realpath(dirname($file));

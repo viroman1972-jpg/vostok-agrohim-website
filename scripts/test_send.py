@@ -144,6 +144,14 @@ def main():
         code, html = post(good, json_=False)
         ok(code == 502 and "tel:+79227500920" in html and "Не удалось отправить" in html, "без скрипта — страница с телефоном")
 
+        print("Файл настроек как в образце (одинарные кавычки, комментарии, кавычка в пароле)")
+        cfg_file.write_text("<?php\r\n// комментарий\r\nreturn [\r\n    // 'transport' => 'smtp',\r\n    'transport' => 'file',\r\n    'smtp_pass' => 'a\\'b\\\\c',\r\n"
+                            "    'from' => 'site@example.test',\r\n    'subject_prefix' => '[ТЕСТ] ',\r\n    'rate_ip_10min' => 1,\r\n    'to' => 'test@example.test',\r\n];\r\n", encoding="utf-8")
+        (priv / "rate.json").unlink(missing_ok=True)
+        code, r = post(good)
+        ok(code == 200 and r.get("ok") and "To: <test@example.test>" in (priv / "outbox" / f"{r.get('id')}.eml").read_bytes().decode(), "читается: строка 'to' и закомментированная строка не мешают")
+        ok(post(good)[0] == 429, "число из настроек (rate_ip_10min => 1) действует")
+
         print("Без скрипта в браузере")
         config()
         code, html = post(good, json_=False)
