@@ -562,7 +562,9 @@ def build(root=ROOT, out=None):
         shutil.copy(content / PRICE_FILE, out / PRICE_FILE)
     # Приём заявок (этап 4, ДМ35): телефоны и адрес — из settings.yml; пароль почты — только на хостинге
     (out / "send.php").write_text(render_send(root, s), encoding="utf-8", newline="\n")
-    (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n", encoding="utf-8")
+    # Закрытая папка заявок (настройки, журнал согласий) из интернета не открывается — второй запрет, кроме её собственного
+    (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n"
+                                   "<IfModule mod_alias.c>\nRedirectMatch 403 ^/\\.vostok-private(/|$)\n</IfModule>\n", encoding="utf-8")
     # Тестовая копия закрыта от поисковиков; на боевом сайте robots.txt появится на этапе 5
     if noindex:
         (out / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")

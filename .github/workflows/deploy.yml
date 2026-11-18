@@ -99,5 +99,6 @@ jobs:
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          # Файл паролей лежит в папке сайта (Timeweb не читает файлы вне неё) — не стирать
-          rsync -az --delete --exclude='/.htpasswd*' -e "ssh -i ~/.ssh/id_deploy" dist/ "$SSH_USER@$SSH_HOST:$SSH_PATH/"
+          # Файл паролей и закрытая папка заявок (настройки с паролем почты, журнал согласий) лежат в папке сайта
+          # (Timeweb не даёт сайту читать файлы вне неё) — не стирать и не перезаписывать
+          rsync -az --delete --exclude='/.htpasswd*' --exclude='/.vostok-private' -e "ssh -i ~/.ssh/id_deploy" dist/ "$SSH_USER@$SSH_HOST:$SSH_PATH/"

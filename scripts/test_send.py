@@ -18,6 +18,16 @@ def ok(cond, what):
         FAILS.append(what)
 
 
+GUARD = "<?php exit; ?>\n"
+
+
+def eml_text(path):
+    """Письмо из папки проверок: байты (read_text заменил бы CRLF в заголовках), без строки «exit»."""
+    raw = Path(path).read_bytes().decode()
+    ok(raw.startswith(GUARD), f"письмо {Path(path).name} начинается с «exit»")
+    return raw[len(GUARD):]
+
+
 def free_port():
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))
@@ -41,7 +51,7 @@ def main():
         base.update(kw)
         body = ",\n".join(f"{json.dumps(k)} => {json.dumps(v, ensure_ascii=False) if not isinstance(v, int) else v}" for k, v in base.items())
         cfg_file.write_text(f"<?php return [\n{body}\n];\n", encoding="utf-8")
-        (priv / "rate.json").unlink(missing_ok=True)
+        (priv / "rate.php").unlink(missing_ok=True)
 
     port = free_port()
     env = dict(os.environ, VOSTOK_SEND_CONFIG=str(cfg_file))
@@ -66,11 +76,11 @@ def main():
             return code, (json.loads(body) if json_ and body.startswith("{") else body)
 
         def journal():
-            files = sorted((priv / "journal").glob("soglasiya-*.csv"))
-            return files[-1].read_text(encoding="utf-8-sig").splitlines() if files else []
+            files = sorted((priv / "journal").glob("soglasiya-*.php"))
+            return files[-1].read_text(encoding="utf-8").splitlines() if files else []
 
         def outbox():
-            return sorted((priv / "outbox").glob("*.eml")) if (priv / "outbox").is_dir() else []
+            return sorted((priv / "outbox").glob("*.eml.php")) if (priv / "outbox").is_dir() else []
 
         good = dict(name="Иван", phone="+7 (900) 123-45-67", message="Пшеница, 200 га", product="Балерина",
                     territory="", page="/catalog/gerbitsidy/balerina/", website="", consent="1")
@@ -110,7 +120,7 @@ def main():
         eml = outbox()
         ok(len(eml) == 1, "письмо создано")
         if eml:
-            raw = eml[0].read_bytes().decode()  # не read_text: он заменил бы CRLF в заголовках
+            raw = eml_text(eml[0])
 
 
             head, _, b64 = raw.partition("\r\n\r\n")
@@ -124,16 +134,18 @@ def main():
             ok("+7 (900) 123-45-67" in body and "Пшеница, 200 га" in body, "в письме телефон и задача")
             ok(r["id"] in eml[0].name and any(f'"{r["id"]}"' in x and '"отправлена"' in x for x in journal()), "номер заявки совпадает в письме и журнале")
         ok(all("Иван" not in x and "900" not in x for x in journal()), "в журнале нет имени и телефона (только дата, IP, согласие)")
-        ok(not any(pub.rglob("*.csv")) and not (pub / "journal").exists(), "журнал не в папке сайта")
+        ok(not any(pub.rglob("soglasiya-*")) and not (pub / "journal").exists(), "журнал не в папке сайта")
+        ok(journal() and journal()[0] == "<?php exit; ?>", "журнал начинается с «exit»: из интернета ничего не покажет")
         code, r = post(dict(good, product="", territory="Промышленные объекты", page="/catalog/gerbitsidy/promyshlennye/"))
-        ok(r.get("ok") and "Тип территории (territory): Промышленные объекты" in base64.b64decode((priv / "outbox" / f"{r.get('id')}.eml").read_bytes().decode().partition("\r\n\r\n")[2]).decode(), "territory доходит до письма")
+        ok(r.get("ok") and "Тип территории (territory): Промышленные объекты" in base64.b64decode(eml_text(priv / "outbox" / f"{r.get('id')}.eml.php").partition("\r\n\r\n")[2]).decode(), "territory доходит до письма")
 
         print("Частота (ДМ35 п. 6)")
         config()
         codes = [post(good)[0] for _ in range(4)]
         ok(codes == [200, 200, 200, 429], f"с одного адреса 3 заявки за 10 минут, 4-я — отказ 429 ({codes})")
         ok(any('"отклонена: частота"' in x for x in journal()), "отказ по частоте записан в журнал")
-        rate = (priv / "rate.json").read_text(encoding="utf-8")
+        rate = (priv / "rate.php").read_text(encoding="utf-8")
+        ok(rate.startswith("<?php exit; ?>"), "счётчик частоты начинается с «exit»")
         ok("127.0.0.1" not in rate, "в счётчике частоты IP только в виде хеша")
 
         print("Почта недоступна")
@@ -147,9 +159,9 @@ def main():
         print("Файл настроек как в образце (одинарные кавычки, комментарии, кавычка в пароле)")
         cfg_file.write_text("<?php\r\n// комментарий\r\nreturn [\r\n    // 'transport' => 'smtp',\r\n    'transport' => 'file',\r\n    'smtp_pass' => 'a\\'b\\\\c',\r\n"
                             "    'from' => 'site@example.test',\r\n    'subject_prefix' => '[ТЕСТ] ',\r\n    'rate_ip_10min' => 1,\r\n    'to' => 'test@example.test',\r\n];\r\n", encoding="utf-8")
-        (priv / "rate.json").unlink(missing_ok=True)
+        (priv / "rate.php").unlink(missing_ok=True)
         code, r = post(good)
-        ok(code == 200 and r.get("ok") and "To: <test@example.test>" in (priv / "outbox" / f"{r.get('id')}.eml").read_bytes().decode(), "читается: строка 'to' и закомментированная строка не мешают")
+        ok(code == 200 and r.get("ok") and "To: <test@example.test>" in eml_text(priv / "outbox" / f"{r.get('id')}.eml.php"), "читается: строка 'to' и закомментированная строка не мешают")
         ok(post(good)[0] == 429, "число из настроек (rate_ip_10min => 1) действует")
 
         print("Без скрипта в браузере")
@@ -178,6 +190,40 @@ def main():
         finally:
             if srv2:
                 srv2.terminate()
+        print("Закрытая папка внутри сайта (.vostok-private)")
+        site2 = tmp / "site2"
+        pub2 = site2 / "public_html"
+        own = pub2 / ".vostok-private"
+        own.mkdir(parents=True)
+        shutil.copy(pub / "send.php", pub2 / "send.php")
+        (own / "send-config.php").write_text("<?php return [\n'transport' => 'file',\n'from' => 'site@example.test',\n'salt' => 's',\n];\n", encoding="utf-8")
+        # снаружи тоже есть файл настроек, но прочитать его нельзя (как на Timeweb с 11.2026)
+        outside = site2 / "vostok-private"
+        outside.mkdir()
+        (outside / "send-config.php").write_text("<?php return ['transport' => 'smtp'];\n", encoding="utf-8")
+        os.chmod(outside / "send-config.php", 0)
+        env2 = {k: v for k, v in env.items() if k != "VOSTOK_SEND_CONFIG"}
+        port3 = free_port()
+        srv3 = subprocess.Popen([PHP, "-d", "display_errors=stderr", "-S", f"127.0.0.1:{port3}", "-t", str(pub2)], env=env2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            time.sleep(0.5)
+            req = urllib.request.Request(f"http://127.0.0.1:{port3}/send.php", data=urllib.parse.urlencode(good).encode(), headers={"Accept": "application/json"})
+            try:
+                with urllib.request.urlopen(req) as resp:
+                    c3, r3 = resp.status, json.loads(resp.read().decode())
+            except urllib.error.HTTPError as e:
+                c3, r3 = e.code, json.loads(e.read().decode() or "{}")
+            readable = os.access(outside / "send-config.php", os.R_OK)  # под root файл с правами 0 всё равно читается
+            ok((c3 == 200 and r3.get("ok")) or readable, f"снаружи не читается — берётся папка внутри сайта ({c3} {r3})")
+            ht = (own / ".htaccess").read_text(encoding="utf-8") if (own / ".htaccess").is_file() else ""
+            ok("Require all denied" in ht and "Deny from all" in ht, "send.php сам поставил запрет на папку")
+            j = sorted((own / "journal").glob("soglasiya-*.php"))
+            jt = j[0].read_text(encoding="utf-8") if j else ""
+            ok(jt.startswith("<?php exit; ?>") and '"отправлена"' in jt, "журнал внутри — .php с «exit», заявка записана")
+            ok(all(f.suffix == ".php" or f.name == ".htaccess" for f in own.rglob("*") if f.is_file()), "в закрытой папке только .php и .htaccess")
+        finally:
+            srv3.terminate()
+            os.chmod(outside / "send-config.php", 0o600)
     finally:
         srv.terminate()
         err = srv.stderr.read().decode(errors="replace") if srv.stderr else ""

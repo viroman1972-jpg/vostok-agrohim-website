@@ -1,10 +1,14 @@
 <?php
 /*
  * Приём заявки с сайта: проверка полей, согласие (ДЗ07), ловушка и частота (ДМ35 п. 6),
- * журнал согласий на хостинге вне папки сайта, письмо на почту компании (ДМ35, НР17).
+ * журнал согласий на хостинге без доступа из интернета, письмо на почту компании (ДМ35, НР17).
  *
- * Настройки (почтовый ящик отправителя и его пароль) — только на хостинге, в файле (читается как текст)
- * ../vostok-private/send-config.php (на уровень выше папки сайта, из интернета недоступен).
+ * Настройки (почтовый ящик отправителя и его пароль) — только на хостинге, файл send-config.php
+ * (читается как текст, не исполняется). Где лежит закрытая папка — по порядку:
+ *   1) ../vostok-private/ — на уровень выше папки сайта (лучше всего, если хостинг даёт её читать);
+ *   2) .vostok-private/ внутри папки сайта — Timeweb с 11.2026 не даёт сайту читать файлы вне неё.
+ *      Защита: запрет в .htaccess папки (send.php создаёт его сам); все файлы — .php с «exit» в первой
+ *      строке (Timeweb отдаёт, например, .txt в обход запретов, а .php — нет); выкладка папку не трогает.
  * Образец — site/php/send-config.example.php в репозитории. Без файла настроек заявка
  * не принимается и посетитель видит телефон.
  *
@@ -22,6 +26,8 @@ const COMPANY = '%%COMPANY%%';
 const RATE_IP_10MIN = 3;
 const RATE_IP_DAY = 10;
 const RATE_ALL_DAY = 50;
+const INSIDE_DIR = '.vostok-private';  // закрытая папка внутри папки сайта (см. шапку)
+const GUARD = "<?php exit; ?>\n";     // первая строка закрытых файлов: открытый из интернета, файл ничего не покажет
 const KEEP_MONTHS = 37;  // журнал и заявки — 3 года (политика ПДн), с запасом на неполный месяц
 
 header('X-Content-Type-Options: nosniff');
@@ -147,15 +153,21 @@ function parse_config(string $text): array
 function load_config(): ?array
 {
     global $why;
-    $file = getenv('VOSTOK_SEND_CONFIG') ?: dirname(__DIR__) . '/vostok-private/send-config.php';
-    if (!is_file($file)) {
-        $why = ini_get('open_basedir') ? 'no-config-basedir' : 'no-config';
-        return null;
+    $env = getenv('VOSTOK_SEND_CONFIG');
+    $files = $env ? [$env] : [dirname(__DIR__) . '/vostok-private/send-config.php', __DIR__ . '/' . INSIDE_DIR . '/send-config.php'];
+    $text = false;
+    $seen = false;
+    foreach ($files as $file) {
+        if (is_file($file)) {
+            $seen = true;
+            $text = @file_get_contents($file);  // как текст, не подключая как код
+            if ($text !== false) {
+                break;
+            }
+        }
     }
-    // Файл читается как текст, а не подключается как код: Timeweb не даёт подключать код из файлов вне папки сайта
-    $text = @file_get_contents($file);
     if ($text === false) {
-        $why = 'config-unreadable';
+        $why = $seen ? 'config-unreadable' : (ini_get('open_basedir') ? 'no-config-basedir' : 'no-config');
         return null;
     }
     $cfg = parse_config($text);
@@ -165,9 +177,14 @@ function load_config(): ?array
     }
     $dir = realpath(dirname($file));
     $root = realpath($_SERVER['DOCUMENT_ROOT'] ?? __DIR__) ?: realpath(__DIR__);
-    // Журнал не должен лежать в папке сайта: Timeweb отдаёт файлы оттуда, минуя .htaccess
-    if ($dir === false || strpos($dir . DIRECTORY_SEPARATOR, $root . DIRECTORY_SEPARATOR) === 0) {
+    // В папке сайта — только своя закрытая папка и только под запретом
+    $own = realpath(__DIR__ . '/' . INSIDE_DIR);
+    if ($dir === false || (strpos($dir . DIRECTORY_SEPARATOR, $root . DIRECTORY_SEPARATOR) === 0 && $dir !== $own)) {
         $why = 'config-in-site';
+        return null;
+    }
+    if ($dir === $own && !protect_dir($dir)) {
+        $why = 'no-deny';
         return null;
     }
     if (!is_writable($dir)) {
@@ -178,6 +195,19 @@ function load_config(): ?array
     return $cfg;
 }
 
+/** Запрет на закрытую папку внутри сайта (Apache 2.4 и 2.2); создаётся, если его нет. */
+function protect_dir(string $dir): bool
+{
+    $ht = $dir . '/.htaccess';
+    if (is_file($ht) && strpos((string)@file_get_contents($ht), 'denied') !== false) {
+        return true;
+    }
+    $rule = "# Закрытая папка приёма заявок: из интернета не открывается\n"
+        . "<IfModule mod_authz_core.c>\nRequire all denied\n</IfModule>\n"
+        . "<IfModule !mod_authz_core.c>\nOrder allow,deny\nDeny from all\n</IfModule>\n";
+    return @file_put_contents($ht, $rule) !== false;
+}
+
 /** Открыть журнал согласий текущего месяца; старые журналы (старше 3 лет) удалить. */
 function open_journal(array $cfg)
 {
@@ -185,7 +215,7 @@ function open_journal(array $cfg)
     if (!is_dir($jdir) && !@mkdir($jdir, 0700)) {
         return null;
     }
-    $name = $jdir . '/soglasiya-' . date('Y-m') . '.csv';
+    $name = $jdir . '/soglasiya-' . date('Y-m') . '.php';
     $new = !is_file($name);
     $f = @fopen($name, 'ab');
     if (!$f) {
@@ -193,10 +223,10 @@ function open_journal(array $cfg)
     }
     @chmod($name, 0600);
     if ($new) {
-        fwrite($f, "\xEF\xBB\xBF" . "дата и время;IP;согласие;итог;номер заявки;страница\n");
+        fwrite($f, GUARD . "дата и время;IP;согласие;итог;номер заявки;страница\n");
         $limit = date('Y-m', strtotime('-' . KEEP_MONTHS . ' months'));
-        foreach (glob($jdir . '/soglasiya-*.csv') ?: [] as $old) {
-            if (preg_match('/soglasiya-(\d{4}-\d{2})\.csv$/', $old, $m) && $m[1] < $limit) {
+        foreach (glob($jdir . '/soglasiya-*') ?: [] as $old) {
+            if (preg_match('/soglasiya-(\d{4}-\d{2})\.(php|csv)$/', $old, $m) && $m[1] < $limit) {
                 @unlink($old);
             }
         }
@@ -223,12 +253,12 @@ function journal($f, string $ip, bool $consent, string $result, string $id = '',
 /** Ограничение частоты: по IP за 10 минут и за сутки, и общее за сутки. IP хранится только в виде хеша. */
 function rate_ok(array $cfg, string $ip): ?bool
 {
-    $f = @fopen($cfg['dir'] . '/rate.json', 'c+b');
+    $f = @fopen($cfg['dir'] . '/rate.php', 'c+b');
     if (!$f) {
         return null;
     }
     flock($f, LOCK_EX);
-    $data = json_decode(stream_get_contents($f) ?: '{}', true) ?: [];
+    $data = json_decode(str_replace(GUARD, '', (string)stream_get_contents($f)) ?: '{}', true) ?: [];
     $now = time();
     foreach ($data as $k => $times) {
         $data[$k] = array_values(array_filter((array)$times, function ($t) use ($now) {
@@ -252,7 +282,7 @@ function rate_ok(array $cfg, string $ip): ?bool
     }
     ftruncate($f, 0);
     rewind($f);
-    fwrite($f, json_encode($data));
+    fwrite($f, GUARD . json_encode($data));
     fflush($f);
     flock($f, LOCK_UN);
     fclose($f);
@@ -349,7 +379,7 @@ function send_mail(array $cfg, string $to, string $subject, string $body, string
             return mail($to, mime_word($subject), $text, $head, '-f' . $cfg['from']);
         case 'file':  // только для автопроверок: письмо кладётся в папку, никуда не уходит
             $out = $cfg['dir'] . '/outbox';
-            return (is_dir($out) || @mkdir($out, 0700)) && file_put_contents($out . '/' . $id . '.eml', $message) !== false;
+            return (is_dir($out) || @mkdir($out, 0700)) && file_put_contents($out . '/' . $id . '.eml.php', GUARD . $message) !== false;
     }
     return false;
 }

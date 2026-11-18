@@ -161,6 +161,14 @@ def check_send(d, has_form):
         errs.append("send.php: пароль почты в файле сайта — только в настройках на хостинге")
     if re.search(r"google|sheets|telegram|api\.", t, re.I):
         errs.append("send.php: заявка уходит в зарубежный сервис или Telegram (НР17)")
+    # Закрытая папка внутри сайта: выкладка не должна её стирать, общий .htaccess её закрывает
+    if ".vostok-private" in t:
+        wf = ROOT / ".github" / "workflows" / "deploy.yml"
+        if wf.is_file() and "--exclude='/.vostok-private'" not in wf.read_text(encoding="utf-8"):
+            errs.append("deploy.yml: выкладка сотрёт закрытую папку заявок .vostok-private")
+        ht = Path(d) / ".htaccess"
+        if ht.is_file() and ".vostok-private" not in ht.read_text(encoding="utf-8"):
+            errs.append(".htaccess: нет запрета на закрытую папку заявок")
     return errs
 
 
