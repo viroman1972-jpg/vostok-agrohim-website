@@ -1,0 +1,7 @@
+# Плохой пример для самопроверки: нет ErrorDocument; переадресации с ошибками
+<IfModule mod_alias.c>
+RedirectMatch 301 ^/products/gerbicidy-f54174/?$ /catalog/net-takoy/
+RedirectMatch 301 ^/products/?$ /products/gerbicidy-f54174/
+RedirectMatch 301 ^/contacts/?$ /catalog/gerbitsidy/
+RedirectMatch 301 ^/p/45155542(-[^/]*)?/?$ /catalog/gerbitsidy/balerina-se/
+</IfModule>

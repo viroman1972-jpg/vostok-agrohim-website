@@ -1,0 +1,260 @@
+old,new,note
+/products/,/catalog/,каталог
+/products/gerbicidy-f54174/,/catalog/gerbitsidy/,категория
+/products/insekticidy-f54178/,/catalog/insektitsidy/,категория
+/products/fungicidy-i-protraviteli-f54175/,/catalog/fungitsidy/,категория
+/products/protraviteli-f32734251/,/catalog/protraviteli/,категория
+/products/prilipateli-f297477/,/catalog/adyuvanty/,категория
+/products/desikanty-f54177/,/catalog/desikanty/,категория
+/products/stimulyatory-rosta-rasteniy-f90411254/,/catalog/stimulyatory-rosta/,категория
+/s/3714-primenenie-lignogumata-normy-rashoda/,/catalog/stimulyatory-rosta/,"статья, ДМ40"
+/s/442254-primenenie-lignogumata-marki-am-dlya-sadovodov/,/catalog/stimulyatory-rosta/,"статья, ДМ40"
+/s/896-bakovye-smesi-na-pshenicu-yachmen-kukuruzu/,/catalog/gerbitsidy/,"статья, ДМ40"
+/s/460160-gerbicidy-promyshlennye/,/catalog/gerbitsidy/promyshlennye/,"статья, ДМ40, ОВ16"
+/price/,/files/prays-list.pdf,"прайс (П07) — подключится, когда файл ляжет в content/files"
+/map-address/24238/,/contacts/,карта проезда
+/p/310882-albit-tps/,/catalog/stimulyatory-rosta/albit-tps/,"карточка: Альбит, ТПС"
+/p/v310882-albit-tps/,/catalog/stimulyatory-rosta/albit-tps/,"карточка: Альбит, ТПС (адрес вида /p/v…)"
+/p/310890-sokol-ke-104-g-l-analog-zelek-super/,/catalog/gerbitsidy/sokol-ke/,"карточка: Сокол, КЭ"
+/p/v310890-sokol-ke-104-g-l-analog-zelek-super/,/catalog/gerbitsidy/sokol-ke/,"карточка: Сокол, КЭ (адрес вида /p/v…)"
+/p/310905-delegat-vdg-600-g-kg-metsulfuron-metil/,/catalog/gerbitsidy/delegat-vdg/,"карточка: Делегат, ВДГ"
+/p/v310905-delegat-vdg-600-g-kg-metsulfuron-metil/,/catalog/gerbitsidy/delegat-vdg/,"карточка: Делегат, ВДГ (адрес вида /p/v…)"
+/p/310906-kontador-vrk-200-g-l-imidakloprid/,/catalog/insektitsidy/kontador-vrk/,"карточка: Контадор, ВРК"
+/p/v310906-kontador-vrk-200-g-l-imidakloprid/,/catalog/insektitsidy/kontador-vrk/,"карточка: Контадор, ВРК (адрес вида /p/v…)"
+/p/310907-rimanol-vdg-250-g-kg-rimsulfurona/,/catalog/gerbitsidy/rimanol-vdg/,"карточка: Риманол, ВДГ"
+/p/v310907-rimanol-vdg-250-g-kg-rimsulfurona/,/catalog/gerbitsidy/rimanol-vdg/,"карточка: Риманол, ВДГ (адрес вида /p/v…)"
+/p/310912-trizlak-vdg-750-g-kg-tribenuron-metil/,/catalog/gerbitsidy/trizlak-vdg/,"карточка: Тризлак, ВДГ"
+/p/v310912-trizlak-vdg-750-g-kg-tribenuron-metil/,/catalog/gerbitsidy/trizlak-vdg/,"карточка: Тризлак, ВДГ (адрес вида /p/v…)"
+/p/713624-ranazol-ultra-ks-120-g-l-tebukonazola/,/catalog/protraviteli/ranazol-ultra-ks/,"карточка: Раназол Ультра, КС"
+/p/v713624-ranazol-ultra-ks-120-g-l-tebukonazola/,/catalog/protraviteli/ranazol-ultra-ks/,"карточка: Раназол Ультра, КС (адрес вида /p/v…)"
+/p/713635-silach-vr-540-g-l-gifosata-kisloty/,/catalog/gerbitsidy/silach-vr/,"карточка: Силач, ВР"
+/p/v713635-silach-vr-540-g-l-gifosata-kisloty/,/catalog/gerbitsidy/silach-vr/,"карточка: Силач, ВР (адрес вида /p/v…)"
+/p/713636-meridian-vr-klopiralid-267-g-l-pikloram-67-g-l/,/catalog/gerbitsidy/meridian-vr/,"карточка: Меридиан, ВР"
+/p/v713636-meridian-vr-klopiralid-267-g-l-pikloram-67-g-l/,/catalog/gerbitsidy/meridian-vr/,"карточка: Меридиан, ВР (адрес вида /p/v…)"
+/p/988809-greyder-vgr-250-g-l-imazapira/,/catalog/gerbitsidy/greyder-vgr/,"карточка: Грейдер, ВГР"
+/p/v988809-greyder-vgr-250-g-l-imazapira/,/catalog/gerbitsidy/greyder-vgr/,"карточка: Грейдер, ВГР (адрес вида /p/v…)"
+/p/2093411-rektor-ks-140-g-l-150-g-l-analog-prestizh-ks/,/catalog/protraviteli/,"исключён (У02) — категория: Ректор, КС"
+/p/v2093411-rektor-ks-140-g-l-150-g-l-analog-prestizh-ks/,/catalog/protraviteli/,"исключён (У02) — категория: Ректор, КС (адрес вида /p/v…)"
+/p/11973131-kontador-maksi-ks-600-g-l-analog-tabu/,/catalog/protraviteli/kontador-maksi-ks/,"карточка: Контадор Макси, КС 600 г/л"
+/p/v11973131-kontador-maksi-ks-600-g-l-analog-tabu/,/catalog/protraviteli/kontador-maksi-ks/,"карточка: Контадор Макси, КС 600 г/л (адрес вида /p/v…)"
+/p/12344095-tornado-500-vr-500-g-l-glifosata/,/catalog/gerbitsidy/tornado-500-vr/,"карточка: Торнадо 500, ВР"
+/p/v12344095-tornado-500-vr-500-g-l-glifosata/,/catalog/gerbitsidy/tornado-500-vr/,"карточка: Торнадо 500, ВР (адрес вида /p/v…)"
+/p/12371269-shaman-ke-500-g-l-hlorpirifos-50-g-l-cipermetrin/,/catalog/insektitsidy/,"до новой регистрации (У08) — категория: Шаман, КЭ"
+/p/v12371269-shaman-ke-500-g-l-hlorpirifos-50-g-l-cipermetrin/,/catalog/insektitsidy/,"до новой регистрации (У08) — категория: Шаман, КЭ (адрес вида /p/v…)"
+/p/12666784-lazurit-super-kne-270-g-l/,/catalog/gerbitsidy/lazurit-super-kne/,"карточка: Лазурит Супер, КНЭ"
+/p/v12666784-lazurit-super-kne-270-g-l/,/catalog/gerbitsidy/lazurit-super-kne/,"карточка: Лазурит Супер, КНЭ (адрес вида /p/v…)"
+/p/12890704-sharpey-me-250-g-l-cipermetrin/,/catalog/insektitsidy/sharpey-me/,"карточка: Шарпей, МЭ"
+/p/v12890704-sharpey-me-250-g-l-cipermetrin/,/catalog/insektitsidy/sharpey-me/,"карточка: Шарпей, МЭ (адрес вида /p/v…)"
+/p/13618574-tabu-vsk-500-g-l/,/catalog/protraviteli/tabu-vsk/,"карточка: Табу, ВСК 500 г/л"
+/p/v13618574-tabu-vsk-500-g-l/,/catalog/protraviteli/tabu-vsk/,"карточка: Табу, ВСК 500 г/л (адрес вида /p/v…)"
+/p/13826632-benorad-sp-500-g-kg-benomil/,/catalog/fungitsidy/benorad-sp/,"карточка: Бенорад, СП"
+/p/v13826632-benorad-sp-500-g-kg-benomil/,/catalog/fungitsidy/benorad-sp/,"карточка: Бенорад, СП (адрес вида /p/v…)"
+/p/15093159-miura-ke-125-g-l/,/catalog/gerbitsidy/miura-ke/,"карточка: Миура, КЭ"
+/p/v15093159-miura-ke-125-g-l/,/catalog/gerbitsidy/miura-ke/,"карточка: Миура, КЭ (адрес вида /p/v…)"
+/p/15093195-haker-vrg-750-g-kg/,/catalog/gerbitsidy/khaker-vrg/,"карточка: Хакер, ВРГ"
+/p/v15093195-haker-vrg-750-g-kg/,/catalog/gerbitsidy/khaker-vrg/,"карточка: Хакер, ВРГ (адрес вида /p/v…)"
+/p/15093220-aliot-ke-570-g-l/,/catalog/insektitsidy/aliot-ke/,"карточка: Алиот, КЭ"
+/p/v15093220-aliot-ke-570-g-l/,/catalog/insektitsidy/aliot-ke/,"карточка: Алиот, КЭ (адрес вида /p/v…)"
+/p/45083742-eskudo-vdg-500-g-kg-rimsulfurona/,/catalog/gerbitsidy/eskudo-vdg/,"карточка: Эскудо, ВДГ"
+/p/v45554742-eskudo-vdg-rimsulfuron-500-g-kg/,/catalog/gerbitsidy/eskudo-vdg/,"карточка: Эскудо, ВДГ (адрес вида /p/v…)"
+/p/45083782-borey-sk-150-g-l-50-g-l/,/catalog/insektitsidy/borey-sk/,"карточка: Борей, СК"
+/p/v45554782-borey-sk-150-g-l-50-g-l/,/catalog/insektitsidy/borey-sk/,"карточка: Борей, СК (адрес вида /p/v…)"
+/p/45129561-ordan-sp-689-g-kg-42-g-kg/,/catalog/fungitsidy/ordan-sp/,"карточка: Ордан, СП"
+/p/v45600591-ordan-sp-689-g-kg-42-g-kg/,/catalog/fungitsidy/ordan-sp/,"карточка: Ордан, СП (адрес вида /p/v…)"
+/p/45130331-magnum-vdg-600-g-kg/,/catalog/gerbitsidy/magnum-vdg/,"карточка: Магнум, ВДГ"
+/p/v45601381-magnum-vdg-600-g-kg/,/catalog/gerbitsidy/magnum-vdg/,"карточка: Магнум, ВДГ (адрес вида /p/v…)"
+/p/45155542-balerina-se-410-g-l-7-4-g-l/,/catalog/gerbitsidy/balerina-se/,"карточка: Балерина, СЭ"
+/p/v45626617-balerina-se-410-g-l-7-4-g-l/,/catalog/gerbitsidy/balerina-se/,"карточка: Балерина, СЭ (адрес вида /p/v…)"
+/p/45155592-gorgon-vrk-350g-l-150-g-l/,/catalog/gerbitsidy/gorgon-vrk/,"карточка: Горгон, ВРК"
+/p/v45626667-gorgon-vrk-350-g-l-150-g-l/,/catalog/gerbitsidy/gorgon-vrk/,"карточка: Горгон, ВРК (адрес вида /p/v…)"
+/p/45744882-gerbitoks-vrk-mcpa-kislota-500-g-l/,/catalog/gerbitsidy/gerbitoks-vrk/,"карточка: Гербитокс, ВРК"
+/p/v46215952-gerbitoks-vrk-mcpa-kislota-500-g-l/,/catalog/gerbitsidy/gerbitoks-vrk/,"карточка: Гербитокс, ВРК (адрес вида /p/v…)"
+/p/45745312-gerbitoks-l-vrk-mcpa-kislota-300-g-l/,/catalog/gerbitsidy/gerbitoks-l-vrk/,"карточка: Гербитокс-Л, ВРК"
+/p/v46216382-gerbitoks-l-vrk-mcpa-kislota-300-g-l/,/catalog/gerbitsidy/gerbitoks-l-vrk/,"карточка: Гербитокс-Л, ВРК (адрес вида /p/v…)"
+/p/45753642-dublon-gold-vdg-600-g-kg-150-g-kg/,/catalog/gerbitsidy/dublon-gold-vdg/,"карточка: Дублон голд, ВДГ"
+/p/v46224707-dublon-gold-vdg-600-g-kg-150-g-kg/,/catalog/gerbitsidy/dublon-gold-vdg/,"карточка: Дублон голд, ВДГ (адрес вида /p/v…)"
+/p/45757290-kvikstep-mke-130-g-l-80-g-l/,/catalog/gerbitsidy/kvikstep-mke/,"карточка: Квикстеп, МКЭ"
+/p/v46228355-kvikstep-mke-130-g-l-80-g-l/,/catalog/gerbitsidy/kvikstep-mke/,"карточка: Квикстеп, МКЭ (адрес вида /p/v…)"
+/p/45757295-korsar-vrk-bentazon-480-g-l/,/catalog/gerbitsidy/korsar-vrk/,"карточка: Корсар, ВРК"
+/p/v46228360-korsar-vrk-bentazon-480-g-l/,/catalog/gerbitsidy/korsar-vrk/,"карточка: Корсар, ВРК (адрес вида /p/v…)"
+/p/45757300-lastik-top-mke-90-g-l-60-g-l-40-g-l/,/catalog/gerbitsidy/lastik-top-mke/,"карточка: Ластик Топ, МКЭ"
+/p/v46228365-lastik-top-mke-90-g-l-60-g-l-40-g-l/,/catalog/gerbitsidy/lastik-top-mke/,"карточка: Ластик Топ, МКЭ (адрес вида /p/v…)"
+/p/46354783-breyk-me-lyambda-cigalotrin-100-g-l/,/catalog/insektitsidy/breyk-me/,"карточка: Брейк, МЭ"
+/p/v46825767-breyk-me-lyambda-cigalotrin-100-g-l/,/catalog/insektitsidy/breyk-me/,"карточка: Брейк, МЭ (адрес вида /p/v…)"
+/p/46355171-sirokko-ke-dimetoat-400-g-l/,/catalog/insektitsidy/sirokko-ke/,"карточка: Сирокко, КЭ"
+/p/v46826155-sirokko-ke-dimetoat-400-g-l/,/catalog/insektitsidy/sirokko-ke/,"карточка: Сирокко, КЭ (адрес вида /p/v…)"
+/p/46356159-kolosal-pro-kme-propikonazol-300-g-l-tebukonazol-200-g-l/,/catalog/fungitsidy/kolosal-pro-kme/,"карточка: Колосаль Про, КМЭ"
+/p/v46827147-kolosal-pro-kme-300-g-l-200-g-l/,/catalog/fungitsidy/kolosal-pro-kme/,"карточка: Колосаль Про, КМЭ (адрес вида /p/v…)"
+/p/46356227-lastik-ekstra-ke-fenoksaprop-p-etil-70-g-l-antidot-40-g-l/,/catalog/gerbitsidy/lastik-ekstra-ke/,"карточка: Ластик экстра, КЭ"
+/p/v46827215-lastik-ekstra-ke-70-g-l-40-g-l/,/catalog/gerbitsidy/lastik-ekstra-ke/,"карточка: Ластик экстра, КЭ (адрес вида /p/v…)"
+/p/46358619-adyu-zh-etoksilat-izodecilovogo-spirta-900-g-l/,/catalog/adyuvanty/adyu-zh/,"карточка: Адью, Ж"
+/p/v46829607-adyu-zh-etoksilat-izodecilovogo-spirta-900-g-l/,/catalog/adyuvanty/adyu-zh/,"карточка: Адью, Ж (адрес вида /p/v…)"
+/p/46364307-tmtd-vsk-tiram-400-g-l/,/catalog/protraviteli/tmtd-vsk/,"карточка: ТМТД, ВСК Тирам, 400 г/л"
+/p/v46835295-tmtd-vsk-tiram-400-g-l/,/catalog/protraviteli/tmtd-vsk/,"карточка: ТМТД, ВСК Тирам, 400 г/л (адрес вида /p/v…)"
+/p/46522572-bunker-vsk-tebukonazol-60-g-l/,/catalog/protraviteli/bunker-vsk/,"карточка: Бункер, ВСК"
+/p/v46993552-bunker-vsk-tebukonazol-60-g-l/,/catalog/protraviteli/bunker-vsk/,"карточка: Бункер, ВСК (адрес вида /p/v…)"
+/p/46522587-vial-trast-vsk-tebukonazol-60-g-l-tiabendazol-80-g-l-antistres-komp/,/catalog/protraviteli/vial-trast-vsk/,"карточка: Виал Траст, ВСК"
+/p/v46993567-vial-trast-vsk-60-g-l-80-g-l/,/catalog/protraviteli/vial-trast-vsk/,"карточка: Виал Траст, ВСК (адрес вида /p/v…)"
+/p/46522597-kolosal-ke-tebukonazol-250-g-l/,/catalog/fungitsidy/kolosal-ke/,"карточка: Колосаль, КЭ"
+/p/v46993577-kolosal-ke-tebukonazol-250-g-l/,/catalog/fungitsidy/kolosal-ke/,"карточка: Колосаль, КЭ (адрес вида /p/v…)"
+/p/46522612-metaksil-sp-mankoceb-640-g-kg-metalaksil-80-g-kg/,/catalog/fungitsidy/metaksil-sp/,"карточка: Метаксил, СП"
+/p/v46993592-metaksil-sp-640-g-kg-80-g-kg/,/catalog/fungitsidy/metaksil-sp/,"карточка: Метаксил, СП (адрес вида /p/v…)"
+/p/46522622-oplot-vsk-difenokonazol-90-g-l-tebukonazol-45-g-l/,/catalog/protraviteli/oplot-vsk/,"карточка: Оплот, ВСК"
+/p/v46993602-oplot-vsk-difenokonazol-90-g-l-tebukonazol-45-g-l/,/catalog/protraviteli/oplot-vsk/,"карточка: Оплот, ВСК (адрес вида /p/v…)"
+/p/46550317-magnum-super-vdg-tribenuron-metil-450-g-kg-metsulfuron-metil-300-g-kg/,/catalog/gerbitsidy/magnum-super-vdg/,"карточка: Магнум Супер, ВДГ"
+/p/v47021252-magnum-super-vdg-450-g-kg-300-g-kg/,/catalog/gerbitsidy/magnum-super-vdg/,"карточка: Магнум Супер, ВДГ (адрес вида /p/v…)"
+/p/46551092-rakurs-sk-ciprokonazol-160-g-l-epoksikonazol-240-g-l/,/catalog/fungitsidy/rakurs-sk/,"карточка: Ракурс, СК"
+/p/v47022027-rakurs-sk-160-g-l-240-g-l/,/catalog/fungitsidy/rakurs-sk/,"карточка: Ракурс, СК (адрес вида /p/v…)"
+/p/46551617-spirit-sk-epoksikonazol-160-g-l-azoksistrobin-240-g-l/,/catalog/fungitsidy/spirit-sk/,"карточка: Спирит, СК"
+/p/v47022552-spirit-sk-160-g-l-240-g-l/,/catalog/fungitsidy/spirit-sk/,"карточка: Спирит, СК (адрес вида /p/v…)"
+/p/58514609-diplomat-ke-50-g-l-lyambda-cigalotrin/,/catalog/insektitsidy/diplomat-ke/,"карточка: Дипломат, КЭ"
+/p/v59005009-diplomat-ke-50-g-l-lyambda-cigalotrin/,/catalog/insektitsidy/diplomat-ke/,"карточка: Дипломат, КЭ (адрес вида /p/v…)"
+/p/134002484-tornado-540-vr-glifosat-kislota-540-g-l/,/catalog/gerbitsidy/tornado-540-vr/,"карточка: Торнадо 540, ВР"
+/p/v134551242-tornado-540-vr-glifosat-kislota-540-g-l/,/catalog/gerbitsidy/tornado-540-vr/,"карточка: Торнадо 540, ВР (адрес вида /p/v…)"
+/p/355835303-lignogumat-kaliynyy-marka-am/,/catalog/stimulyatory-rosta/,"исключён (У05), ДМ40: Лигногумат калийный марка АМ"
+/p/v356964368-lignogumat-kaliynyy-marka-am/,/catalog/stimulyatory-rosta/,"исключён (У05), ДМ40: Лигногумат калийный марка АМ (адрес вида /p/v…)"
+/p/356906725-kayzer-ks-350-g-l-tiametoksam/,/catalog/protraviteli/kayzer-ks/,"карточка: Кайзер, КС 350 г/л Тиаметоксам"
+/p/v358038198-kayzer-ks-350-g-l-tiametoksam/,/catalog/protraviteli/kayzer-ks/,"карточка: Кайзер, КС 350 г/л Тиаметоксам (адрес вида /p/v…)"
+/p/377508076-raek-ke-difenokonazol-250-g-l/,/catalog/fungitsidy/raek-ke/,"карточка: Раёк, КЭ"
+/p/v378709325-raek-ke-250-g-l/,/catalog/fungitsidy/raek-ke/,"карточка: Раёк, КЭ (адрес вида /p/v…)"
+/p/498892170-vial-trio-vsk-120-g-l-30-g-l-5-g-l/,/catalog/protraviteli/vial-trio-vsk/,"карточка: Виал Трио, ВСК"
+/p/v500555573-vial-trio-vsk-120-g-l-30-g-l-5-g-l/,/catalog/protraviteli/vial-trio-vsk/,"карточка: Виал Трио, ВСК (адрес вида /p/v…)"
+/p/498968218-sinkler-sk-fludioksonil-75-g-l/,/catalog/protraviteli/sinkler-sk/,"карточка: Синклер, СК"
+/p/v500631894-sinkler-sk-fludioksonil-75-g-l/,/catalog/protraviteli/sinkler-sk/,"карточка: Синклер, СК (адрес вида /p/v…)"
+/p/652420411-tebuzil-ks-60-g-l-100-g-l/,/catalog/protraviteli/tebuzil-tks/,"карточка: Тебузил, КС"
+/p/v655328869-tebuzil-ks-60-g-l-100-g-l/,/catalog/protraviteli/tebuzil-tks/,"карточка: Тебузил, КС (адрес вида /p/v…)"
+/p/652421017-galion-vr-300-75-g-l/,/catalog/gerbitsidy/galion-vr/,"карточка: Галион, ВР"
+/p/v655329475-galion-vr-300-g-l-75-g-l/,/catalog/gerbitsidy/galion-vr/,"карточка: Галион, ВР (адрес вида /p/v…)"
+/p/652421125-paradoks-vrk-120-g-l-imazamoks/,/catalog/gerbitsidy/paradoks-vrk/,"карточка: Парадокс, ВРК"
+/p/v655329583-paradoks-vrk-120-g-l-imazamoks/,/catalog/gerbitsidy/paradoks-vrk/,"карточка: Парадокс, ВРК (адрес вида /p/v…)"
+/p/653338453-allyur-zh/,/catalog/adyuvanty/allyur-zh/,"карточка: Аллюр, Ж"
+/p/v656246953-allyur-zh/,/catalog/adyuvanty/allyur-zh/,"карточка: Аллюр, Ж (адрес вида /p/v…)"
+/p/653355301-polismago/,/catalog/adyuvanty/polismago/,карточка: ПолисмаГО
+/p/v656263801-polismago/,/catalog/adyuvanty/polismago/,карточка: ПолисмаГО (адрес вида /p/v…)
+/p/653362123-vikont-sp-80-g-l-640-g-l/,/catalog/fungitsidy/vikont-sp/,"карточка: Виконт, СП"
+/p/v656270623-vikont-sp-80-g-l-640-g-l/,/catalog/fungitsidy/vikont-sp/,"карточка: Виконт, СП (адрес вида /p/v…)"
+/p/653362351-fatrin-ke-alfa-cipermetrin-100-g-l/,/catalog/insektitsidy/fatrin-ke/,"карточка: Фатрин, КЭ"
+/p/v656270851-fatrin-ke-alfa-cipermetrin-100-g-l/,/catalog/insektitsidy/fatrin-ke/,"карточка: Фатрин, КЭ (адрес вида /p/v…)"
+/p/653363401-oplot-trio-vsk-90-g-l-45-g-l-40-g-l/,/catalog/protraviteli/oplot-trio-vsk/,"карточка: Оплот Трио, ВСК"
+/p/v656271907-oplot-trio-vsk-90-g-l-45-g-l-40-g-l/,/catalog/protraviteli/oplot-trio-vsk/,"карточка: Оплот Трио, ВСК (адрес вида /p/v…)"
+/p/653661732-gerold-vsk-diflubenzuron-240-g-l/,/catalog/insektitsidy/gerold-vsk/,"карточка: Герольд, ВСК"
+/p/v656570268-gerold-vsk-diflubenzuron-240-g-l/,/catalog/insektitsidy/gerold-vsk/,"карточка: Герольд, ВСК (адрес вида /p/v…)"
+/p/653787229-simba-ke-s-metolahlor-960-g-l/,/catalog/gerbitsidy/simba-ke/,"карточка: Симба, КЭ"
+/p/v656695777-simba-ke-s-metolahlor-960-g-l/,/catalog/gerbitsidy/simba-ke/,"карточка: Симба, КЭ (адрес вида /p/v…)"
+/p/653787439-suhovey-vr-dikvat-150-g-l/,/catalog/gerbitsidy/sukhovey-vr/,"карточка: Суховей, ВР"
+/p/v656695987-suhovey-vr-dikvat-150-g-l/,/catalog/gerbitsidy/sukhovey-vr/,"карточка: Суховей, ВР (адрес вида /p/v…)"
+/p/653787475-tabu-neo-sk-imidakloprid-400-g-l-klotianidin-100-g-l/,/catalog/protraviteli/tabu-neo-sk/,"карточка: Табу Нео, СК"
+/p/v656696023-tabu-neo-sk-imidakloprid-400-g-l-klotianidin-100-g-l/,/catalog/protraviteli/tabu-neo-sk/,"карточка: Табу Нео, СК (адрес вида /p/v…)"
+/p/657124079-soylent-vr/,/catalog/adyuvanty/soylent-vr/,"карточка: Сойлент, ВР"
+/p/v660033725-soylent-vr/,/catalog/adyuvanty/soylent-vr/,"карточка: Сойлент, ВР (адрес вида /p/v…)"
+/p/684742377-tiara-ks-350-g-l-tiametoksam/,/catalog/dv/tiametoksam/,"исключена (У06) — страница вещества: Тиара, КС"
+/p/v688108077-tiara-ks-350-g-l-tiametoksam/,/catalog/dv/tiametoksam/,"исключена (У06) — страница вещества: Тиара, КС (адрес вида /p/v…)"
+/p/816966746-mamba-ke-150-g-l-alfa-cipermetrin/,/catalog/insektitsidy/mamba-ke/,"карточка: Мамба, КЭ"
+/p/v821516011-mamba-ke-150-g-l-alfa-cipermetrin/,/catalog/insektitsidy/mamba-ke/,"карточка: Мамба, КЭ (адрес вида /p/v…)"
+/p/1375180342-borey-neo-sk-125-g-l-100-g-l-50-g-l/,/catalog/insektitsidy/borey-neo-sk/,"карточка: Борей Нео, СК"
+/p/v1383637047-borey-neo-sk-125-g-l-100-g-l-50-g-l/,/catalog/insektitsidy/borey-neo-sk/,"карточка: Борей Нео, СК (адрес вида /p/v…)"
+/p/1375181202-tayra-ke-hlorpirifos-480-g-l/,/catalog/insektitsidy/tayra-ke/,"карточка: Тайра, КЭ"
+/p/v1383638002-tayra-ke-hlorpirifos-480-g-l/,/catalog/insektitsidy/tayra-ke/,"карточка: Тайра, КЭ (адрес вида /p/v…)"
+/p/1375185567-alfacin-ke-alfa-cipermetrin-100-g-l/,/catalog/dv/alfa-tsipermetrin/,"исключён (У03) — страница вещества: Альфацин, КЭ"
+/p/v1383642852-alfacin-ke-alfa-cipermetrin-100-g-l/,/catalog/dv/alfa-tsipermetrin/,"исключён (У03) — страница вещества: Альфацин, КЭ (адрес вида /p/v…)"
+/p/1379232358-gambit-sk-prometrin-500-g-l/,/catalog/gerbitsidy/gambit-sk/,"карточка: Гамбит, СК"
+/p/v1387751193-gambit-sk-prometrin-500-g-l/,/catalog/gerbitsidy/gambit-sk/,"карточка: Гамбит, СК (адрес вида /p/v…)"
+/p/1381897013-drakon-ke-140-g-l-90-g-l-60-g-l/,/catalog/gerbitsidy/drakon-ke/,"карточка: Дракон, КЭ"
+/p/v1390482098-drakon-ke-140-g-l-90-g-l-60-g-l/,/catalog/gerbitsidy/drakon-ke/,"карточка: Дракон, КЭ (адрес вида /p/v…)"
+/p/1385495494-balerina-forte/,/catalog/gerbitsidy/balerina-forte-se/,"карточка: Балерина Форте, СЭ"
+/p/v1394167694-balerina-forte-se-300-g-l-37-5-g-l-10-g-l/,/catalog/gerbitsidy/balerina-forte-se/,"карточка: Балерина Форте, СЭ (адрес вида /p/v…)"
+/p/1392551425-libertador-sk-160-g-l/,/catalog/fungitsidy/libertador-sk/,"карточка: Либертадор, СК"
+/p/v1401649395-libertador-sk-160-g-l/,/catalog/fungitsidy/libertador-sk/,"карточка: Либертадор, СК (адрес вида /p/v…)"
+/p/1433929118-lazurit-ultra-sk-600-g-l/,/catalog/dv/metribuzin/,"исключён (У04) — страница вещества: Лазурит Ультра, СК"
+/p/v1445287113-lazurit-ultra-sk-600-g-l/,/catalog/dv/metribuzin/,"исключён (У04) — страница вещества: Лазурит Ультра, СК (адрес вида /p/v…)"
+/p/1454060578-drakon-super-7-5-ke-69-g-l-75-g-l/,/catalog/gerbitsidy/drakon-super-7-5-ke/,"карточка: Дракон Супер 7,5 КЭ"
+/p/v1466408383-drakon-super-7-5-ke-69-g-l-75-g-l/,/catalog/gerbitsidy/drakon-super-7-5-ke/,"карточка: Дракон Супер 7,5 КЭ (адрес вида /p/v…)"
+/p/1454060603-drakon-super-100-ke-100-g-l-27-g-l/,/catalog/gerbitsidy/drakon-super-100-ke/,"карточка: Дракон Супер 100, КЭ"
+/p/v1466408408-drakon-super-100-ke-100-g-l-27-g-l/,/catalog/gerbitsidy/drakon-super-100-ke/,"карточка: Дракон Супер 100, КЭ (адрес вида /p/v…)"
+/p/1454060743-evro-lend-vrk-33-g-l-15-g-l/,/catalog/gerbitsidy/evro-lend-vrk/,"карточка: Евро-Ленд, ВРК"
+/p/v1466408588-evro-lend-vrk-33-g-l-15-g-l/,/catalog/gerbitsidy/evro-lend-vrk/,"карточка: Евро-Ленд, ВРК (адрес вида /p/v…)"
+/p/1454060903-komissar-ke-300-g-l-200-g-l/,/catalog/fungitsidy/komissar-ke/,"карточка: Комиссар, КЭ"
+/p/v1466408783-komissar-ke-300-g-l-200-g-l/,/catalog/fungitsidy/komissar-ke/,"карточка: Комиссар, КЭ (адрес вида /p/v…)"
+/p/1454060938-kadet-vr-120-g-l-344-g-l/,/catalog/gerbitsidy/kadet-vr/,"карточка: Кадет, ВР"
+/p/v1466408853-kadet-vr-120-g-l-344-g-l/,/catalog/gerbitsidy/kadet-vr/,"карточка: Кадет, ВР (адрес вида /p/v…)"
+/p/1454060982-lemur-ke-40-g-l/,/catalog/gerbitsidy/,"до новой регистрации (У08) — категория: Лемур, КЭ"
+/p/v1466408897-lemur-ke-40-g-l/,/catalog/gerbitsidy/,"до новой регистрации (У08) — категория: Лемур, КЭ (адрес вида /p/v…)"
+/p/1454061003-serp-vrk-100-g-l/,/catalog/gerbitsidy/serp-vrk/,"карточка: Серп, ВРК"
+/p/v1466408953-serp-vrk-100-g-l/,/catalog/gerbitsidy/serp-vrk/,"карточка: Серп, ВРК (адрес вида /p/v…)"
+/p/1456836584-kentavr-vdg-700-g-kg/,/catalog/gerbitsidy/kentavr-vdg/,"карточка: Кентавр, ВДГ"
+/p/v1469410259-kentavr-vdg-700-g-kg/,/catalog/gerbitsidy/kentavr-vdg/,"карточка: Кентавр, ВДГ (адрес вида /p/v…)"
+/p/1456862339-alsion-vdg-750-g-kg/,/catalog/gerbitsidy/alsion-vdg/,"карточка: Алсион, ВДГ"
+/p/v1469436229-alsion-vdg-750-g-kg/,/catalog/gerbitsidy/alsion-vdg/,"карточка: Алсион, ВДГ (адрес вида /p/v…)"
+/p/1477017362-haker-300-vr-300-g-l/,/catalog/gerbitsidy/khaker-300-vr/,"карточка: Хакер 300, ВР"
+/p/v1489326287-haker-300-vr-300-g-l/,/catalog/gerbitsidy/khaker-300-vr/,"карточка: Хакер 300, ВР (адрес вида /p/v…)"
+/p/1516770115-lambada-se-300-g-l-6-25-g-l/,/catalog/gerbitsidy/lambada-se/,"карточка: Ламбада, СЭ"
+/p/v1529407695-lambada-se-300-g-l-6-25-g-l/,/catalog/gerbitsidy/lambada-se/,"карточка: Ламбада, СЭ (адрес вида /p/v…)"
+/p/1517960528-hator-vr-300-g-l/,/catalog/gerbitsidy/khator-vr/,"карточка: Хатор, ВР"
+/p/v1530598283-hator-vr-300-g-l/,/catalog/gerbitsidy/khator-vr/,"карточка: Хатор, ВР (адрес вида /p/v…)"
+/p/1517960628-gaur-ke-240-g-l/,/catalog/gerbitsidy/gaur-ke/,"карточка: Гаур, КЭ"
+/p/v1530598383-gaur-ke-240-g-l/,/catalog/gerbitsidy/gaur-ke/,"карточка: Гаур, КЭ (адрес вида /p/v…)"
+/p/1518444681-balerina-super-se-410-g-l-15-g-l/,/catalog/gerbitsidy/balerina-super-se/,"карточка: Балерина Супер, СЭ"
+/p/v1531085466-balerina-super-se-410-g-l-15-g-l/,/catalog/gerbitsidy/balerina-super-se/,"карточка: Балерина Супер, СЭ (адрес вида /p/v…)"
+/p/1521867435-lyambda-s-ks-50-g-l-lyambda-cigalotrin/,/catalog/insektitsidy/lyambda-s-ke/,"карточка: Лямбда-С, КС"
+/p/v1534510340-lyambda-s-ks-50-g-l-lyambda-cigalotrin/,/catalog/insektitsidy/lyambda-s-ke/,"карточка: Лямбда-С, КС (адрес вида /p/v…)"
+/tags/serpy/,/catalog/gerbitsidy/serp-vrk/,метка Satom — Серп
+/tags/stimulyatory-rosta-rasteniy/,/catalog/stimulyatory-rosta/,метка Satom
+/tags/f-stimulyatory-rosta/,/catalog/stimulyatory-rosta/,метка Satom
+/tags/pasty/,/catalog/stimulyatory-rosta/albit-tps/,метка Satom — Альбит
+/tags/gerbicidy-sploshnogo-deystviya/,/catalog/gerbitsidy/,метка Satom
+/tags/gerbicidy_avgust_c4015/,/catalog/gerbitsidy/,метка Satom
+/tags/f-mnogoletniy/,/catalog/gerbitsidy/,метка Satom
+/tags/gerbicidy-tornado/,/catalog/seriya/tornado/,метка Satom
+/tags/f-tornado-ot-sornyakov/,/catalog/seriya/tornado/,метка Satom
+/tags/f-tornado-540/,/catalog/gerbitsidy/tornado-540-vr/,метка Satom
+/tags/f-tornado-500/,/catalog/gerbitsidy/tornado-500-vr/,метка Satom
+/tags/gerbicidy-lazurit/,/catalog/gerbitsidy/lazurit-super-kne/,метка Satom — Лазурит Ультра исключён
+/tags/gerbicidy-miura/,/catalog/gerbitsidy/miura-ke/,метка Satom
+/tags/specii-perec/,/catalog/gerbitsidy/miura-ke/,метка Satom — единственный препарат метки
+/tags/fungicidy-kolosal/,/catalog/seriya/kolosal/,метка Satom
+/tags/f-magnum-gerbicid/,/catalog/seriya/magnum/,метка Satom
+/tags/f-magnum-ot-sornyakov/,/catalog/seriya/magnum/,метка Satom
+/tags/f-magnum/,/catalog/seriya/magnum/,метка Satom
+/tags/f-breyk-insekticid/,/catalog/insektitsidy/breyk-me/,метка Satom
+/tags/f-dublon-gold-avgust/,/catalog/gerbitsidy/dublon-gold-vdg/,метка Satom
+/tags/prilipateli/,/catalog/adyuvanty/,метка Satom
+/tags/f-zhidkost-i/,/catalog/adyuvanty/,метка Satom — единственный препарат — Адью
+/tags/f-prometrin/,/catalog/dv/prometrin/,метка Satom
+/tags/f-alfacipermetrin/,/catalog/dv/alfa-tsipermetrin/,метка Satom
+/tags/f-imidakloprid/,/catalog/dv/imidakloprid/,метка Satom
+/tags/f-cipermetrin/,/catalog/dv/tsipermetrin/,метка Satom
+/tags/f-dikvat/,/catalog/dv/dikvat-dibromid/,метка Satom
+/tags/f-klopiralid/,/catalog/dv/klopiralid/,метка Satom
+/tags/ozimye/,/catalog/kultura/pshenitsa-ozimaya/,"метка Satom — те же препараты, что в «Озимой пшенице»"
+/tags/f-ozimaya-pshenica/,/catalog/kultura/pshenitsa-ozimaya/,метка Satom
+/tags/f-raps-ozimyy/,/catalog/kultura/raps-ozimyy/,метка Satom
+/tags/f-yablonya/,/catalog/kultura/yablonya/,метка Satom
+/tags/f-vinograd-stolovyy/,/catalog/kultura/vinograd/,метка Satom
+/tags/f-belokochannaya-kapusta/,/catalog/kultura/kapusta/,метка Satom
+/tags/insekticidy_dlya_kapusty_c4016/,/catalog/kultura/kapusta/,метка Satom
+/tags/f-belyanka/,/catalog/vrednyy-obekt/belyanki/,метка Satom
+/tags/f-vrediteli-nasekomye/,/catalog/vrednyy-obekt/vrediteli/,метка Satom
+/tags/pet-tara/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-tara-plastikovaya/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-flakony/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-granuly/,/catalog/,служебная метка Satom без смысловой пары
+/tags/semena-lyucerny/,/catalog/,служебная метка Satom без смысловой пары
+/tags/timofeevka-lugovaya/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-klever-lugovoy/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-sazhency/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-sazhency-derevev/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-cherenki-plodovyh/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-semena-dlya-gazona/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-vse-dlya-sada/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-koren-pod-kornem/,/catalog/,служебная метка Satom без смысловой пары
+/tags/semena_ovoshchey_c4154/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-ekstrakt-hvoynyy/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-derevya-kustarniki/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-dekorativno-listvennye/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-derevya/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-dekorativnaya-kapusta/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-cvetok-g/,/catalog/,служебная метка Satom без смысловой пары
+/tags/f-len-belyy/,/catalog/,служебная метка Satom без смысловой пары
+/tags/holsty_polotna_rosa-c5740/,/catalog/,служебная метка Satom без смысловой пары
+/tags/setki_selskohozyaystvennye_klever_c7605/,/catalog/,служебная метка Satom без смысловой пары
+/tags/lestnicy_stremyanki_kentavr_c4570/,/catalog/,служебная метка Satom без смысловой пары

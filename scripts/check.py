@@ -1,5 +1,6 @@
 """Автопроверки собранного сайта. Код возврата 1, если есть нарушения.
 Использование: check.py [папка] [--staging | --release]   |   check.py --selftest
+Переадресации со старого сайта: data/redirects.csv ↔ .htaccess сборки.
 --staging: дополнительно проверить, что тестовая копия закрыта от индексации.
 --release: боевой сайт — картинки только с правом использования (журнал ДЗ09, статус «разрешено» или «своё»).
 Кроме собранных страниц проверяются исходные SEO-тексты content/seo (правило 4: названия препаратов — по таблице связей)."""
@@ -437,6 +438,49 @@ def check_css(d):
     return errs
 
 
+REDIRECT = re.compile(r"^RedirectMatch\s+301\s+(\S+)\s+(\S+)\s*$", re.M)
+
+
+def check_redirects(d, table=ROOT / "data" / "redirects.csv", release=False):
+    """Переадресации 301 (ДМ40 п. 4): таблица без повторов и цепочек; в .htaccess каждая цель собрана,
+    правило не закрывает собранную страницу и не ведёт на другой переадресуемый адрес; на боевом сайте подключены все строки."""
+    d, errs = Path(d), []
+    rows = read_csv(table) if Path(table).is_file() else []
+    if not rows:
+        errs.append(f"{table}: нет таблицы переадресаций со старого сайта")
+    seen = set()
+    for r in rows:
+        old, new = r["old"], r["new"]
+        if not old.startswith("/") or not new.startswith("/") or new.startswith("//"):
+            errs.append(f"redirects.csv: {old} → {new}: адрес не с «/» своего сайта")
+        if old.rstrip("/") in seen:
+            errs.append(f"redirects.csv: старый адрес {old} повторяется")
+        seen.add(old.rstrip("/"))
+        if new.rstrip("/") in {x["old"].rstrip("/") for x in rows}:
+            errs.append(f"redirects.csv: цепочка переадресаций {old} → {new} → …")
+    ht = d / ".htaccess"
+    rules = REDIRECT.findall(ht.read_text(encoding="utf-8")) if ht.is_file() else []
+    pages = {"/" + p.relative_to(d).as_posix().removesuffix("index.html") for p in d.rglob("*") if p.is_file()}
+    for pat, target in rules:
+        try:
+            rx = re.compile(pat)
+        except re.error:
+            errs.append(f".htaccess: ошибка в шаблоне переадресации {pat}"); continue
+        if target not in pages:
+            errs.append(f".htaccess: цель переадресации {target} не существует ({pat})")
+        if any(re.search(p2, target) for p2, _ in rules):
+            errs.append(f".htaccess: цепочка переадресаций {pat} → {target} → …")
+        hit = sorted(p for p in pages if rx.search(p))
+        if hit:
+            errs.append(f".htaccess: переадресация {pat} закрывает собранную страницу {hit[0]}")
+    if release:
+        emitted = {t for _, t in rules}
+        for r in rows:
+            if r["new"] not in emitted or not any(re.search(p, r["old"]) for p, _ in rules):
+                errs.append(f"redirects.csv: переадресация {r['old']} → {r['new']} не подключена — новый адрес не собран")
+    return errs
+
+
 def check_dir(d, staging=False, release=False, journal=JOURNAL):
     errs, n, has_form = [], 0, False
     jr = read_journal(journal)
@@ -581,6 +625,7 @@ def selftest():
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
     bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo") + check_send(ROOT / "tests" / "send-bad", True)
+    bad += check_redirects(ROOT / "tests" / "bad", ROOT / "tests" / "seo" / "data" / "redirects.csv", release=True)
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
                 "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "только на листинге категории", "не на месте", "повторяет быстрый вход", "не совпадает с отбором", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
                 "тег dovskhodovyy не у гербицида", "нет применения до всходов", "нет тега dovskhodovyy",
@@ -595,6 +640,7 @@ def selftest():
                 "нет Offer в рублях", "адрес в Offer не равен", "цена в Offer не из prices.csv", "закрытая от поиска или несуществующая", "sitemap.xml: нет открытой страницы",
                 "нет строки Sitemap", "закрывает открытые страницы",
                 "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
+                "цель переадресации /catalog/net-takoy/ не существует", "цепочка переадресаций ^/", "закрывает собранную страницу", "старый адрес /products/ повторяется", "redirects.csv: цепочка", "адрес не с «/»", "не подключена",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
@@ -613,7 +659,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
     errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
-    errs += check_seo() + check_prom() + check_term()
+    errs += check_seo() + check_prom() + check_term() + check_redirects(d, release="--release" in sys.argv)
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)

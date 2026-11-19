@@ -1,0 +1,7 @@
+old,new,note
+/products/,/catalog/,
+/products/,/catalog/gerbitsidy/,старый адрес повторяется
+/products/gerbicidy-f54174/,/products/,цепочка
+/price/,https://example.com/price.pdf,чужой адрес
+/p/45155542-balerina-se-410-g-l-7-4-g-l/,/catalog/gerbitsidy/balerina-se/,
+/p/1454060982-lemur-ke-40-g-l/,/catalog/gerbitsidy/lemur-ke/,не собрана — на боевом не подключена

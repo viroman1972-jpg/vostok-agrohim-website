@@ -188,6 +188,28 @@ def render_send(root, s):
     return text
 
 
+def redirect_pattern(old):
+    """Старый адрес → шаблон RedirectMatch. Карточки и статьи Satom (/p/123-…, /p/v123-…, /s/123-…) открывались
+    по номеру с любым хвостом — совпадение по номеру; остальное — точный адрес, со слэшем в конце и без."""
+    m = re.fullmatch(r"/(p|s)/(v?\d+)(?:-[^/]*)?/?", old)
+    if m:
+        return f"^/{m.group(1)}/{m.group(2)}(-[^/]*)?/?$"
+    return "^" + re.sub(r"([.^$*+?()\[\]{}|\\])", r"\\\1", old.rstrip("/")) + "/?$"
+
+
+def redirects(root, built):
+    """ДМ40 п. 4: data/redirects.csv → правила 301 для .htaccess. Правило пишется, только если новый адрес собран:
+    до публикации карточки (черновик) старый адрес отдаёт 404, сборка предупреждает; на боевом сайте check.py требует все.
+    Возвращает (строки правил, пропущенные строки таблицы)."""
+    rules, skipped = [], []
+    for r in read_csv(Path(root) / "data" / "redirects.csv"):
+        if r["new"] in built:
+            rules.append(f"RedirectMatch 301 {redirect_pattern(r['old'])} {r['new']}")
+        else:
+            skipped.append(r)
+    return rules, skipped
+
+
 def build(root=ROOT, out=None):
     root = Path(root)
     data, tpl, content = root / "data", root / "site" / "templates", root / "content"
@@ -652,8 +674,16 @@ def build(root=ROOT, out=None):
     # Приём заявок (этап 4, ДМ35): телефоны и адрес — из settings.yml; пароль почты — только на хостинге
     (out / "send.php").write_text(render_send(root, s), encoding="utf-8", newline="\n")
     # Закрытая папка заявок (настройки, журнал согласий) из интернета не открывается — второй запрет, кроме её собственного
+    # Переадресации 301 со старого сайта (ДМ40 п. 4); строка запроса (метки Директа utm, yclid) сохраняется
+    built = {"/" + r.removesuffix("index.html") for r in pages} | ({"/" + PRICE_FILE} if has_price else set())
+    rules, skipped = redirects(root, built)
+    if skipped:
+        warnings.append(f"переадресации: {len(skipped)} из {len(rules) + len(skipped)} не подключены — новый адрес не собран "
+                        f"(черновик или нет файла прайса); на боевом сайте check.py --release этого не пропустит")
     (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n"
-                                   "<IfModule mod_alias.c>\nRedirectMatch 403 ^/\\.vostok-private(/|$)\n</IfModule>\n", encoding="utf-8")
+                                   "<IfModule mod_alias.c>\nRedirectMatch 403 ^/\\.vostok-private(/|$)\n"
+                                   "# Переадресации со старого сайта — из data/redirects.csv\n" + "".join(x + "\n" for x in rules)
+                                   + "</IfModule>\n", encoding="utf-8")
     # Тестовая копия закрыта от поисковиков, sitemap.xml у неё нет. Боевой сайт (ДМ40): в sitemap.xml — только страницы без noindex
     # (не попадают /catalog/all/, 404, черновики — их нет в обычной сборке)
     if noindex:
