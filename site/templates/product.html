@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block bodyclass %}has-sticky{% endblock %}
-{% block head %}
-<script type="application/ld+json">{{ jsonld|safe }}</script>
-{% endblock %}
 {% macro acc(title, paras, open=false) %}
 <details class="acc"{% if open %} open{% endif %}><summary>{{ title }}</summary><div class="body">{% for t in paras %}<p>{{ t }}</p>{% endfor %}</div></details>
 {% endmacro %}

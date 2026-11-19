@@ -3,6 +3,7 @@
 import csv, json, os, re, shutil, sys
 from collections import defaultdict
 from pathlib import Path
+from xml.sax.saxutils import escape as xml_escape
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from markupsafe import Markup, escape
@@ -107,6 +108,76 @@ def word_preparat(n):
     return plural(n, ("препарат", "препарата", "препаратов"))
 
 
+LD_CTX = "https://schema.org"
+DAYS = {"Пн": "Monday", "Вт": "Tuesday", "Ср": "Wednesday", "Чт": "Thursday", "Пт": "Friday", "Сб": "Saturday", "Вс": "Sunday"}
+# Метки переходов из рекламы и выдачи: Яндекс не считает адреса с ними отдельными страницами
+CLEAN_PARAM = "utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&ysclid"
+
+
+def ld_dump(*objs):
+    """JSON-LD для <script>: «</» экранируется, чтобы текст не закрыл тег."""
+    return [json.dumps(o, ensure_ascii=False).replace("</", "<\\/") for o in objs if o]
+
+
+def ld_crumbs(site, trail):
+    """BreadcrumbList (ДМ40): те же звенья, что в видимых крошках, адреса — полные."""
+    return {"@context": LD_CTX, "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i, "name": n, "item": site + u} for i, (n, u) in enumerate(trail, 1)]}
+
+
+def ld_address(addr):
+    """Адрес из settings.yml («454006, Россия, Челябинская обл., г. Челябинск, ул. …») -> PostalAddress; что не разобрано — в streetAddress."""
+    parts = [x.strip() for x in addr.split(",") if x.strip()]
+    out = {"@type": "PostalAddress", "addressCountry": "RU"}
+    if parts and re.fullmatch(r"\d{6}", parts[0]):
+        out["postalCode"] = parts.pop(0)
+    if parts and parts[0] == "Россия":
+        parts.pop(0)
+    if parts and re.search(r"обл\.|область|край|республик", parts[0], re.I):
+        out["addressRegion"] = parts.pop(0)
+    if parts and parts[0].startswith("г. "):
+        out["addressLocality"] = parts.pop(0)[3:]
+    out["streetAddress"] = ", ".join(parts)
+    return out
+
+
+def ld_hours(lines):
+    """График из settings.yml -> OpeningHoursSpecification; обед делит день на два отрезка. Не разобрано — None."""
+    order, spans, lunch = list(DAYS), [], None
+    t = r"(\d{1,2}):(\d{2})"
+    def hm(h, m):
+        return f"{int(h):02d}:{m}"
+    for line in lines:
+        line = str(line).strip()
+        m = re.fullmatch(rf"({'|'.join(DAYS)})(?:\s*[–-]\s*({'|'.join(DAYS)}))?:\s*{t}\s*[–-]\s*{t}", line)
+        if m:
+            days = order[order.index(m.group(1)):order.index(m.group(2) or m.group(1)) + 1]
+            spans.append((days, hm(m.group(3), m.group(4)), hm(m.group(5), m.group(6))))
+            continue
+        m = re.fullmatch(rf"Обед:\s*{t}\s*[–-]\s*{t}", line)
+        if m:
+            lunch = (hm(m.group(1), m.group(2)), hm(m.group(3), m.group(4)))
+            continue
+        if not re.search(r"выходн", line):
+            return None
+    if not spans:
+        return None
+    out = []
+    for days, o, c in spans:
+        for a, b in ([(o, lunch[0]), (lunch[1], c)] if lunch and o < lunch[0] < lunch[1] < c else [(o, c)]):
+            out.append({"@type": "OpeningHoursSpecification", "dayOfWeek": [DAYS[d] for d in days], "opens": a, "closes": b})
+    return out
+
+
+def ld_org(s, kind="Organization", hours=None):
+    """Organization (главная) и LocalBusiness (/contacts/) — из settings.yml. Без рейтинга и отзывов (ДМ40)."""
+    o = {"@context": LD_CTX, "@type": kind, "name": s["company"], "url": s["site_url"] + "/",
+         "telephone": [tel(s["phone_office"]), tel(s["phone_mobile"])], "email": s["email"], "address": ld_address(s["address"])}
+    if hours:
+        o["openingHoursSpecification"] = hours
+    return o
+
+
 def render_send(root, s):
     """send.php с телефонами, адресом и названием из settings.yml (строки PHP в одинарных кавычках)."""
     def php(v):
@@ -199,6 +270,8 @@ def build(root=ROOT, out=None):
     prom_tile = [dict(slug=PROM_URL.strip("/").removeprefix("catalog/"), name=PROM_NAME)] if prom else []
     has_price = (content / PRICE_FILE).is_file()
     common = dict(s=s, cats=cats, noindex=noindex, prom=prom, price_file="/" + PRICE_FILE if has_price else None)
+    site = s["site_url"]
+    HOME, CATALOG = ("Главная", "/"), ("Каталог", "/catalog/")
 
     action_names = {"izbiratelnyy": {"name": "Избирательный"}, "sploshnoy": {"name": "Сплошного действия"}}
     facets = {"cat": ("Категория", "category", cat_by), "dv": ("Действующее вещество", "substances", subs),
@@ -226,8 +299,14 @@ def build(root=ROOT, out=None):
     def listing(rel, items, h1, crumb, keys, quick, title, description, lead, seo, auto=None, other_title="Другие категории каталога", other_cats=cats, crumbs=(), related=(), search_page=False):
         """Листинг по макету гербицидов: категория, подраздел, страница входа (культура, объект, ДВ) или все препараты с поиском."""
         prices_l = [p["price_num"] for p in items]
+        canonical = "/" + rel.removesuffix("index.html")
+        ld = [ld_crumbs(site, [HOME, CATALOG] + [(c["name"], c["url"]) for c in crumbs] + [(crumb, canonical)])]
+        if not search_page:  # ДМ33, ДМ40: состав и порядок — как в сетке карточек
+            ld.append({"@context": LD_CTX, "@type": "CollectionPage", "name": h1, "url": site + canonical, "description": description,
+                       "mainEntity": {"@type": "ItemList", "numberOfItems": len(items), "itemListElement": [
+                           {"@type": "ListItem", "position": i, "url": site + p["url"], "name": p["name"]} for i, p in enumerate(items, 1)]}})
         write(rel, env.get_template("listing.html").render(
-            **dict(common, noindex=noindex or search_page), search_page=search_page, title=title, description=description, canonical="/" + rel.removesuffix("index.html"), h1=h1, crumb=crumb, crumbs=list(crumbs),
+            **dict(common, noindex=noindex or search_page), search_page=search_page, title=title, description=description, canonical=canonical, h1=h1, crumb=crumb, crumbs=list(crumbs), jsonld=ld_dump(*ld),
             items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
             groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
             other_title=other_title, other_cats=other_cats, related=related))
@@ -376,10 +455,12 @@ def build(root=ROOT, out=None):
         if not groups:
             return False
         n = n or sum(len(g["tiles"]) for g in groups)  # у культур считаются и подвиды
+        canonical = "/" + rel.removesuffix("index.html")
         write(rel, env.get_template("overview.html").render(
             **common, title=f"{h1} — купить в Челябинске | Восток АгроХим",
             description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.",
-            canonical="/" + rel.removesuffix("index.html"), h1=h1, lead=lead, crumbs=list(crumbs), groups=groups,
+            canonical=canonical, h1=h1, lead=lead, crumbs=list(crumbs), groups=groups,
+            jsonld=ld_dump(ld_crumbs(site, [HOME, CATALOG] + [(c["name"], c["url"]) for c in crumbs] + [(h1, canonical)])),
             count=f"{n} {plural(n, words)}", other_cats=[c for c in cats if any(in_cat(p, c["slug"]) for p in products)]))
         return True
 
@@ -442,7 +523,7 @@ def build(root=ROOT, out=None):
     write("catalog/index.html", env.get_template("catalog.html").render(
         **common, title=f"{h1} — купить в Челябинске | Восток АгроХим",
         description=f"{lead} Отгрузка под заявку, доставка по РФ и самовывоз в Челябинске.", canonical="/catalog/",
-        h1=h1, lead=lead, count=f"{len(products)} {word_preparat(len(products))}", root_cats=root_cats,
+        h1=h1, lead=lead, count=f"{len(products)} {word_preparat(len(products))}", root_cats=root_cats, jsonld=ld_dump(ld_crumbs(site, [HOME, CATALOG])),
         blocks=[b for b in blocks if b["tiles"]]))
 
     # Карточки
@@ -460,17 +541,20 @@ def build(root=ROOT, out=None):
             if rs in by_slug:
                 q = by_slug[rs]
                 cross.append(dict(name=q["name"], url=q["url"], photo=q["photo"], img480=q["img480"], category_one=q["category_one"], dv_text=q["dv_text"]))
-        ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["description"],
+        # Offer (ДМ40): цена = видимая = prices.csv; наличие не указываем (ПИ11); рейтинга нет — отзывы не о препарате
+        ld = {"@context": LD_CTX, "@type": "Product", "name": p["name"], "description": p["description"],
               "brand": {"@type": "Brand", "name": mk[p["manufacturer"]]["name"]},
               "offers": {"@type": "Offer", "price": str(p["price_num"]), "priceCurrency": "RUB",
-                         "url": f"{s['site_url']}{p['url']}"}}
+                         "url": f"{site}{p['url']}", "seller": {"@type": "Organization", "name": s["company"]}}}
         if p["photo"]:
-            ld["image"] = f"{s['site_url']}{p['img1000']}"
+            ld["image"] = f"{site}{p['img1000']}"
+        cat = cat_by[p["category"]]
+        crumbs_p = ld_crumbs(site, [HOME, CATALOG, (cat["name"], f"/catalog/{cat['slug']}/"), (p["name"], p["url"])])
         html = env.get_template("product.html").render(
             **common, title=f"{p['name']} — купить в Челябинске | Восток АгроХим", description=p["description"],
             canonical=p["url"], p=p, category=cat_by[p["category"]], maker=mk[p["manufacturer"]], specs=specs, c=c, reg_agro=reg_agro, reg_prom=reg_prom,
             crops=[dict(crops[x], url=PROM_URL if x == PROM_LAND else f"/catalog/kultura/{x}/") for x in p["crops"]], pests=[pests[x] for x in p["pests"]], cross=cross,
-            jsonld=json.dumps(ld, ensure_ascii=False))
+            jsonld=ld_dump(crumbs_p, ld))
         write(f"catalog/{p['category']}/{p['slug']}/index.html", html)
 
     # Главная
@@ -487,13 +571,17 @@ def build(root=ROOT, out=None):
             t["href"] = fallback[t["href"]] if fallback[t["href"]] in done else "/catalog/"
     write("index.html", env.get_template("home.html").render(
         **common, title="Восток АгроХим — средства защиты растений в Челябинске", description=hp.get("description", ""),
-        canonical="/", h=hp, featured=[by_slug[x] for x in hp.get("featured", []) if x in by_slug]))
+        canonical="/", h=hp, featured=[by_slug[x] for x in hp.get("featured", []) if x in by_slug], jsonld=ld_dump(ld_org(s))))
 
     # Служебные страницы (план §2.4); макетов нет — из элементов листинга
+    hours = ld_hours(s["hours"])
+    if hours is None:
+        warnings.append("график работы в settings.yml не разобран — в разметке /contacts/ его нет")
     for slug, h1 in (("about", "О компании"), ("contacts", "Контакты"), ("comments", "Отзывы"), ("privacy-policy", "Политика обработки персональных данных")):
         page = yaml.safe_load((content / "pages" / f"{slug}.yml").read_text(encoding="utf-8"))
+        ld = [ld_crumbs(site, [HOME, (h1, f"/{slug}/")])] + ([ld_org(s, "LocalBusiness", hours)] if slug == "contacts" else [])
         write(f"{slug}/index.html", env.get_template({"privacy-policy": "privacy.html"}.get(slug, f"{slug}.html")).render(
-            **common, title=page["title"], description=page["description"], canonical=f"/{slug}/", h1=h1, lead=page.get("lead", ""), page=page))
+            **common, title=page["title"], description=page["description"], canonical=f"/{slug}/", h1=h1, lead=page.get("lead", ""), page=page, jsonld=ld_dump(*ld)))
 
     # Карта сайта (ДМ19): все собранные страницы, кроме неё самой и 404
     done = {"/" + r.removesuffix("index.html") for r in pages}
@@ -516,7 +604,8 @@ def build(root=ROOT, out=None):
     if series_links:
         sm_groups.append(dict(title="Серии препаратов", blocks=[dict(title="", url="", links=series_links)]))
     write("sitemap/index.html", env.get_template("sitemap.html").render(
-        **common, title="Карта сайта — Восток АгроХим", description="Все разделы и страницы сайта ООО «Восток АгроХим».", canonical="/sitemap/", h1="Карта сайта", lead="", groups=sm_groups))
+        **common, title="Карта сайта — Восток АгроХим", description="Все разделы и страницы сайта ООО «Восток АгроХим».", canonical="/sitemap/", h1="Карта сайта", lead="", groups=sm_groups,
+        jsonld=ld_dump(ld_crumbs(site, [HOME, ("Карта сайта", "/sitemap/")]))))
 
     # 404 отдаётся на любом адресе и в индекс не попадает; ErrorDocument — в .htaccess ниже
     write("404.html", env.get_template("404.html").render(**dict(common, noindex=True), title="Страница не найдена — Восток АгроХим"))
@@ -565,9 +654,18 @@ def build(root=ROOT, out=None):
     # Закрытая папка заявок (настройки, журнал согласий) из интернета не открывается — второй запрет, кроме её собственного
     (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n"
                                    "<IfModule mod_alias.c>\nRedirectMatch 403 ^/\\.vostok-private(/|$)\n</IfModule>\n", encoding="utf-8")
-    # Тестовая копия закрыта от поисковиков; на боевом сайте robots.txt появится на этапе 5
+    # Тестовая копия закрыта от поисковиков, sitemap.xml у неё нет. Боевой сайт (ДМ40): в sitemap.xml — только страницы без noindex
+    # (не попадают /catalog/all/, 404, черновики — их нет в обычной сборке)
     if noindex:
         (out / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
+    else:
+        locs = []
+        for rel in sorted(pages, key=lambda r: (r != "index.html", r)):
+            if 'name="robots" content="noindex' not in (out / rel).read_text(encoding="utf-8"):
+                locs.append(f"  <url><loc>{xml_escape(site + '/' + rel.removesuffix('index.html'))}</loc></url>\n")
+        (out / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                                         + "".join(locs) + "</urlset>\n", encoding="utf-8")
+        (out / "robots.txt").write_text(f"User-agent: *\nDisallow: /send.php\nClean-param: {CLEAN_PARAM} /\n\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
     return out, warnings
 
 

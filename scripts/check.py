@@ -3,7 +3,7 @@
 --staging: дополнительно проверить, что тестовая копия закрыта от индексации.
 --release: боевой сайт — картинки только с правом использования (журнал ДЗ09, статус «разрешено» или «своё»).
 Кроме собранных страниц проверяются исходные SEO-тексты content/seo (правило 4: названия препаратов — по таблице связей)."""
-import csv, json, re, sys
+import csv, html, json, re, sys
 from pathlib import Path
 
 import yaml
@@ -278,6 +278,134 @@ def check_related(path, text):
     return errs
 
 
+CLOSED = ("404.html", "catalog/all/index.html")  # закрыты от поиска всегда (ДМ38), в том числе на тестовой копии
+NOINDEX = 'name="robots" content="noindex'
+
+
+def ld_blocks(text):
+    out = []
+    for m in LD.finditer(text):
+        try:
+            out.append(json.loads(m.group(1)))
+        except ValueError:
+            pass  # о нечитаемой разметке сообщает check_file
+    return out
+
+
+def ld_has(obj, keys):
+    """Есть ли где-нибудь в разметке ключ из keys (рейтинг, отзывы)."""
+    if isinstance(obj, dict):
+        return any(k in keys for k in obj) or any(ld_has(v, keys) for v in obj.values())
+    return isinstance(obj, list) and any(ld_has(v, keys) for v in obj)
+
+
+def tag_text(s):
+    return " ".join(html.unescape(re.sub(r"<[^>]+>", "", s)).replace("\xad", "").split())
+
+
+def check_markup(d, staging=False):
+    """SEO-минимум (план §5, ДМ40): у страниц, открытых для поиска, свои title и description, canonical на себя, есть в sitemap.xml;
+    разметка читается и совпадает с видимым: крошки, сетка листинга, цена; Organization на главной, LocalBusiness на /contacts/; рейтинга нет.
+    sitemap.xml и robots.txt боевого сайта: только открытые страницы, ничего открытого не закрыто."""
+    d, errs = Path(d), []
+    site = yaml.safe_load((ROOT / "data" / "settings.yml").read_text(encoding="utf-8"))["site_url"]
+    prices = {r["slug"]: r["price"] for r in read_csv(ROOT / "data" / "prices.csv")}
+    seen = {"title": {}, "description": {}}
+    open_urls = set()
+    for f in sorted(d.rglob("*.html")):
+        rel = f.relative_to(d).as_posix()
+        url = "/" + rel.removesuffix("index.html")
+        text = f.read_text(encoding="utf-8")
+        lds = ld_blocks(text)
+        for ld in lds:
+            if ld.get("@context") != "https://schema.org":
+                errs.append(f"{rel}: в разметке нет @context https://schema.org")
+            if ld_has(ld, ("aggregateRating", "review", "reviewRating")):
+                errs.append(f"{rel}: рейтинг или отзывы в разметке — не ставим (ДМ40)")
+        if rel in CLOSED or (not staging and NOINDEX in text):
+            continue
+        open_urls.add(url)
+        head = text.split("</head>")[0]
+        for key, pat in (("title", r"<title>(.*?)</title>"), ("description", r'<meta name="description" content="([^"]*)"')):
+            m = re.search(pat, head, re.S)
+            val = html.unescape(m.group(1)).strip() if m else ""
+            if not val:
+                errs.append(f"{rel}: нет {key} (SEO-минимум)")
+            elif val in seen[key]:
+                errs.append(f"{rel}: {key} повторяется — такой же у {seen[key][val]} (SEO-минимум)")
+            else:
+                seen[key][val] = rel
+        m = re.search(r'<link rel="canonical" href="([^"]*)"', head)
+        if not m or m.group(1) != site + url:
+            errs.append(f"{rel}: canonical не на себя ({m.group(1) if m else 'нет'}, нужен {site + url})")
+        types = {ld.get("@type"): ld for ld in lds}
+        # Крошки: на всех страницах, кроме главной; звенья разметки = видимые звенья
+        if url != "/":
+            crumbs = re.search(r'<div class="crumbs">(.*?)</div>', text, re.S)
+            bc = types.get("BreadcrumbList")
+            if not crumbs or not bc:
+                errs.append(f"{rel}: нет хлебных крошек или разметки BreadcrumbList (ДМ40)")
+            else:
+                vis = [(tag_text(n), site + h) for h, n in re.findall(r'<a href="([^"]*)">(.*?)</a>', crumbs.group(1))]
+                cur = re.search(r'<span class="cur">(.*?)</span>', crumbs.group(1))
+                vis.append((tag_text(cur.group(1)) if cur else "", site + url))
+                got = [(x.get("name"), x.get("item")) for x in bc.get("itemListElement", [])]
+                if got != vis or [x.get("position") for x in bc.get("itemListElement", [])] != list(range(1, len(got) + 1)):
+                    errs.append(f"{rel}: BreadcrumbList не совпадает с видимыми крошками (ДМ40)")
+        # Листинг: CollectionPage + ItemList в порядке сетки
+        cards = re.findall(r'<a class="card" href="([^"]+)" data-name=', text)  # сетка листинга; «Смотрите также» в карточке — без data-name
+        if cards:
+            cp = types.get("CollectionPage")
+            il = cp.get("mainEntity", {}) if cp else {}
+            urls = [x.get("url") for x in il.get("itemListElement", [])] if isinstance(il, dict) else []
+            if not cp or il.get("@type") != "ItemList":
+                errs.append(f"{rel}: листинг без разметки CollectionPage/ItemList (ДМ33, ДМ40)")
+            elif urls != [site + c for c in cards] or il.get("numberOfItems") != len(cards):
+                errs.append(f"{rel}: ItemList не совпадает с карточками листинга (ДМ33)")
+        if url == "/" and not {"name", "url", "telephone", "address"} <= set(types.get("Organization", {})):
+            errs.append(f"{rel}: на главной нет разметки Organization с названием, адресом и телефоном (ДМ40)")
+        if url == "/contacts/" and not {"name", "telephone", "address"} <= set(types.get("LocalBusiness", {})):
+            errs.append(f"{rel}: на /contacts/ нет разметки LocalBusiness с названием, адресом и телефоном (ДМ40)")
+        prod = types.get("Product")
+        if prod:
+            offer = prod.get("offers") or {}
+            slug = url.strip("/").split("/")[-1]
+            if offer.get("@type") != "Offer" or offer.get("priceCurrency") != "RUB":
+                errs.append(f"{rel}: в Product нет Offer в рублях (ДМ40)")
+            if offer.get("url") != site + url:
+                errs.append(f"{rel}: адрес в Offer не равен адресу карточки")
+            if slug not in prices or str(offer.get("price")) != str(int(float(prices[slug]))):
+                errs.append(f"{rel}: цена в Offer не из prices.csv ({offer.get('price')} и {prices.get(slug, 'нет')})")
+    if staging:
+        return errs
+    # sitemap.xml и robots.txt боевого сайта
+    sm = d / "sitemap.xml"
+    if not sm.is_file():
+        errs.append(f"{d}: нет sitemap.xml (ДМ40)")
+    else:
+        locs = re.findall(r"<loc>(.*?)</loc>", sm.read_text(encoding="utf-8"))
+        paths = {html.unescape(x).removeprefix(site) for x in locs}
+        for x in locs:
+            if not x.startswith(site + "/") or x.removeprefix(site) not in open_urls:
+                errs.append(f"sitemap.xml: {x} — закрытая от поиска или несуществующая страница (ДМ40)")
+        for u in sorted(open_urls - paths):
+            errs.append(f"sitemap.xml: нет открытой страницы {u} (SEO-минимум)")
+        if len(locs) != len(set(locs)):
+            errs.append("sitemap.xml: адрес повторяется")
+    rb = d / "robots.txt"
+    rt = rb.read_text(encoding="utf-8") if rb.is_file() else ""
+    if not rt:
+        errs.append(f"{d}: нет robots.txt боевого сайта (ДМ40)")
+    else:
+        if f"Sitemap: {site}/sitemap.xml" not in rt.splitlines():
+            errs.append("robots.txt: нет строки Sitemap со ссылкой на sitemap.xml (ДМ40)")
+        for rule in re.findall(r"(?im)^Disallow:\s*(\S+)", rt):
+            hit = sorted(u for u in open_urls if u.startswith(rule.replace("*", "")))
+            if hit:
+                errs.append(f"robots.txt: Disallow {rule} закрывает открытые страницы ({hit[0]}…)")
+    return errs
+
+
 def read_journal(path):
     with open(path, encoding="utf-8", newline="") as fh:
         return {r["file"]: r for r in csv.DictReader(fh)}
@@ -324,7 +452,7 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
-    errs += check_service(d, release) + check_css(d) + check_search(d) + check_send(d, has_form)
+    errs += check_service(d, release) + check_css(d) + check_search(d) + check_send(d, has_form) + check_markup(d, staging)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -462,6 +590,10 @@ def selftest():
                 "нет обязательной страницы about", "отменённые страницы /return-policy/", "препарата нет в каталоге", "в политике нет раздела", "недопустимое в отзыве", "sitemap: нет ссылки", "404 не настроена", "404.html: страница не закрыта", "нет файла прайса",
                 "колонка .shell растягивается", "длинное слово в заголовке", "крошки не переносятся", "нижняя кнопка на главной", "нет телефонов в первом экране",
                 "нет обязательной страницы catalog/all", "нет значка или поля поиска", "в шапке нет номера телефона", "в индексе поиска цена", "индекс ведёт на несобранную страницу",
+                "нет title", "title повторяется", "description повторяется", "canonical не на себя", "нет @context", "рейтинг или отзывы в разметке",
+                "нет хлебных крошек или разметки BreadcrumbList", "BreadcrumbList не совпадает", "ItemList не совпадает", "нет разметки Organization", "нет разметки LocalBusiness",
+                "нет Offer в рублях", "адрес в Offer не равен", "цена в Offer не из prices.csv", "закрытая от поиска или несуществующая", "sitemap.xml: нет открытой страницы",
+                "нет строки Sitemap", "закрывает открытые страницы",
                 "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
