@@ -2,7 +2,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X"></script></head><body>
 <!-- Метрика: счётчик прямо в странице (до «Принять») и на тестовой копии -->
-<div class="cookie" id="cookie" data-ym="21446467"></div>
+<div class="cookie" id="cookie" data-ym="21446467">
+  <div>Сайт использует cookie.</div>
+  <div class="acts"><button type="button">Принять</button><button type="button">Отказаться</button></div>
+</div>
+<!-- правовой аудит (этап 7): стоп-слова ДЗ04 в тексте и alt, разрешённый контекст, сегментация, возрастной знак, подвал без реквизитов, согласие без цели, нет ДЗ10 -->
+<p>Щадящее действие, экологичный препарат, полная защита всходов. Только для профессионалов, 18+.</p>
+<img src="/static/img/products/balerina-se-480.webp" alt="Безвредный гербицид">
+<p>Срок безопасного выхода людей — 3 дня. Меры безопасности при работе. Класс опасности для пчёл — 3 (малоопасный).</p>
+<footer class="site-footer"><span>ООО «Восток АгроХим»</span><span>ИНН 0000000000</span></footer>
 <script>ym(21446467, 'init', {webvisor: true});</script>
 <p>Мы — прямые дистрибьюторы. Гарантия производителя на всю реализуемую продукцию.</p>
 <p>Продолжая использовать сайт, вы соглашаетесь. В наличии. Щёлково Агрохим.</p>
@@ -10,7 +18,7 @@
 <img src="/static/img/products/net-v-zhurnale-480.webp" alt="x"><img src="/static/img/products/strannyy-480.webp" alt="x"><img src="/static/img/products/zhdet-1000.webp" alt="x">
 <form><input type="checkbox" name="consent" checked></form>
 <!-- форма заявки: не в send.php, нет скрытых полей, ловушки, телефона при сбое и после успеха; send.php в папке нет -->
-<form class="modal" action="/lead" id="lead-form"><input type="hidden" name="product" value=""><p>для обработки заявки</p></form>
+<form class="modal" action="/lead" id="lead-form"><input type="hidden" name="product" value=""><p>для обработки заявки</p><label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку данных и получение рассылки.</span></label></form>
 <div class="modal" id="lead-done" hidden><p>Заявка принята.</p></div>
 <a href="/catalog/gerbitsidy/net-takogo/">нет такой</a>
 <a href="/catalog/kultura/net-takoy/">нет такой культуры</a>

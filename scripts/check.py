@@ -40,10 +40,31 @@ RELEASE_OK = {"разрешено", "своё"}
 REQUIRED = ("catalog/all/index.html", "about/index.html", "contacts/index.html", "comments/index.html", "privacy-policy/index.html", "sitemap/index.html", "404.html")  # план §2.4
 PRICE_FILE = "files/prays-list.pdf"  # П07
 # Политика (чек-лист D, ДЗ08): без этих разделов страница не проходит
-POLICY_MUST = ("Оператор персональных данных", "Цели обработки", "Правовые основания", "хранятся", "Ваши права", "Отозвать согласие", "cookie", "Яндекс.Метрика", "Редакция от")
+POLICY_MUST = ("Оператор персональных данных", "ИНН", "Какие данные обрабатываются", "Цели обработки", "Правовые основания", "хранятся", "Ваши права", "Отозвать согласие", "10 рабочих дней", "Кому передаются", "cookie", "Яндекс.Метрика", "Редакция от")
 # Отзывы (ДЗ04, ДЗ06, B.9): стоп-слова, непроверяемые обещания, упоминание физлиц. Имён авторов здесь нет намеренно — это персональные данные
 COMMENTS_OFF = r"безопасн|безвредн|экологичн|100\s*%|гарантированн|физлиц|физическ\w+ лиц|частн\w+ лиц"
 LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+# Стоп-слова 109-ФЗ ст. 17 и 38-ФЗ ст. 5 ч. 3 (ДЗ04, чек-лист A.1, C): по тексту страниц, alt, title, meta, подписям и по исходным текстам,
+# включая черновики. Разрешённые контексты — только в scripts/stopwords-allow.txt
+LEGAL_STOP = [
+    (r"безопас(?:н|ен)\w*", "«безопасный» о препарате"), (r"безвред(?:н|ен)\w*", "«безвредный»"), (r"\bне\s*токсич(?:н|ен)\w*", "«нетоксичный»"),
+    (r"экологичн\w*|экологически\s+(?:безопасн|чист)\w*|\bэко[-\s]\w*|экочист\w*", "«экологичный», «эко-»"), (r"биобезопасн\w*", "«биобезопасный»"),
+    (r"щадящ\w*", "«щадящий»"), (r"мягк\w*\s+(?:действ|препарат|для)\w*", "«мягкий» о действии препарата"),
+    (r"натуральн\w*", "«натуральный» о препарате"), (r"природн\w*", "«природный» о препарате"),
+    (r"без\s+(?:вреда|ущерб\w*|побочн\w*|последстви\w*)", "«без вреда / последствий»"), (r"не\s+наносит\s+вред\w*|не\s+вредит", "«не наносит вреда»"),
+    (r"малоопас(?:н|ен)\w*|малотоксич(?:н|ен)\w*","«малоопасный» вне классификации в скобках"),
+    (r"полностью\s+защищ\w*|полн\w*\s+защит\w*|100\s*%", "обещание полной защиты (38-ФЗ)"),
+    (r"гарантир\w*\s+(?:результат|эффект|защит)\w*|гарантированн\w*", "гарантия результата (38-ФЗ)"),
+    (r"моментальн\w*\s+гибел\w*", "«моментальная гибель» (38-ФЗ)"), (r"без\s+ограничений\s+по\s+стади\w*", "«без ограничений по стадиям»"),
+]
+ALLOW_FILE = ROOT / "scripts" / "stopwords-allow.txt"
+# Сегментация покупателей (ДЗ05, НР13, чек-лист B.5, B.6, B.9): ни ярлыков, ни противопоставления физ/юр, опт/розница. Политика — вне правила
+SEGMENT = r"физлиц\w*|физическ\w+\s+лиц\w*|юрлиц\w*|юридическ\w+\s+лиц\w*|только\s+для\s+профессионал\w*|оптов\w+\s+(?:покупател|клиент)\w*|розничн\w+\s+(?:покупател|клиент)\w*|\b(?:0|6|12|16|18)\+"
+# Карточка (решение Прутяна 24.08.2026, ДЗ05, П10): ровно эти 7 характеристик; регномер, свидетельство и ДОПОГ не публикуются
+SPECS7 = ("Действующее вещество", "Форма препарата", "Тип применения", "Способ проникновения", "Класс опасности для человека", "Класс опасности для пчёл", "Фитотоксичность")
+CARD_OFF = r"\d{3}-\d{2}-\d{3,5}-\d|свидетельств\w*\s+о\s+(?:гос\w*\s+)?регистрац\w*|регистрационн\w+\s+номер|допог|\badr\b|номер\s+оон|\bun\s?\d{4}\b"
+GUARANTEE = "Гарантия качества и происхождения от производителя на всю продукцию."  # ДЗ10
+EXCLUDED = ("Ректор", "Альфацин", "Лазурит Ультра", "Лигногумат", "Тиара", "Лемур", "Шаман")  # У02–У06, У08
 # Названия, которых не должно быть в SEO-текстах: исключённые из каталога и встречавшиеся в волнах, но не продаваемые
 SEO_OFF = {"Ректор": "исключён (У02)", "Альфацин": "исключён (У03)", "Лазурит Ультра": "исключён (У04)",
            "Лигногумат": "исключён (У05)", "Тиара": "исключена (У06)", "Лемур": "исключён до новой регистрации (У08)",
@@ -144,6 +165,120 @@ def check_lead(path, text):
     return errs
 
 
+def read_allow(path=ALLOW_FILE):
+    lines = path.read_text(encoding="utf-8").splitlines() if path.is_file() else []
+    return [re.compile(x.strip()) for x in lines if x.strip() and not x.lstrip().startswith("#")]
+
+
+def strings(o):
+    if isinstance(o, dict):
+        for v in o.values(): yield from strings(v)
+    elif isinstance(o, list):
+        for v in o: yield from strings(v)
+    elif isinstance(o, str):
+        yield o
+
+
+def page_words(text):
+    """Всё, что видит посетитель или поисковик: текст, alt, title, aria-label, placeholder, meta и строки разметки ld+json (ДЗ04, чек-лист C)."""
+    ld = []
+    for m in LD.finditer(text):
+        try:
+            ld += strings(json.loads(m.group(1)))
+        except ValueError:
+            pass
+    t = re.sub(r"<(script|style)\b.*?</\1>", " ", text, flags=re.S | re.I)
+    attrs = re.findall(r'\b(?:alt|title|aria-label|placeholder|content)\s*=\s*"([^"]*)"', t, re.I)
+    return html.unescape(" ".join([re.sub(r"<[^>]+>", " ", t)] + attrs + ld))
+
+
+def stop_hits(where, text, allow):
+    """Стоп-слова ДЗ04 вне разрешённых контекстов: по одному сообщению на найденный оборот."""
+    low = text.lower()
+    for a in allow:
+        low = a.sub(" ", low)
+    errs = []
+    for pat, why in LEGAL_STOP:
+        for m in re.finditer(pat, low):
+            ctx = re.sub(r"\s+", " ", low[max(0, m.start() - 40):m.end() + 40]).strip()
+            errs.append(f"{where}: {why} — «…{ctx}…» (ДЗ04)")
+    return list(dict.fromkeys(errs))
+
+
+def check_legal(path, text, allow, s):
+    """Правовой аудит страницы (этап 7, чек-лист A–D): стоп-слова, сегментация, подвал, окно cookie, согласие, ДЗ10, карточка."""
+    rel = Path(path).as_posix()
+    words = page_words(text)
+    errs = stop_hits(rel, words, allow)
+    if not rel.startswith("privacy-policy/"):
+        for m in sorted(set(x.group(0) for x in re.finditer(SEGMENT, words.lower()))):
+            errs.append(f"{rel}: «{m}» — сегментация покупателей или возрастной знак (ДЗ05, НР13, НР15)")
+    foot = re.search(r"<footer\b.*?</footer>", text, re.S)
+    if not foot:
+        errs.append(f"{rel}: нет подвала с реквизитами (чек-лист B.1)")
+    else:
+        ft = html.unescape(re.sub(r"<[^>]+>", " ", foot.group(0)))
+        ft = re.sub(r"\s+", " ", ft)
+        lg = s["legal"]
+        for must in (s["company"], f"ИНН {lg['inn']}", f"КПП {lg['kpp']}", f"ОГРН {lg['ogrn']}", f"Оператор персональных данных № {lg['pd_operator']}",
+                     s["address"], s["email"], f"© {s['company']}"):
+            if must not in ft:
+                errs.append(f"{rel}: в подвале нет «{must}» (чек-лист B.1, ДЗ03)")
+        if 'href="/privacy-policy/"' not in foot.group(0):
+            errs.append(f"{rel}: в подвале нет ссылки на Политику (ДЗ01)")
+    ck = re.search(r'<div[^>]*\bid="cookie"[^>]*>(.*?)</div>\s*</div>', text, re.S)
+    buttons = re.findall(r"<button\b[^>]*>(.*?)</button>", ck.group(1), re.S) if ck else []
+    if [b.strip() for b in buttons] != ["Принять"]:
+        errs.append(f"{rel}: в окне cookie не одна кнопка «Принять» (ДЗ08)")
+    if not ck or 'href="/privacy-policy/"' not in ck.group(1):
+        errs.append(f"{rel}: в окне cookie нет ссылки на Политику (ДЗ08)")
+    form = re.search(r'<form\b[^>]*\bid="lead-form"[^>]*>(.*?)</form>', text, re.S)
+    if form:
+        boxes = re.findall(r'<input\b[^>]*type="checkbox"[^>]*>', form.group(1))
+        lab = re.search(r'<label class="consent">(.*?)</label>', form.group(1), re.S)
+        if len(boxes) != 1 or not lab:
+            errs.append(f"{rel}: в форме заявки не одна отдельная галочка согласия (ДЗ07 п. 1)")
+        elif not re.search(r"согласие на обработку персональных данных для \w+", lab.group(1)) or 'href="/privacy-policy/"' not in lab.group(1):
+            errs.append(f"{rel}: в подписи согласия нет цели обработки или ссылки на Политику (ДЗ07 п. 3)")
+        elif re.search(r"рассылк|оферт|услови\w+ работ", lab.group(1), re.I):
+            errs.append(f"{rel}: согласие смешано с рассылкой или условиями (ДЗ07 п. 1)")
+    if rel == "index.html" and GUARANTEE not in text:
+        errs.append(f"{rel}: в блоке «Производители» нет «{GUARANTEE}» (ДЗ10)")
+    if any('"@type": "Product"' in m or '"@type":"Product"' in m for m in LD.findall(text)):
+        mob = re.search(r"<summary>Характеристики препарата</summary>(.*?)</details>", text, re.S)
+        dts = re.findall(r"<dt>(.*?)</dt>", mob.group(1)) if mob else []
+        # Пустое поле не выводится (фитотоксичность — только при утверждении производителя), лишних и переставленных быть не может
+        if tuple(dts) != tuple(k for k in SPECS7 if k in dts) or set(re.findall(r'<div class="spec"><dt>(.*?)</dt>', text)) != set(dts):
+            errs.append(f"{rel}: в карточке характеристики не из списка семи или не по порядку (решение 24.08.2026)")
+        for k, v in re.findall(r'<div class="spec"><dt>(.*?)</dt><dd>(.*?)</dd>', text):
+            if k.startswith("Класс опасности") and not re.match(r"[1-4]\b", v):
+                errs.append(f"{rel}: «{k}» — не класс 1–4 (ДЗ05, ОВ41)")
+        for m in sorted(set(x.group(0) for x in re.finditer(CARD_OFF, words.lower()))):
+            errs.append(f"{rel}: в карточке «{m}» — регномер, свидетельство и ДОПОГ не публикуются (ДЗ05)")
+        h1 = re.search(r'<h1 class="p-title">(.*?)</h1>', text)
+        if h1 and h1.group(1).startswith(EXCLUDED):
+            errs.append(f"{rel}: карточка исключённого препарата {h1.group(1)} (У02–У06, У08)")
+    return list(dict.fromkeys(errs))
+
+
+def check_legal_sources(root=ROOT):
+    """Стоп-слова ДЗ04 и сегментация в исходных текстах, включая черновики: чтобы нарушение не всплыло при публикации."""
+    root, allow, errs = Path(root), read_allow(), []
+    for f in sorted((root / "content").rglob("*.yml")):
+        rel = f.relative_to(root).as_posix()
+        text = "\n".join(strings(yaml.safe_load(f.read_text(encoding="utf-8"))))
+        errs += stop_hits(rel, text, allow)
+        if f.stem != "privacy-policy":
+            for m in sorted(set(x.group(0) for x in re.finditer(SEGMENT, text.lower()))):
+                errs.append(f"{rel}: «{m}» — сегментация покупателей или возрастной знак (ДЗ05, НР13, НР15)")
+    pf = root / "data" / "products.csv"
+    if pf.is_file():
+        for p in read_csv(pf):
+            text = "\n".join(p.get(k, "") for k in ("name", "description", "drug_type", "phytotox", "action_character", "dv_text"))
+            errs += stop_hits(f"products.csv: {p['slug']}", text, allow)
+    return errs
+
+
 def check_send(d, has_form):
     """send.php (этап 4): есть, если на сайте форма; согласие проверяется на сервере; нет пароля и неподставленных значений."""
     f = Path(d) / "send.php"
@@ -190,6 +325,8 @@ def check_service(d, release):
         body = re.search(r"<main.*?</main>", f.read_text(encoding="utf-8"), re.S)
         for m in re.finditer(COMMENTS_OFF, body.group(0).lower() if body else "", re.I):
             errs.append(f"comments: недопустимое в отзыве «{m.group(0)}» (ДЗ04, ДЗ06, B.9)")
+        if not body or not re.search(r"снять.{0,80}vostokxim@mail\.ru", body.group(0), re.S):
+            errs.append("comments: нет способа попросить снять отзыв (ДЗ06 п. 5)")
     f = d / "sitemap" / "index.html"
     if f.is_file():
         linked = set(HREF.findall(re.search(r"<main.*?</main>", f.read_text(encoding="utf-8"), re.S).group(0)))
@@ -523,12 +660,14 @@ def check_metrika(d, staging=False, release=False):
 def check_dir(d, staging=False, release=False, journal=JOURNAL):
     errs, n, has_form = [], 0, False
     jr = read_journal(journal)
+    allow, s = read_allow(), yaml.safe_load((ROOT / "data" / "settings.yml").read_text(encoding="utf-8"))
     for f in sorted(Path(d).rglob("*.html")):
         n += 1
         text = f.read_text(encoding="utf-8")
         has_form = has_form or 'id="lead-form"' in text
         errs += check_file(f.relative_to(d), text, Path(d))
         errs += check_images(f.relative_to(d), text, jr, release)
+        errs += check_legal(f.relative_to(d), text, allow, s)
         if re.search(r'class="sep">·</span>(?!<wbr>)', text):
             errs.append(f"{f.relative_to(d)}: крошки не переносятся — после разделителя нужен <wbr>")
         if staging and 'name="robots" content="noindex' not in text:
@@ -663,7 +802,8 @@ def selftest():
     bad, _ = check_dir(ROOT / "tests" / "bad", staging=True, journal=ROOT / "tests" / "image-sources.csv")
     bad += check_dir(ROOT / "tests" / "bad", release=True, journal=ROOT / "tests" / "image-sources.csv")[0]
     seo = check_seo(ROOT / "tests" / "seo")
-    bad += seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo") + check_send(ROOT / "tests" / "send-bad", True)
+    legal = check_legal_sources(ROOT / "tests" / "seo")
+    bad += legal + seo + check_prom(ROOT / "tests" / "seo") + check_term(ROOT / "tests" / "seo") + check_send(ROOT / "tests" / "send-bad", True)
     bad += check_redirects(ROOT / "tests" / "bad", ROOT / "tests" / "seo" / "data" / "redirects.csv", release=True)
     expected = ["не записана в журнал", "неизвестный статус", "без права использования", "Прямые дистрибьюторы", "гарантии", "cookie", "Щёлково", "наличия", "чужому серверу", "заранее", "не обязательна", "без alt", "GA4", "цена на странице", "битая ссылка /catalog/gerbitsidy/", "битая ссылка /catalog/kultura/", "битая ссылка /catalog/vrednyy-obekt/vrediteli/", "битая ссылка /catalog/seriya/", "не открывает форму заявки", "нет поля territory", "фильтр вместо ссылки", "нет галочки в боковой панели", "«Категория» с одним значением",
                 "«Упаковка» с одним значением", "развёрнута, а должна быть под кнопкой", "под кнопкой «Ещё фильтры», а должна быть развёрнута", "не то число групп", "только на листинге категории", "не на месте", "повторяет быстрый вход", "не совпадает с отбором", "balerina-se — тип применения расходится", "miura-ke — тип применения расходится",
@@ -681,8 +821,15 @@ def selftest():
                 "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
                 "цель переадресации /catalog/net-takoy/ не существует", "цепочка переадресаций ^/", "закрывает собранную страницу", "старый адрес /products/ повторяется", "redirects.csv: цепочка", "адрес не с «/»", "не подключена",
                 "счётчик Метрики в коде страницы", "на тестовой копии подключён счётчик", "нет номера счётчика Метрики", "Вебвизор не выключен", "не по кнопке «Принять»", "нет цели lead_sent", "без trackLinks",
+                "«безопасный» о препарате — «…препарат безопасен", "«натуральный» о препарате", "гарантия результата", "legal-bad.yml: «физлицам»",
+                "«щадящий»", "«экологичный»", "обещание полной защиты", "«безвредный»", "«только для профессионалов»", "«18+»", "в подвале нет «ИНН 7447186421»",
+                "в подвале нет ссылки на Политику", "не одна кнопка «Принять»", "в окне cookie нет ссылки", "нет цели обработки или ссылки на Политику", "нет «Гарантия качества",
+                "карточка исключённого препарата Шаман", "не из списка семи", "не класс 1–4", "«109-03-3245-1»", "«допог»", "«un 3082»", "нет подвала с реквизитами",
+                "comments: нет способа попросить снять отзыв", "в политике нет раздела «10 рабочих дней»",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
+    if any(w in x for x in legal + bad for w in ("безопасного выхода", "обезвред", "(малоопасный)", "природные гормоны")):
+        missing.append("ложное срабатывание на разрешённый контекст ДЗ04")
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение
         missing.append("ложное срабатывание на Балерину (связь через «пшеницу»)")
     if not any(x.endswith("битая ссылка /catalog/") for x in bad):  # корень каталога без исключения
@@ -699,7 +846,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     d = Path(args[0]) if args else ROOT / "dist"
     errs, n = check_dir(d, staging="--staging" in sys.argv, release="--release" in sys.argv)
-    errs += check_seo() + check_prom() + check_term() + check_redirects(d, release="--release" in sys.argv)
+    errs += check_seo() + check_prom() + check_term() + check_legal_sources() + check_redirects(d, release="--release" in sys.argv)
     for e in errs: print("✗", e)
     print(f"Проверено страниц: {n}, нарушений: {len(errs)}")
     sys.exit(1 if errs else 0)
