@@ -1,5 +1,6 @@
 /* Общие скрипты: заявка, «наверх», фото на карточке. Без внешних библиотек. */
 (function () {
+  var goal = function () {};  // цель Метрики; работает только после «Принять» (ниже)
   var lead = document.getElementById('lead');
   var form = document.getElementById('lead-form');
   var done = document.getElementById('lead-done');
@@ -54,6 +55,7 @@
       }).then(function (j) {
         if (!j.ok) { fail(j.status); return; }
         form.reset(); form.hidden = true; done.hidden = false;
+        goal('lead_sent');
       }).catch(function () { fail(); }).then(sync);
     });
   }
@@ -116,17 +118,39 @@
     regTabs.querySelector('[role=tablist]').hidden = false;
     pick(tabs[0]);
   }
-  // Окно про cookie. Статистика (Метрика) подключается только после «Принять»; сейчас подключения нет.
+  // Окно про cookie и Яндекс.Метрика (ДЗ08, ДМ40 п. 5). Счётчик загружается только после «Принять»
+  // (сейчас или при прошлом визите). Вебвизор выключен: он записывает ввод имени и телефона. Карта кликов — можно.
   var ck = document.getElementById('cookie');
+  var ymId = ck && ck.getAttribute('data-ym');
+  var ymOn = false;
+  function startYm() {
+    if (!ymId || ymOn) return;
+    ymOn = true;
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t); a = e.getElementsByTagName(t)[0]; k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+    window.ym(+ymId, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: false });
+  }
+  goal = function (name) { if (ymOn) window.ym(+ymId, 'reachGoal', name); };
   if (ck) {
     var saved = null;
     try { saved = localStorage.getItem('cookie-choice'); } catch (e) {}
-    if (!saved) ck.classList.add('on');
+    if (saved === 'yes') startYm();
+    else if (!saved) ck.classList.add('on');
     ck.querySelectorAll('[data-cookie]').forEach(function (b) {
       b.addEventListener('click', function () {
-        try { localStorage.setItem('cookie-choice', b.getAttribute('data-cookie')); } catch (e) {}
+        var v = b.getAttribute('data-cookie');
+        try { localStorage.setItem('cookie-choice', v); } catch (e) {}
         ck.classList.remove('on');
+        if (v === 'yes') startYm();
       });
     });
   }
+  // Цели: клик по телефону и по почте (заявка — после ответа send.php, выше)
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+    if (a) goal(a.getAttribute('href').indexOf('tel:') === 0 ? 'phone_click' : 'email_click');
+  });
 })();

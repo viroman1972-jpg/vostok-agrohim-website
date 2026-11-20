@@ -481,6 +481,43 @@ def check_redirects(d, table=ROOT / "data" / "redirects.csv", release=False):
     return errs
 
 
+YM_GOALS = ("lead_sent", "phone_click", "email_click")  # ДМ40 п. 5; те же идентификаторы — в целях счётчика
+
+
+def check_metrika(d, staging=False, release=False):
+    """Метрика (ДМ40 п. 5, ДЗ08): номер счётчика на каждой странице боевой сборки, на тестовой копии — нет;
+    в самой странице счётчика нет (иначе он загрузится до «Принять»); site.js грузит его только после «Принять»,
+    без Вебвизора, с тремя целями."""
+    d, errs, ids = Path(d), [], set()
+    for f in sorted(d.rglob("*.html")):
+        text = f.read_text(encoding="utf-8")
+        m = re.search(r'id="cookie"[^>]*\bdata-ym="(\d*)"', text)
+        if m:
+            ids.add(m.group(1))
+        elif release:
+            errs.append(f"{f.relative_to(d)}: нет номера счётчика Метрики (data-ym)")
+        if re.search(r"mc\.yandex\.ru|metrika/tag\.js|\bym\(", text):
+            errs.append(f"{f.relative_to(d)}: счётчик Метрики в коде страницы — загрузится до «Принять» (ДЗ08)")
+    if staging and ids:
+        errs.append(f"{d}: на тестовой копии подключён счётчик Метрики — тестовые визиты попадут в статистику")
+    if len(ids) > 1:
+        errs.append(f"{d}: на страницах разные номера счётчика: {', '.join(sorted(ids))}")
+    js = d / "static" / "site.js"
+    if ids and js.is_file():
+        code = js.read_text(encoding="utf-8")
+        if re.search(r"webvisor\s*:\s*true", code) or not re.search(r"webvisor\s*:\s*false", code):
+            errs.append("site.js: Вебвизор не выключен явно (ДМ40 п. 5)")
+        start = re.search(r"function startYm\(\)\s*\{(.*?)\n  \}", code, re.S)
+        if not start or "tag.js" not in start.group(1) or code.count("tag.js") != 1:
+            errs.append("site.js: счётчик загружается не только из startYm()")
+        if not re.search(r"if \(v === 'yes'\) startYm\(\)", code) or not re.search(r"if \(saved === 'yes'\) startYm\(\)", code):
+            errs.append("site.js: счётчик загружается не по кнопке «Принять» (ДЗ08)")
+        for g in YM_GOALS:
+            if f"'{g}'" not in code:
+                errs.append(f"site.js: нет цели {g} (ДМ40 п. 5)")
+    return errs
+
+
 def check_dir(d, staging=False, release=False, journal=JOURNAL):
     errs, n, has_form = [], 0, False
     jr = read_journal(journal)
@@ -496,7 +533,7 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
             errs.append(f"{f.relative_to(d)}: тестовая копия не закрыта от индексации (нет noindex)")
     if n == 0:
         errs.append(f"{d}: нет ни одной html-страницы")
-    errs += check_service(d, release) + check_css(d) + check_search(d) + check_send(d, has_form) + check_markup(d, staging)
+    errs += check_service(d, release) + check_css(d) + check_search(d) + check_send(d, has_form) + check_markup(d, staging) + check_metrika(d, staging, release)
     if staging and "Disallow: /\n" not in ((Path(d) / "robots.txt").read_text(encoding="utf-8") if (Path(d) / "robots.txt").is_file() else ""):
         errs.append(f"{d}: тестовая копия без robots.txt с запретом индексации")
     return errs, n
@@ -641,6 +678,7 @@ def selftest():
                 "нет строки Sitemap", "закрывает открытые страницы",
                 "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
                 "цель переадресации /catalog/net-takoy/ не существует", "цепочка переадресаций ^/", "закрывает собранную страницу", "старый адрес /products/ повторяется", "redirects.csv: цепочка", "адрес не с «/»", "не подключена",
+                "счётчик Метрики в коде страницы", "на тестовой копии подключён счётчик", "нет номера счётчика Метрики", "Вебвизор не выключен", "не по кнопке «Принять»", "нет цели phone_click",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение

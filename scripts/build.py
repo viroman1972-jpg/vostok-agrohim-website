@@ -17,6 +17,10 @@ RESERVED = {"all", "promyshlennye", "sornyaki", "vrediteli", "bolezni"}  # site-
 PROM_TAG, PROM_LAND, PROM_URL = "promyshlennoe-primenenie", "zemli-neselhozpolzovaniya", "/catalog/gerbitsidy/promyshlennye/"
 PROM_NAME = "Гербициды промышленного применения"
 PRICE_FILE = "files/prays-list.pdf"  # П07: пока файла нет в content/, ссылки в подвале нет
+# ДМ40 п. 5: счётчик Метрики фирмы (тот же, что на старом сайте; ответы на К15, К16). Не секрет — номер виден в коде страницы.
+# На тестовой копии счётчика нет (визиты Оли и тестировщиков не попадают в статистику и Директ);
+# METRIKA_ID=… в окружении задаёт номер явно (в том числе пустой — без счётчика).
+METRIKA_ID = "21446467"
 TERM_TAG = "dovskhodovyy"  # ДМ32: у гербицидов с применением до всходов по регламенту; следит check.py
 ZLAK = ("odnoletnie-zlakovye-sornyaki", "mnogoletnie-zlakovye-sornyaki")
 
@@ -291,7 +295,10 @@ def build(root=ROOT, out=None):
     prom = PROM_URL if prom_items else None  # ссылки на подраздел — только если он собирается
     prom_tile = [dict(slug=PROM_URL.strip("/").removeprefix("catalog/"), name=PROM_NAME)] if prom else []
     has_price = (content / PRICE_FILE).is_file()
-    common = dict(s=s, cats=cats, noindex=noindex, prom=prom, price_file="/" + PRICE_FILE if has_price else None)
+    metrika = os.environ.get("METRIKA_ID", "" if noindex else METRIKA_ID)
+    if metrika and not metrika.isdigit():
+        sys.exit(f"METRIKA_ID «{metrika}» — не номер счётчика")
+    common = dict(s=s, cats=cats, noindex=noindex, metrika=metrika, prom=prom, price_file="/" + PRICE_FILE if has_price else None)
     site = s["site_url"]
     HOME, CATALOG = ("Главная", "/"), ("Каталог", "/catalog/")
 
