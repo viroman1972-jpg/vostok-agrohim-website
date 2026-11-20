@@ -481,7 +481,7 @@ def check_redirects(d, table=ROOT / "data" / "redirects.csv", release=False):
     return errs
 
 
-YM_GOALS = ("lead_sent", "phone_click", "email_click")  # ДМ40 п. 5; те же идентификаторы — в целях счётчика
+YM_GOALS = ("lead_sent",)  # ДМ40 п. 5: цель «Заявка с сайта»; телефон и почта — цели Метрики по ссылкам (нужен trackLinks)
 
 
 def check_metrika(d, staging=False, release=False):
@@ -507,6 +507,8 @@ def check_metrika(d, staging=False, release=False):
         code = js.read_text(encoding="utf-8")
         if re.search(r"webvisor\s*:\s*true", code) or not re.search(r"webvisor\s*:\s*false", code):
             errs.append("site.js: Вебвизор не выключен явно (ДМ40 п. 5)")
+        if not re.search(r"trackLinks\s*:\s*true", code):
+            errs.append("site.js: без trackLinks не работают цели «Позвонить» и «Клик по почте»")
         start = re.search(r"function startYm\(\)\s*\{(.*?)\n  \}", code, re.S)
         if not start or "tag.js" not in start.group(1) or code.count("tag.js") != 1:
             errs.append("site.js: счётчик загружается не только из startYm()")
@@ -678,7 +680,7 @@ def selftest():
                 "нет строки Sitemap", "закрывает открытые страницы",
                 "не отправляется в /send.php", "нет скрытого поля territory", "нет скрытого поля page", "нет поля-ловушки", "не показывает телефон", "«Если не ответим", "а send.php нет",
                 "цель переадресации /catalog/net-takoy/ не существует", "цепочка переадресаций ^/", "закрывает собранную страницу", "старый адрес /products/ повторяется", "redirects.csv: цепочка", "адрес не с «/»", "не подключена",
-                "счётчик Метрики в коде страницы", "на тестовой копии подключён счётчик", "нет номера счётчика Метрики", "Вебвизор не выключен", "не по кнопке «Принять»", "нет цели phone_click",
+                "счётчик Метрики в коде страницы", "на тестовой копии подключён счётчик", "нет номера счётчика Метрики", "Вебвизор не выключен", "не по кнопке «Принять»", "нет цели lead_sent", "без trackLinks",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]
     if any("Балерина" in x for x in seo):  # связь через родительскую культуру — не нарушение

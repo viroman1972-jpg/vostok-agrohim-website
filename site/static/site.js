@@ -120,6 +120,8 @@
   }
   // Окно про cookie и Яндекс.Метрика (ДЗ08, ДМ40 п. 5). Счётчик загружается только после «Принять»
   // (сейчас или при прошлом визите). Вебвизор выключен: он записывает ввод имени и телефона. Карта кликов — можно.
+  // Цели: «Заявка с сайта» — lead_sent после ответа send.php; телефон и почту Метрика считает сама по ссылкам tel:/mailto:
+  // (trackLinks; цели «Позвонить» — старая, её использует Директ, и «Клик по почте»).
   var ck = document.getElementById('cookie');
   var ymId = ck && ck.getAttribute('data-ym');
   var ymOn = false;
@@ -148,9 +150,4 @@
       });
     });
   }
-  // Цели: клик по телефону и по почте (заявка — после ответа send.php, выше)
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
-    if (a) goal(a.getAttribute('href').indexOf('tel:') === 0 ? 'phone_click' : 'email_click');
-  });
 })();
