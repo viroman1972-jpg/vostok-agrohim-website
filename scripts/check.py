@@ -33,7 +33,9 @@ PLANNED = ("/catalog/insektitsidy/", "/catalog/fungitsidy/",
            "/catalog/protraviteli/", "/catalog/stimulyatory-rosta/", "/catalog/adyuvanty/")
 HREF = re.compile(r"""<a\b[^>]*\bhref\s*=\s*["'](/[^"'#?]*)""", re.I)
 PRICE_VIS = re.compile(r'class="price">\s*([\d\s ]+)\s*₽')
-IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"']+?)(?:-\d+)?\.(?:webp|svg|jpe?g|png)["']""", re.I)
+IMG_REF = re.compile(r"""(?:src|data-front|data-back)\s*=\s*["']/static/(img/[^"']+?)(?:-\d+)?\.(?:webp|svg|jpe?g|png)(?:\?v=\w+)?["']""", re.I)
+# Метки версий (24.11.2026): Timeweb отдаёт /static/ с хранением в браузере на год — без метки после выкладки остаются старые стили и скрипты
+STATIC_REF = re.compile(r"""(?:src|href|data-front|data-back)\s*=\s*["']/static/([^"'?#]+)(\?v=\w+)?["']""", re.I)
 JOURNAL = ROOT / "assets" / "image-sources.csv"
 STATUSES = {"разрешено", "своё", "ожидает", "уточнить"}  # первые два допустимы на боевом сайте (ДЗ09)
 RELEASE_OK = {"разрешено", "своё"}
@@ -673,6 +675,9 @@ def check_dir(d, staging=False, release=False, journal=JOURNAL):
         errs += check_file(f.relative_to(d), text, Path(d))
         errs += check_images(f.relative_to(d), text, jr, release)
         errs += check_legal(f.relative_to(d), text, allow, s)
+        for rel_s, v in sorted(set(STATIC_REF.findall(text))):
+            if (Path(d) / "static" / rel_s).is_file() and not v and not rel_s.startswith("fonts/"):
+                errs.append(f"{f.relative_to(d)}: /static/{rel_s} без метки версии — после выкладки браузер покажет старый файл")
         if re.search(r'class="sep">·</span>(?!<wbr>)', text):
             errs.append(f"{f.relative_to(d)}: крошки не переносятся — после разделителя нужен <wbr>")
         if staging and 'name="robots" content="noindex' not in text:
@@ -829,7 +834,7 @@ def selftest():
                 "«безопасный» о препарате — «…препарат безопасен", "«натуральный» о препарате", "гарантия результата", "legal-bad.yml: «физлицам»",
                 "«щадящий»", "«экологичный»", "обещание полной защиты", "«безвредный»", "«только для профессионалов»", "«18+»", "в подвале нет «ИНН 7447186421»",
                 "в подвале нет ссылки на Политику", "не одна кнопка «Принять»", "в окне cookie нет ссылки", "нет цели обработки или ссылки на Политику", "нет «Гарантия качества",
-                "карточка исключённого препарата Шаман", "нет изготовителя и страны происхождения", "не из списка семи", "не класс 1–4", "«109-03-3245-1»", "«допог»", "«un 3082»", "нет подвала с реквизитами",
+                "карточка исключённого препарата Шаман", "нет изготовителя и страны происхождения", "/static/site.js без метки версии", "не из списка семи", "не класс 1–4", "«109-03-3245-1»", "«допог»", "«un 3082»", "нет подвала с реквизитами",
                 "comments: нет способа попросить снять отзыв", "в политике нет раздела «10 рабочих дней»",
                 "не подставлены телефоны", "без галочки согласия не отклоняется", "нет проверки поля-ловушки", "нет ограничения частоты", "настройки не вне папки сайта", "сбой отправки не сообщается", "пароль почты в файле сайта"]
     missing = [e for e in expected if not any(e in x for x in bad)]

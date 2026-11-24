@@ -1,6 +1,6 @@
 """Сборка сайта: data/*.csv + content/*.yml + site/templates -> dist/.
 Цены берутся только из data/prices.csv."""
-import csv, json, os, re, shutil, sys
+import csv, hashlib, json, os, re, shutil, sys
 from collections import defaultdict
 from pathlib import Path
 from xml.sax.saxutils import escape as xml_escape
@@ -706,7 +706,33 @@ def build(root=ROOT, out=None):
         (out / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                                          + "".join(locs) + "</urlset>\n", encoding="utf-8")
         (out / "robots.txt").write_text(f"User-agent: *\nDisallow: /send.php\nClean-param: {CLEAN_PARAM} /\n\nSitemap: {site}/sitemap.xml\n", encoding="utf-8")
+    version_static(out)
     return out, warnings
+
+
+def version_static(out):
+    """Метки версий у файлов /static/ (24.11.2026): Timeweb отдаёт стили, скрипты, картинки и индекс поиска с хранением в браузере
+    на год, и после выкладки телефон показывал новую страницу со старыми стилями и скриптами. Метка — начало хеша содержимого:
+    файл изменился — адрес другой, браузер скачивает заново; не изменился — берёт из памяти."""
+    def tag(rel):
+        return hashlib.sha256((out / "static" / rel).read_bytes()).hexdigest()[:10]
+    js, idx = out / "static" / "search.js", "search-index.json"
+    if js.is_file() and (out / "static" / idx).is_file():  # индекс загружает скрипт поиска, а не страница
+        js.write_text(js.read_text(encoding="utf-8").replace(f"'/static/{idx}'", f"'/static/{idx}?v={tag(idx)}'"), encoding="utf-8")
+    ref, tags = re.compile(r"""(["'])/static/([^"'?#]+)\1"""), {}
+
+    def sub(m):
+        rel = m.group(2)
+        if rel.startswith("fonts/"):  # шрифты не меняются; стили грузят их без метки — preload должен совпасть по адресу
+            return m.group(0)
+        if rel not in tags:
+            tags[rel] = tag(rel) if (out / "static" / rel).is_file() else None
+        return m.group(0) if tags[rel] is None else f"{m.group(1)}/static/{rel}?v={tags[rel]}{m.group(1)}"
+    for f in out.rglob("*.html"):
+        text = f.read_text(encoding="utf-8")
+        new = ref.sub(sub, text)
+        if new != text:
+            f.write_text(new, encoding="utf-8")
 
 
 if __name__ == "__main__":
