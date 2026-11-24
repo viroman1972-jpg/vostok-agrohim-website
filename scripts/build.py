@@ -263,6 +263,7 @@ def build(root=ROOT, out=None):
         p["url"] = f"/catalog/{p['category']}/{p['slug']}/"
         p["substances"], p["crops"], p["pests"] = l_sub[p["slug"]], l_crop[p["slug"]], l_pest[p["slug"]]
         p["term"] = [TERM_TAG] if TERM_TAG in p["tags"].split() else []
+        p["hazard"] = p["hazard_human"][:1] if p["hazard_human"][:1] in "1234" else ""  # фильтр «Класс опасности» (ДЗ05): цифра класса для человека
         p["packs"] = [v.replace(" ", "") for v in pack_labels(p["package_sizes"])]  # значение фильтра без пробела: «5л», подпись «5 л»
         p["maker_badge"] = mk[p["manufacturer"]]["badge"]
         p["category_one"] = cat_by[p["category"]]["name_one"]
@@ -308,7 +309,8 @@ def build(root=ROOT, out=None):
               "maker": ("Производитель", "manufacturer", {k: {"name": v["name"]} for k, v in mk.items()}),
               "action": ("Характер действия", "action_character", action_names),
               "term": ("Срок применения", "term", {TERM_TAG: {"name": "Довсходовые"}}),
-              "pack": ("Упаковка", "packs", {v.replace(" ", ""): {"name": v} for p in products for v in pack_labels(p["package_sizes"])})}
+              "pack": ("Упаковка", "packs", {v.replace(" ", ""): {"name": v} for p in products for v in pack_labels(p["package_sizes"])}),
+              "hazard": ("Класс опасности", "hazard", {p["hazard"]: {"name": p["hazard_human"]} for p in products if p["hazard"]})}
 
     def facet(items, key):
         title, field, names = facets[key]
@@ -317,10 +319,10 @@ def build(root=ROOT, out=None):
             for v in (p[field] if isinstance(p[field], list) else [p[field]]):
                 if v:
                     cnt[v] += 1
-        its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0]))]
-        if key == "pack" and len(its) < 2:  # ДМ32: одно значение ничего не отбирает
+        its = [dict(value=v, label=names.get(v, {"name": v})["name"], count=n) for v, n in sorted(cnt.items(), key=lambda kv: (kv[0],) if key == "hazard" else (-kv[1], kv[0]))]
+        if key in ("pack", "hazard") and len(its) < 2:  # ДМ32: одно значение ничего не отбирает
             return None
-        return dict(key=key, title=title, items=its, extra=key in ("action", "term", "pack")) if its else None  # extra — под кнопкой «Ещё фильтры» (ДМ23), цена там же, в шаблоне
+        return dict(key=key, title=title, items=its, extra=key in ("action", "term", "pack", "hazard")) if its else None  # extra — под кнопкой «Ещё фильтры» (ДМ23), цена там же, в шаблоне
 
     def read_seo(f):
         return yaml.safe_load(f.read_text(encoding="utf-8")) if f.exists() else {}
@@ -337,7 +339,8 @@ def build(root=ROOT, out=None):
         write(rel, env.get_template("listing.html").render(
             **dict(common, noindex=noindex or search_page), search_page=search_page, title=title, description=description, canonical=canonical, h1=h1, crumb=crumb, crumbs=list(crumbs), jsonld=ld_dump(*ld),
             items=items, count_word=word_preparat(len(items)), lead=lead, seo=seo, auto=auto, quick=[q for q in quick if q["items"]],
-            groups=[g for g in (facet(items, k) for k in keys) if g], price_min=min(prices_l), price_max=max(prices_l),
+            # «Класс опасности» — на всех листингах, под «Ещё фильтры» (ДЗ05, ДМ23 уточнение 24.11.2026)
+            groups=[g for g in (facet(items, k) for k in keys + ["hazard"]) if g], price_min=min(prices_l), price_max=max(prices_l),
             other_title=other_title, other_cats=other_cats, related=related))
 
     # Десиканты — представление по тегу над гербицидами (ПИ08): препарат лежит в своей категории, адрес карточки не меняется

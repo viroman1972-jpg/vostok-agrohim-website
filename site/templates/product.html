@@ -31,6 +31,7 @@
       <div class="p-tags"><span class="tag tag-cat">{{ category.name_one }}</span>{% if maker %}<span class="tag tag-maker">{{ maker.badge }}</span>{% endif %}</div>
       <h1 class="p-title">{{ p.name }}</h1>
       <div class="p-dv">{{ p.dv_text }}</div>
+      {% if maker or p.country %}<div class="p-origin">{% if maker %}Производитель: {{ maker.legal_name or maker.name }}{% endif %}{% if maker and p.country %} · {% endif %}{% if p.country %}страна происхождения: {{ p.country }}{% endif %}</div>{% endif %}
       <p class="p-lead">{{ p.description }}</p>
       <div class="buy">
         <div><span class="price">{{ p.price_text }}/{{ p.unit }}</span></div>

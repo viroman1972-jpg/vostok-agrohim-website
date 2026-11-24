@@ -249,7 +249,7 @@ def main(report_path):
         if slug not in {m["slug"] for m in makers}:
             makers.append(dict(slug=slug, name=nm, badge=badge))
     with open(mfile, "w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=["slug", "name", "badge"], lineterminator="\n")
+        w = csv.DictWriter(f, fieldnames=["slug", "name", "badge", "legal_name"], restval="", lineterminator="\n")
         w.writeheader()
         w.writerows(makers)
 

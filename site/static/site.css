@@ -148,6 +148,8 @@ h1,h2{overflow-wrap:anywhere}  /* длинное слово не должно р
 .p-title{font-family:var(--serif);font-weight:700;font-size:42px;line-height:1.18;margin:0 0 14px;letter-spacing:-.01em}
 @media (max-width:639px){.p-title{font-size:30px}}
 .p-dv{font-size:17px;font-weight:600;color:var(--green);line-height:1.5;margin-bottom:12px}
+/* ЗоЗПП ст. 10: изготовитель и страна происхождения (решение Оли 24.11.2026) — строка, не восьмая характеристика */
+.p-origin{font-size:14px;color:var(--gray);line-height:1.5;margin:-4px 0 14px}
 .p-lead{font-size:16px;line-height:1.6;color:var(--gray);margin:0 0 26px;max-width:56ch;text-wrap:pretty}
 .buy{background:var(--cream);border:1px solid var(--line);border-radius:4px;padding:24px}
 .price{font-family:var(--serif);font-weight:700;font-size:32px;color:var(--gold-d)}
