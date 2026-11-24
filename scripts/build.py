@@ -690,7 +690,10 @@ def build(root=ROOT, out=None):
     if skipped:
         warnings.append(f"переадресации: {len(skipped)} из {len(rules) + len(skipped)} не подключены — новый адрес не собран "
                         f"(черновик или нет файла прайса); на боевом сайте check.py --release этого не пропустит")
+    # Страницы — сверять с сервером при каждом заходе (24.11.2026): без заголовка браузер сам решает, сколько их хранить, и после
+    # выкладки показывал старую страницу. Файлы /static/ хранятся долго, их адреса меняются меткой версии (version_static)
     (out / ".htaccess").write_text("ErrorDocument 404 /404.html\nOptions -Indexes\n"
+                                   "<IfModule mod_headers.c>\n<FilesMatch \"\\.html$\">\nHeader set Cache-Control \"no-cache\"\n</FilesMatch>\n</IfModule>\n"
                                    "<IfModule mod_alias.c>\nRedirectMatch 403 ^/\\.vostok-private(/|$)\n"
                                    "# Переадресации со старого сайта — из data/redirects.csv\n" + "".join(x + "\n" for x in rules)
                                    + "</IfModule>\n", encoding="utf-8")
